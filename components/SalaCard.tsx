@@ -85,7 +85,7 @@ export function SalaCard({ sala }: SalaCardProps) {
         {/* CTAs */}
         <div className="mt-3 flex gap-2">
           {acf?.link_referido && (
-            <Button asChild size="sm" className="flex-1 btn-gold text-xs h-8">
+            <Button asChild size="sm" className="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold text-xs h-8">
               <a href={acf.link_referido} target="_blank" rel="noopener noreferrer sponsored">
                 {acf.texto_boton_referido || "Jugar ahora"}
               </a>

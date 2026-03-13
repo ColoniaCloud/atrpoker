@@ -11,7 +11,7 @@
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 98%;
     --primary: 199 89% 48%;
-    --primary-foreground: 0 0% 98%;
+    --primary-foreground: 0 0% 2%;
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14%;
@@ -24,33 +24,25 @@
     --input: 0 0% 14%;
     --ring: 199 89% 48%;
     --radius: 0.5rem;
-    --font-sans: "Inter", system-ui, sans-serif;
   }
 
   * {
     @apply border-border;
+    box-sizing: border-box;
   }
 
   body {
     @apply bg-background text-foreground antialiased;
+    font-family: var(--font-inter), system-ui, sans-serif;
   }
 
   /* Contenido HTML de WordPress */
   .wp-content {
     @apply prose prose-invert prose-zinc max-w-none;
-    @apply prose-headings:font-bold prose-headings:text-zinc-100;
-    @apply prose-a:text-sky-400 prose-a:no-underline hover:prose-a:underline;
+    @apply prose-headings:font-bold prose-headings:text-foreground;
+    @apply prose-a:text-primary prose-a:no-underline hover:prose-a:underline;
     @apply prose-img:rounded-lg prose-img:mx-auto;
-    @apply prose-blockquote:border-sky-500 prose-blockquote:text-zinc-400;
-    @apply prose-code:text-sky-300 prose-code:bg-zinc-800 prose-code:px-1 prose-code:rounded;
-  }
-}
-
-@layer components {
-  .btn-gold {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
-           bg-amber-500 hover:bg-amber-400 text-zinc-950
-           transition-colors duration-200 focus:outline-none focus:ring-2
-           focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
+    @apply prose-blockquote:border-primary prose-blockquote:text-muted-foreground;
+    @apply prose-code:text-primary prose-code:bg-secondary prose-code:px-1 prose-code:rounded;
   }
 }

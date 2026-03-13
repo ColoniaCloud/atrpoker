@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 interface PaginationProps {
@@ -16,50 +18,61 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
   );
 
   return (
-    <nav className="flex items-center justify-center gap-1 mt-10" aria-label="Paginación">
+    <nav className="mt-10 flex items-center justify-center gap-1" aria-label="Paginación">
       {/* Anterior */}
-      {currentPage > 1 && (
-        <Link
-          href={`${basePath}?page=${currentPage - 1}`}
-          className="px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-        >
-          ← Anterior
-        </Link>
+      {currentPage > 1 ? (
+        <Button asChild variant="outline" size="sm">
+          <Link href={`${basePath}?page=${currentPage - 1}`}>
+            <ChevronLeft className="h-4 w-4 mr-1" />
+            Anterior
+          </Link>
+        </Button>
+      ) : (
+        <Button variant="outline" size="sm" disabled>
+          <ChevronLeft className="h-4 w-4 mr-1" />
+          Anterior
+        </Button>
       )}
 
-      {/* Números */}
+      {/* Números de página */}
       {visiblePages.map((page, idx) => {
         const prev = visiblePages[idx - 1];
         const showEllipsis = prev && page - prev > 1;
         return (
           <span key={page} className="flex items-center gap-1">
             {showEllipsis && (
-              <span className="px-2 text-zinc-600">…</span>
+              <span className="px-2 text-sm text-muted-foreground">…</span>
             )}
-            <Link
-              href={`${basePath}?page=${page}`}
-              className={cn(
-                "w-9 h-9 flex items-center justify-center rounded-lg text-sm font-medium transition-colors",
-                page === currentPage
-                  ? "bg-brand-600 text-white"
-                  : "text-zinc-400 hover:text-white hover:bg-zinc-800"
-              )}
+            <Button
+              asChild={page !== currentPage}
+              variant={page === currentPage ? "default" : "ghost"}
+              size="icon"
+              className={cn("h-9 w-9", page === currentPage && "pointer-events-none")}
               aria-current={page === currentPage ? "page" : undefined}
             >
-              {page}
-            </Link>
+              {page === currentPage ? (
+                <span>{page}</span>
+              ) : (
+                <Link href={`${basePath}?page=${page}`}>{page}</Link>
+              )}
+            </Button>
           </span>
         );
       })}
 
       {/* Siguiente */}
-      {currentPage < totalPages && (
-        <Link
-          href={`${basePath}?page=${currentPage + 1}`}
-          className="px-3 py-2 rounded-lg text-sm text-zinc-400 hover:text-white hover:bg-zinc-800 transition-colors"
-        >
-          Siguiente →
-        </Link>
+      {currentPage < totalPages ? (
+        <Button asChild variant="outline" size="sm">
+          <Link href={`${basePath}?page=${currentPage + 1}`}>
+            Siguiente
+            <ChevronRight className="h-4 w-4 ml-1" />
+          </Link>
+        </Button>
+      ) : (
+        <Button variant="outline" size="sm" disabled>
+          Siguiente
+          <ChevronRight className="h-4 w-4 ml-1" />
+        </Button>
       )}
     </nav>
   );

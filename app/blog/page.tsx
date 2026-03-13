@@ -1,4 +1,7 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+import { Button } from "@/components/ui/button";
 import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
 import { CATEGORY_SLUGS } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
@@ -33,13 +36,13 @@ export default async function BlogPage({ searchParams }: PageProps) {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
       <div className="mb-10">
-        <h1 className="text-4xl font-black text-white mb-3">Blog de Póker</h1>
-        <p className="text-zinc-400 text-lg">
-          Estrategia, noticias y análisis —{" "}
-          <span className="text-zinc-500">{total} artículos</span>
+        <h1 className="text-4xl font-black text-foreground mb-2">Blog de Póker</h1>
+        <p className="text-muted-foreground text-lg">
+          Estrategia, noticias y análisis{" "}
+          <span className="text-muted-foreground/60">· {total} artículos</span>
         </p>
       </div>
 
@@ -51,16 +54,18 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <BlogCard key={post.id} post={post} />
             ))}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            basePath="/blog"
-          />
+          <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
         </>
       ) : (
-        <div className="text-center py-20 text-zinc-500">
-          <span className="text-5xl block mb-4">♠</span>
-          <p className="text-lg">No hay artículos publicados aún.</p>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <span className="text-6xl mb-4 text-muted-foreground/20">♠</span>
+          <p className="text-lg text-muted-foreground">No hay artículos publicados aún.</p>
+          <Button asChild variant="outline" className="mt-6">
+            <Link href="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Volver al inicio
+            </Link>
+          </Button>
         </div>
       )}
     </div>

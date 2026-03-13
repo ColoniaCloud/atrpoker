@@ -2,6 +2,10 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, ChevronRight } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Separator } from "@/components/ui/separator";
 import {
   getPostBySlug,
   getPostSlugs,
@@ -59,60 +63,55 @@ export default async function BlogPostPage({ params }: PageProps) {
   const categories = post._embedded?.["wp:term"]?.[0] ?? [];
 
   return (
-    <article className="max-w-3xl mx-auto px-4 sm:px-6 py-12">
+    <article className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-        <Link href="/" className="hover:text-zinc-300">Inicio</Link>
-        <span>/</span>
-        <Link href="/blog" className="hover:text-zinc-300">Blog</Link>
-        <span>/</span>
-        <span className="text-zinc-400 truncate" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
+      <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
+        <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
       </nav>
 
       {/* Categorías */}
       {categories.length > 0 && (
-        <div className="flex flex-wrap gap-2 mb-4">
+        <div className="mb-4 flex flex-wrap gap-2">
           {categories.map((cat) => (
-            <span
-              key={cat.id}
-              className="badge bg-brand-900/50 text-brand-300 border border-brand-800"
-            >
-              {cat.name}
-            </span>
+            <Badge key={cat.id} variant="secondary">{cat.name}</Badge>
           ))}
         </div>
       )}
 
       {/* Título */}
       <h1
-        className="text-4xl font-black text-white leading-tight mb-6"
+        className="mb-6 text-4xl font-black leading-tight text-foreground"
         dangerouslySetInnerHTML={{ __html: post.title.rendered }}
       />
 
-      {/* Meta */}
-      <div className="flex items-center gap-4 mb-8 pb-8 border-b border-zinc-800">
+      {/* Meta autor + fecha */}
+      <div className="mb-8 flex items-center gap-4">
         {author?.avatar_urls?.["48"] && (
           <Image
             src={author.avatar_urls["48"]}
             alt={author.name}
             width={40}
             height={40}
-            className="rounded-full"
+            className="rounded-full ring-2 ring-border"
           />
         )}
         <div>
-          {author && (
-            <p className="text-sm font-medium text-zinc-300">{author.name}</p>
-          )}
-          <time dateTime={post.date} className="text-sm text-zinc-500">
+          {author && <p className="text-sm font-medium text-foreground">{author.name}</p>}
+          <time dateTime={post.date} className="text-sm text-muted-foreground">
             {formatDate(post.date)}
           </time>
         </div>
       </div>
 
+      <Separator className="mb-8" />
+
       {/* Imagen destacada */}
       {imageUrl && (
-        <div className="relative aspect-video rounded-xl overflow-hidden mb-10">
+        <div className="relative mb-10 aspect-video overflow-hidden rounded-xl">
           <Image
             src={imageUrl}
             alt={stripHtml(post.title.rendered)}
@@ -124,18 +123,20 @@ export default async function BlogPostPage({ params }: PageProps) {
         </div>
       )}
 
-      {/* Contenido */}
+      {/* Contenido WordPress */}
       <div
         className="wp-content"
         dangerouslySetInnerHTML={{ __html: post.content.rendered }}
       />
 
-      {/* Back */}
-      <div className="mt-12 pt-8 border-t border-zinc-800">
-        <Link href="/blog" className="btn-outline">
-          ← Volver al Blog
+      {/* Volver */}
+      <Separator className="mt-12 mb-8" />
+      <Button asChild variant="outline">
+        <Link href="/blog">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Volver al Blog
         </Link>
-      </div>
+      </Button>
     </article>
   );
 }

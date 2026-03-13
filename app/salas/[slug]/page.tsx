@@ -2,6 +2,11 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowLeft, ChevronRight, Check, X, ExternalLink, Star } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Separator } from "@/components/ui/separator";
 import {
   getSalaBySlug,
   getSalaSlugs,
@@ -38,21 +43,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-function StarRating({ rating, size = "md" }: { rating: number; size?: "sm" | "md" | "lg" }) {
-  const sizes = { sm: "w-4 h-4", md: "w-5 h-5", lg: "w-6 h-6" };
+function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-1">
       {Array.from({ length: 5 }, (_, i) => (
-        <svg
+        <Star
           key={i}
-          className={`${sizes[size]} ${i < rating ? "text-gold-400" : "text-zinc-700"}`}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-        >
-          <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
+          className={`h-5 w-5 ${i < rating ? "fill-amber-400 text-amber-400" : "fill-muted text-muted"}`}
+        />
       ))}
-      <span className="ml-1 text-zinc-400 text-sm">({rating}/5)</span>
+      <span className="ml-2 text-sm text-muted-foreground">({rating}/5)</span>
     </div>
   );
 }
@@ -67,22 +67,22 @@ export default async function SalaPage({ params }: PageProps) {
   const { acf } = sala;
 
   return (
-    <div className="max-w-4xl mx-auto px-4 sm:px-6 py-12">
+    <div className="mx-auto max-w-4xl px-4 sm:px-6 py-12">
       {/* Breadcrumb */}
-      <nav className="flex items-center gap-2 text-sm text-zinc-500 mb-8">
-        <Link href="/" className="hover:text-zinc-300">Inicio</Link>
-        <span>/</span>
-        <Link href="/salas" className="hover:text-zinc-300">Salas</Link>
-        <span>/</span>
-        <span className="text-zinc-400 truncate" dangerouslySetInnerHTML={{ __html: sala.title.rendered }} />
+      <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
+        <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <Link href="/salas" className="hover:text-foreground transition-colors">Salas</Link>
+        <ChevronRight className="h-3.5 w-3.5" />
+        <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: sala.title.rendered }} />
       </nav>
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
-        {/* Contenido principal */}
+        {/* ── Contenido principal ── */}
         <div className="lg:col-span-2">
           {/* Imagen */}
           {imageUrl && (
-            <div className="relative aspect-video rounded-xl overflow-hidden mb-6">
+            <div className="relative mb-6 aspect-video overflow-hidden rounded-xl">
               <Image
                 src={imageUrl}
                 alt={stripHtml(sala.title.rendered)}
@@ -97,18 +97,18 @@ export default async function SalaPage({ params }: PageProps) {
           {/* Título + rating */}
           <div className="mb-6">
             {acf?.pais && (
-              <span className="badge bg-zinc-800 text-zinc-400 border border-zinc-700 mb-3">
-                {acf.pais}
-              </span>
+              <Badge variant="outline" className="mb-3">{acf.pais}</Badge>
             )}
             <h1
-              className="text-4xl font-black text-white mb-3"
+              className="mb-3 text-4xl font-black text-foreground"
               dangerouslySetInnerHTML={{ __html: sala.title.rendered }}
             />
-            {acf?.rating && <StarRating rating={acf.rating} size="lg" />}
+            {acf?.rating && <StarRating rating={acf.rating} />}
           </div>
 
-          {/* Contenido del review */}
+          <Separator className="mb-8" />
+
+          {/* Contenido WordPress */}
           <div
             className="wp-content"
             dangerouslySetInnerHTML={{ __html: sala.content.rendered }}
@@ -118,109 +118,118 @@ export default async function SalaPage({ params }: PageProps) {
           {(acf?.pros || acf?.contras) && (
             <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 gap-4">
               {acf.pros && (
-                <div className="p-4 rounded-lg bg-green-900/20 border border-green-800/30">
-                  <h3 className="font-bold text-green-400 mb-2 flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
-                    Pros
-                  </h3>
-                  <p className="text-sm text-zinc-300 whitespace-pre-line">{acf.pros}</p>
-                </div>
+                <Card className="border-green-800/40 bg-green-950/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-2 text-green-400 text-base">
+                      <Check className="h-4 w-4" />
+                      Pros
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-foreground/80 whitespace-pre-line">{acf.pros}</p>
+                  </CardContent>
+                </Card>
               )}
               {acf.contras && (
-                <div className="p-4 rounded-lg bg-red-900/20 border border-red-800/30">
-                  <h3 className="font-bold text-red-400 mb-2 flex items-center gap-1">
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                    </svg>
-                    Contras
-                  </h3>
-                  <p className="text-sm text-zinc-300 whitespace-pre-line">{acf.contras}</p>
-                </div>
+                <Card className="border-red-800/40 bg-red-950/20">
+                  <CardHeader className="pb-2">
+                    <CardTitle className="flex items-center gap-2 text-destructive text-base">
+                      <X className="h-4 w-4" />
+                      Contras
+                    </CardTitle>
+                  </CardHeader>
+                  <CardContent>
+                    <p className="text-sm text-foreground/80 whitespace-pre-line">{acf.contras}</p>
+                  </CardContent>
+                </Card>
               )}
             </div>
           )}
         </div>
 
-        {/* Sidebar de acción */}
+        {/* ── Sidebar ── */}
         <div className="lg:col-span-1">
           <div className="sticky top-24 space-y-4">
             {/* Card de bono */}
             {(acf?.codigo_bono || acf?.link_referido) && (
-              <div className="card p-5 border-gold-500/30">
-                <h2 className="font-bold text-white mb-4">Oferta Exclusiva</h2>
+              <Card className="border-amber-500/30">
+                <CardHeader>
+                  <CardTitle className="text-base text-foreground">Oferta Exclusiva</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-4">
+                  {acf.descripcion_bono && (
+                    <p className="text-sm text-muted-foreground">{acf.descripcion_bono}</p>
+                  )}
 
-                {acf.descripcion_bono && (
-                  <p className="text-sm text-zinc-400 mb-4">{acf.descripcion_bono}</p>
-                )}
+                  {acf.codigo_bono && (
+                    <div className="rounded-lg border border-amber-500/30 bg-amber-500/10 p-3 text-center">
+                      <p className="text-xs font-medium text-amber-500 mb-1">Código de bono</p>
+                      <p className="font-mono text-xl font-black text-amber-400">{acf.codigo_bono}</p>
+                      <p className="mt-1 text-xs text-muted-foreground">Copiá y usá al registrarte</p>
+                    </div>
+                  )}
 
-                {acf.codigo_bono && (
-                  <div className="p-3 rounded-lg bg-gold-500/10 border border-gold-500/30 mb-4 text-center">
-                    <p className="text-xs text-gold-500 font-medium mb-1">Código de bono</p>
-                    <p className="text-xl font-mono font-black text-gold-300">
-                      {acf.codigo_bono}
-                    </p>
-                    <p className="text-xs text-zinc-500 mt-1">Copiá y usá al registrarte</p>
-                  </div>
-                )}
+                  {acf.link_referido && (
+                    <Button
+                      asChild
+                      className="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold"
+                    >
+                      <a href={acf.link_referido} target="_blank" rel="noopener noreferrer sponsored">
+                        {acf.texto_boton_referido || "Jugar en esta sala"}
+                        <ExternalLink className="ml-2 h-4 w-4" />
+                      </a>
+                    </Button>
+                  )}
 
-                {acf.link_referido && (
-                  <a
-                    href={acf.link_referido}
-                    target="_blank"
-                    rel="noopener noreferrer sponsored"
-                    className="btn-gold w-full justify-center"
-                  >
-                    {acf.texto_boton_referido || "Jugar en esta sala"}
-                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </a>
-                )}
-
-                <p className="text-xs text-zinc-600 mt-3 text-center">
-                  Link de referido. El juego puede crear dependencia. +18.
-                </p>
-              </div>
+                  <p className="text-center text-xs text-muted-foreground/60">
+                    Link de referido · El juego puede crear dependencia · +18
+                  </p>
+                </CardContent>
+              </Card>
             )}
 
             {/* Plataformas */}
             {acf?.plataformas && acf.plataformas.length > 0 && (
-              <div className="card p-5">
-                <h3 className="font-semibold text-zinc-300 mb-3 text-sm">Plataformas disponibles</h3>
-                <div className="flex flex-wrap gap-2">
-                  {acf.plataformas.map((p) => (
-                    <span key={p} className="badge bg-zinc-800 text-zinc-400 border border-zinc-700 capitalize">
-                      {p}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-muted-foreground">Plataformas disponibles</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {acf.plataformas.map((p) => (
+                      <Badge key={p} variant="secondary" className="capitalize">{p}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             )}
 
             {/* Variantes */}
             {acf?.variantes_poker && acf.variantes_poker.length > 0 && (
-              <div className="card p-5">
-                <h3 className="font-semibold text-zinc-300 mb-3 text-sm">Variantes de póker</h3>
-                <div className="flex flex-wrap gap-2">
-                  {acf.variantes_poker.map((v) => (
-                    <span key={v} className="badge bg-brand-900/40 text-brand-300 border border-brand-800">
-                      {v}
-                    </span>
-                  ))}
-                </div>
-              </div>
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-sm text-muted-foreground">Variantes de póker</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <div className="flex flex-wrap gap-2">
+                    {acf.variantes_poker.map((v) => (
+                      <Badge key={v} variant="outline" className="text-primary border-primary/30">{v}</Badge>
+                    ))}
+                  </div>
+                </CardContent>
+              </Card>
             )}
           </div>
         </div>
       </div>
 
-      <div className="mt-12 pt-8 border-t border-zinc-800">
-        <Link href="/salas" className="btn-outline">
-          ← Ver todas las salas
+      <Separator className="mt-12 mb-8" />
+      <Button asChild variant="outline">
+        <Link href="/salas">
+          <ArrowLeft className="mr-2 h-4 w-4" />
+          Ver todas las salas
         </Link>
-      </div>
+      </Button>
     </div>
   );
 }

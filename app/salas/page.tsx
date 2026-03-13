@@ -1,4 +1,8 @@
 import type { Metadata } from "next";
+import Link from "next/link";
+import { ArrowLeft, Info } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getSalas } from "@/lib/wordpress";
 import { SalaCard } from "@/components/SalaCard";
 import { Pagination } from "@/components/Pagination";
@@ -29,22 +33,24 @@ export default async function SalasPage({ searchParams }: PageProps) {
   });
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
       {/* Header */}
-      <div className="mb-10">
-        <h1 className="text-4xl font-black text-white mb-3">
-          Salas de Póker Online
-        </h1>
-        <p className="text-zinc-400 text-lg">
-          Reseñas honestas y bonos exclusivos —{" "}
-          <span className="text-zinc-500">{total} salas analizadas</span>
+      <div className="mb-8">
+        <h1 className="text-4xl font-black text-foreground mb-2">Salas de Póker Online</h1>
+        <p className="text-muted-foreground text-lg">
+          Reseñas honestas y bonos exclusivos{" "}
+          <span className="text-muted-foreground/60">· {total} salas analizadas</span>
         </p>
       </div>
 
-      {/* Disclaimer de afiliados */}
-      <div className="mb-8 p-4 rounded-lg bg-zinc-900 border border-zinc-800 text-sm text-zinc-500">
-        <strong className="text-zinc-400">Nota:</strong> Algunos links son links de referido. Las reseñas son independientes y reflejan nuestra opinión honesta.
-      </div>
+      {/* Disclaimer */}
+      <Alert className="mb-8 border-border bg-card">
+        <Info className="h-4 w-4" />
+        <AlertDescription className="text-muted-foreground">
+          <strong className="text-foreground">Nota sobre afiliados:</strong>{" "}
+          Algunos links son links de referido. Las reseñas son independientes y reflejan nuestra opinión honesta.
+        </AlertDescription>
+      </Alert>
 
       {/* Grid */}
       {salas.length > 0 ? (
@@ -54,16 +60,18 @@ export default async function SalasPage({ searchParams }: PageProps) {
               <SalaCard key={sala.id} sala={sala} />
             ))}
           </div>
-          <Pagination
-            currentPage={currentPage}
-            totalPages={totalPages}
-            basePath="/salas"
-          />
+          <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/salas" />
         </>
       ) : (
-        <div className="text-center py-20 text-zinc-500">
-          <span className="text-5xl block mb-4">♣</span>
-          <p className="text-lg">No hay salas publicadas aún.</p>
+        <div className="flex flex-col items-center justify-center py-24 text-center">
+          <span className="text-6xl mb-4 text-muted-foreground/20">♣</span>
+          <p className="text-lg text-muted-foreground">No hay salas publicadas aún.</p>
+          <Button asChild variant="outline" className="mt-6">
+            <Link href="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Volver al inicio
+            </Link>
+          </Button>
         </div>
       )}
     </div>

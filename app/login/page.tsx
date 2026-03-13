@@ -4,6 +4,12 @@ import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { Loader2 } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
+import { Alert, AlertDescription } from "@/components/ui/alert";
+import { Separator } from "@/components/ui/separator";
 
 function LoginForm() {
   const router = useRouter();
@@ -39,85 +45,86 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center px-4">
-      <div className="w-full max-w-md">
+    <div className="flex min-h-[80vh] items-center justify-center px-4">
+      <div className="w-full max-w-md space-y-6">
         {/* Logo */}
-        <div className="text-center mb-8">
-          <Link href="/" className="inline-flex items-center gap-2 font-bold text-2xl">
-            <span className="text-gold-400">♠</span>
-            <span className="text-white">ATR</span>
-            <span className="text-gold-400">Poker</span>
+        <div className="text-center">
+          <Link href="/" className="inline-flex items-center gap-1.5 font-black text-2xl">
+            <span className="text-amber-400">♠</span>
+            <span className="text-foreground">ATR</span>
+            <span className="text-amber-400">Poker</span>
           </Link>
-          <p className="text-zinc-400 mt-2">Iniciá sesión con tu cuenta</p>
+          <p className="mt-2 text-muted-foreground">Iniciá sesión con tu cuenta WordPress</p>
         </div>
 
-        <div className="card p-8">
-          {formError && (
-            <div className="mb-4 p-3 rounded-lg bg-red-900/30 border border-red-800 text-red-400 text-sm">
-              {formError}
-            </div>
-          )}
+        <Card>
+          <CardHeader>
+            <CardTitle>Iniciar sesión</CardTitle>
+            <CardDescription>
+              Usá tu usuario y contraseña de WordPress.
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            {formError && (
+              <Alert variant="destructive" className="mb-4">
+                <AlertDescription>{formError}</AlertDescription>
+              </Alert>
+            )}
 
-          <form onSubmit={handleSubmit} className="space-y-4">
-            <div>
-              <label htmlFor="username" className="block text-sm font-medium text-zinc-300 mb-1.5">
-                Usuario de WordPress
-              </label>
-              <input
-                id="username"
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-                required
-                autoComplete="username"
-                className="w-full px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-colors"
-                placeholder="tu_usuario"
-              />
-            </div>
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div className="space-y-1.5">
+                <label htmlFor="username" className="text-sm font-medium text-foreground">
+                  Usuario de WordPress
+                </label>
+                <Input
+                  id="username"
+                  type="text"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
+                  required
+                  autoComplete="username"
+                  placeholder="tu_usuario"
+                />
+              </div>
 
-            <div>
-              <label htmlFor="password" className="block text-sm font-medium text-zinc-300 mb-1.5">
-                Contraseña
-              </label>
-              <input
-                id="password"
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-                required
-                autoComplete="current-password"
-                className="w-full px-4 py-2.5 rounded-lg bg-zinc-800 border border-zinc-700 text-white placeholder-zinc-500 focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition-colors"
-                placeholder="••••••••"
-              />
-            </div>
+              <div className="space-y-1.5">
+                <label htmlFor="password" className="text-sm font-medium text-foreground">
+                  Contraseña
+                </label>
+                <Input
+                  id="password"
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  autoComplete="current-password"
+                  placeholder="••••••••"
+                />
+              </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="btn-primary w-full justify-center disabled:opacity-50 disabled:cursor-not-allowed"
-            >
-              {loading ? (
-                <>
-                  <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24">
-                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" />
-                  </svg>
-                  Iniciando sesión...
-                </>
-              ) : (
-                "Iniciar sesión"
-              )}
-            </button>
-          </form>
-        </div>
+              <Button type="submit" disabled={loading} className="w-full">
+                {loading ? (
+                  <>
+                    <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                    Iniciando sesión...
+                  </>
+                ) : (
+                  "Iniciar sesión"
+                )}
+              </Button>
+            </form>
+          </CardContent>
+        </Card>
 
-        <p className="text-center text-sm text-zinc-500 mt-4">
+        <Separator />
+
+        <p className="text-center text-sm text-muted-foreground">
           ¿No tenés cuenta?{" "}
           <a
             href={`${process.env.NEXT_PUBLIC_WP_URL ?? ""}/wp-login.php?action=register`}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-brand-400 hover:text-brand-300"
+            className="text-primary hover:underline font-medium"
           >
             Registrate en WordPress
           </a>
