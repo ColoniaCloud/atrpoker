@@ -1,0 +1,58 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --font-sans: "Inter", system-ui, sans-serif;
+  }
+
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased;
+  }
+
+  /* Estilos para contenido HTML de WordPress */
+  .wp-content {
+    @apply prose prose-invert prose-zinc max-w-none;
+    @apply prose-headings:font-bold prose-headings:text-zinc-100;
+    @apply prose-a:text-brand-400 prose-a:no-underline hover:prose-a:underline;
+    @apply prose-img:rounded-lg prose-img:mx-auto;
+    @apply prose-blockquote:border-brand-500 prose-blockquote:text-zinc-400;
+    @apply prose-code:text-brand-300 prose-code:bg-zinc-800 prose-code:px-1 prose-code:rounded;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
+           bg-brand-600 hover:bg-brand-500 text-white
+           transition-colors duration-200 focus:outline-none focus:ring-2
+           focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
+  }
+
+  .btn-gold {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
+           bg-gold-500 hover:bg-gold-400 text-zinc-950
+           transition-colors duration-200 focus:outline-none focus:ring-2
+           focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
+  }
+
+  .btn-outline {
+    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
+           border border-zinc-700 hover:border-zinc-500 text-zinc-300 hover:text-white
+           transition-colors duration-200;
+  }
+
+  .card {
+    @apply bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
+           hover:border-zinc-700 transition-colors duration-200;
+  }
+
+  .badge {
+    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+  }
+}
