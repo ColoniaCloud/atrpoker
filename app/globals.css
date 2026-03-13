@@ -4,6 +4,26 @@
 
 @layer base {
   :root {
+    --background: 0 0% 3.9%;
+    --foreground: 0 0% 98%;
+    --card: 0 0% 7%;
+    --card-foreground: 0 0% 98%;
+    --popover: 0 0% 5%;
+    --popover-foreground: 0 0% 98%;
+    --primary: 199 89% 48%;
+    --primary-foreground: 0 0% 98%;
+    --secondary: 0 0% 14%;
+    --secondary-foreground: 0 0% 98%;
+    --muted: 0 0% 14%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 14%;
+    --accent-foreground: 0 0% 98%;
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 14%;
+    --input: 0 0% 14%;
+    --ring: 199 89% 48%;
+    --radius: 0.5rem;
     --font-sans: "Inter", system-ui, sans-serif;
   }
 
@@ -12,47 +32,25 @@
   }
 
   body {
-    @apply bg-zinc-950 text-zinc-100 antialiased;
+    @apply bg-background text-foreground antialiased;
   }
 
-  /* Estilos para contenido HTML de WordPress */
+  /* Contenido HTML de WordPress */
   .wp-content {
     @apply prose prose-invert prose-zinc max-w-none;
     @apply prose-headings:font-bold prose-headings:text-zinc-100;
-    @apply prose-a:text-brand-400 prose-a:no-underline hover:prose-a:underline;
+    @apply prose-a:text-sky-400 prose-a:no-underline hover:prose-a:underline;
     @apply prose-img:rounded-lg prose-img:mx-auto;
-    @apply prose-blockquote:border-brand-500 prose-blockquote:text-zinc-400;
-    @apply prose-code:text-brand-300 prose-code:bg-zinc-800 prose-code:px-1 prose-code:rounded;
+    @apply prose-blockquote:border-sky-500 prose-blockquote:text-zinc-400;
+    @apply prose-code:text-sky-300 prose-code:bg-zinc-800 prose-code:px-1 prose-code:rounded;
   }
 }
 
 @layer components {
-  .btn-primary {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
-           bg-brand-600 hover:bg-brand-500 text-white
-           transition-colors duration-200 focus:outline-none focus:ring-2
-           focus:ring-brand-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
-  }
-
   .btn-gold {
     @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
-           bg-gold-500 hover:bg-gold-400 text-zinc-950
+           bg-amber-500 hover:bg-amber-400 text-zinc-950
            transition-colors duration-200 focus:outline-none focus:ring-2
-           focus:ring-gold-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
-  }
-
-  .btn-outline {
-    @apply inline-flex items-center gap-2 px-6 py-3 rounded-lg font-semibold
-           border border-zinc-700 hover:border-zinc-500 text-zinc-300 hover:text-white
-           transition-colors duration-200;
-  }
-
-  .card {
-    @apply bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden
-           hover:border-zinc-700 transition-colors duration-200;
-  }
-
-  .badge {
-    @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+           focus:ring-amber-400 focus:ring-offset-2 focus:ring-offset-zinc-950;
   }
 }
