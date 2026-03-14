@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { useSession, signOut } from "next-auth/react";
 import { useState } from "react";
 import {
@@ -12,7 +13,7 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 import { Button } from "@/components/ui/button";
-import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
 import { Menu, ChevronDown, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -142,14 +143,19 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-border bg-background/90 backdrop-blur-md">
-      <div className="mx-auto flex h-16 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+    <header className="sticky top-4 z-50 w-[85vw] mx-auto rounded-2xl border border-border bg-background/90 backdrop-blur-md shadow-lg">
+      <div className="flex h-14 items-center justify-between px-5 sm:px-6">
 
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-1.5 font-black text-xl shrink-0 mr-4">
-          <span className="text-gold-400">♠</span>
-          <span>ATR</span>
-          <span className="text-gold-400">Poker</span>
+        <Link href="/" className="shrink-0 mr-4">
+          <Image
+            src="/brand/Isologotipo.webp"
+            alt="ATRPoker"
+            width={100}
+            height={28}
+            className="h-7 w-auto object-contain"
+            priority
+          />
         </Link>
 
         {/* Desktop navigation */}
@@ -312,15 +318,16 @@ export function Navbar() {
             </Button>
           </SheetTrigger>
           <SheetContent side="left" className="w-[300px] overflow-y-auto">
+            <SheetTitle className="sr-only">Menú principal</SheetTitle>
             <div className="mb-6 mt-2">
-              <Link
-                href="/"
-                onClick={() => setMobileOpen(false)}
-                className="flex items-center gap-1.5 font-black text-xl"
-              >
-                <span className="text-gold-400">♠</span>
-                <span>ATR</span>
-                <span className="text-gold-400">Poker</span>
+              <Link href="/" onClick={() => setMobileOpen(false)}>
+                <Image
+                  src="/brand/Isologotipo.webp"
+                  alt="ATRPoker"
+                  width={90}
+                  height={26}
+                  className="h-7 w-auto object-contain"
+                />
               </Link>
             </div>
 
