@@ -1,101 +1,155 @@
+"use client";
+
 import Link from "next/link";
 import Image from "next/image";
-import { Star } from "lucide-react";
-import { Card, CardContent } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
+import { ExternalLink, Eye } from "lucide-react";
 import type { WPSala } from "@/lib/types";
-import { getFeaturedImageUrl, stripHtml } from "@/lib/wordpress";
+import { stripHtml } from "@/lib/wordpress";
+import { SalaJugaModal } from "@/components/SalaJugaModal";
+
+interface LogoObject {
+  url: string;
+  alt?: string;
+  width?: number;
+  height?: number;
+}
 
 interface SalaCardProps {
   sala: WPSala;
+  index?: number;
 }
 
-function StarRating({ rating }: { rating: number }) {
-  return (
-    <div className="flex items-center gap-0.5" aria-label={`${rating} de 5 estrellas`}>
-      {Array.from({ length: 5 }, (_, i) => (
-        <Star
-          key={i}
-          className={`h-3.5 w-3.5 ${i < rating ? "fill-gold-400 text-gold-400" : "fill-muted text-muted"}`}
-        />
-      ))}
-    </div>
-  );
-}
+const ESTADO_STYLES: Record<string, string> = {
+  activa: "bg-green-500/10 text-green-400 border-green-500/20",
+  inactiva: "bg-red-500/10 text-red-400 border-red-500/20",
+  mantenimiento: "bg-yellow-500/10 text-yellow-400 border-yellow-500/20",
+};
 
-export function SalaCard({ sala }: SalaCardProps) {
-  const imageUrl = getFeaturedImageUrl(sala, "medium");
-  const excerpt = stripHtml(sala.excerpt?.rendered ?? "").slice(0, 120);
+const ESTADO_LABELS: Record<string, string> = {
+  activa: "Activa",
+  inactiva: "Inactiva",
+  mantenimiento: "Mantenimiento",
+};
+
+export function SalaCard({ sala, index = 0 }: SalaCardProps) {
   const { acf } = sala;
+  const salaName = stripHtml(sala.title.rendered);
+
+  const logo =
+    acf?.logo_entero && typeof acf.logo_entero === "object"
+      ? (acf.logo_entero as LogoObject)
+      : null;
+
+  const rakeback = acf?.rakeback ? String(acf.rakeback).trim() : null;
+  const red = acf?.red?.trim() || null;
+  const bonificacion = acf?.bonificacion?.trim() || null;
+  const estado = acf?.estado || null;
+  const deposito = acf?.deposito_minimo ? String(acf.deposito_minimo).trim() : null;
+
+  const delay = `${index * 60}ms`;
 
   return (
-    <Card className="group flex flex-col h-full overflow-hidden bg-card border-border hover:border-muted transition-colors duration-200">
-      {/* Imagen */}
-      <Link href={`/salas/${sala.slug}`} className="relative h-40 overflow-hidden block bg-secondary">
-        {imageUrl ? (
+    <div
+      className="group h-full rounded-2xl border border-border bg-card overflow-hidden flex flex-col animate-fade-up hover:border-amber-500/40 transition-colors duration-300"
+      style={{ animationDelay: delay }}
+    >
+      {/* Logo / cabecera */}
+      <Link
+        href={`/salas/${sala.slug}`}
+        className="flex items-center justify-center h-32 px-6 bg-zinc-900/60 border-b border-border hover:bg-zinc-900/80 transition-colors"
+        title={salaName}
+      >
+        {logo ? (
           <Image
-            src={imageUrl}
-            alt={stripHtml(sala.title.rendered)}
-            fill
-            className="object-cover group-hover:scale-105 transition-transform duration-300"
-            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 25vw"
+            src={logo.url}
+            alt={logo.alt || salaName}
+            width={logo.width || 200}
+            height={logo.height || 80}
+            className="object-contain max-h-20 w-auto max-w-[180px] transition-transform duration-300 group-hover:scale-105"
+            draggable={false}
           />
         ) : (
-          <div className="w-full h-full flex items-center justify-center">
-            <span className="text-5xl text-muted-foreground">♣</span>
-          </div>
-        )}
-        {acf?.estado && acf.estado !== "activa" && (
-          <div className="absolute top-2 right-2">
-            <Badge variant="destructive" className="capitalize">{acf.estado}</Badge>
-          </div>
+          <span className="text-lg font-black text-foreground/60 text-center leading-tight">
+            {salaName}
+          </span>
         )}
       </Link>
 
-      <CardContent className="p-4 flex flex-col flex-1">
-        {/* Rating + país */}
-        <div className="flex items-center justify-between mb-2">
-          {acf?.rating && <StarRating rating={acf.rating} />}
-          {acf?.pais && (
-            <Badge variant="outline" className="text-xs">{acf.pais}</Badge>
+      {/* Body */}
+      <div className="flex flex-col gap-3 p-4 flex-1">
+        {/* Estado + red */}
+        <div className="flex flex-wrap items-center gap-1.5">
+          {estado && ESTADO_STYLES[estado] && (
+            <span
+              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${ESTADO_STYLES[estado]}`}
+            >
+              {ESTADO_LABELS[estado] ?? estado}
+            </span>
+          )}
+          {red && (
+            <span className="inline-flex items-center rounded-full border border-border bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+              {red}
+            </span>
           )}
         </div>
 
-        {/* Título */}
-        <h2 className="text-base font-bold text-foreground mb-1.5 group-hover:text-gold-400 transition-colors">
-          <Link href={`/salas/${sala.slug}`}>
-            <span dangerouslySetInnerHTML={{ __html: sala.title.rendered }} />
-          </Link>
-        </h2>
-
-        {/* Excerpt */}
-        {excerpt && (
-          <p className="text-xs text-muted-foreground line-clamp-2 flex-1">{excerpt}</p>
-        )}
-
-        {/* Código de bono */}
-        {acf?.codigo_bono && (
-          <div className="mt-3 p-2.5 rounded-lg bg-gold-500/10 border border-gold-500/20">
-            <p className="text-xs text-gold-400 font-medium">Código de bono</p>
-            <p className="text-sm font-mono font-bold text-gold-400 mt-0.5">{acf.codigo_bono}</p>
+        {/* Rakeback */}
+        {rakeback && (
+          <div className="flex items-baseline gap-1.5">
+            <span className="text-2xl font-black text-amber-400 leading-none">
+              {rakeback}
+            </span>
+            <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">
+              rakeback ATR
+            </span>
           </div>
         )}
 
-        {/* CTAs */}
-        <div className="mt-3 flex gap-2">
-          {acf?.link_referido && (
-            <Button asChild size="sm" className="flex-1 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-semibold text-xs h-8">
-              <a href={acf.link_referido} target="_blank" rel="noopener noreferrer sponsored">
-                {acf.texto_boton_referido || "Jugar ahora"}
-              </a>
-            </Button>
+        {/* Bonificación */}
+        {bonificacion && (
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+            {bonificacion}
+          </p>
+        )}
+
+        {/* Depósito mínimo */}
+        {deposito && (
+          <p className="text-xs text-muted-foreground">
+            <span className="font-medium text-foreground/70">Depósito mín.:</span>{" "}
+            {deposito}
+          </p>
+        )}
+      </div>
+
+      {/* Botones */}
+      <div className="flex flex-col gap-2 p-4 pt-0">
+        <Link
+          href={`/salas/${sala.slug}`}
+          className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-border bg-transparent hover:bg-muted text-foreground/70 hover:text-foreground font-semibold text-xs py-2.5 transition-colors duration-200"
+        >
+          <Eye className="h-3.5 w-3.5" />
+          VER SALA
+        </Link>
+
+        <SalaJugaModal
+          salaName={salaName}
+          logo={logo}
+          instrucciones={acf?.instrucciones}
+          linkAfiliado={acf?.link_de_afiliado}
+          codigoAfiliado={acf?.codigo_de_afiliado}
+          codigoBonificacion={acf?.codigo_de_bonificacion}
+          web={acf?.web}
+          renderTrigger={(onClick) => (
+            <button
+              onClick={onClick}
+              className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs py-2.5 transition-colors duration-200"
+            >
+              <ExternalLink className="h-3.5 w-3.5" />
+              JUGÁ AHORA
+            </button>
           )}
-          <Button asChild variant="outline" size="sm" className="flex-1 text-xs h-8">
-            <Link href={`/salas/${sala.slug}`}>Ver reseña</Link>
-          </Button>
-        </div>
-      </CardContent>
-    </Card>
+        />
+      </div>
+    </div>
   );
 }

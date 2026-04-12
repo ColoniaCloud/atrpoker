@@ -34,11 +34,11 @@ export default async function StreamingPlayerPage({ params }: PageProps) {
   }
 
   const { acf } = post;
-  const hasVideo = acf?.bunny_video_id && acf?.bunny_library_id;
+  const hasVideo = !!acf?.bunny_video_id;
   const isLive = acf?.is_live;
 
   return (
-    <div className="mx-auto max-w-5xl px-4 sm:px-6 py-8">
+    <div className="py-8">
       {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/streaming" className="hover:text-foreground transition-colors">Streaming</Link>
@@ -65,7 +65,6 @@ export default async function StreamingPlayerPage({ params }: PageProps) {
         <div className="mb-8">
           <BunnyPlayer
             videoId={acf!.bunny_video_id!}
-            libraryId={acf!.bunny_library_id!}
             title={stripHtml(post.title.rendered)}
           />
         </div>

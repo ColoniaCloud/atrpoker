@@ -1,11 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
-import { Button } from "@/components/ui/button";
 import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
 import { CATEGORY_SLUGS } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
 import { Pagination } from "@/components/Pagination";
+import { cn } from "@/lib/utils";
 
 export const metadata: Metadata = {
   title: "Blog de Póker",
@@ -13,37 +12,90 @@ export const metadata: Metadata = {
     "Artículos sobre estrategia de póker, análisis de torneos, noticias y consejos para mejorar tu juego.",
   openGraph: {
     title: "Blog de Póker | ATRPoker",
-    description: "Estrategia, noticias y análisis de póker en Uruguay.",
+    description: "Estrategia, noticias y análisis de póker en Latinoamerica.",
   },
 };
 
 export const revalidate = 300;
 
+const TABS = [
+  { slug: null, label: "Todos" },
+  { slug: CATEGORY_SLUGS.BLOG_POSTS, label: "Blog de Póker" },
+  { slug: CATEGORY_SLUGS.NOTICIAS, label: "Noticias" },
+] as const;
+
 interface PageProps {
-  searchParams: Promise<{ page?: string }>;
+  searchParams: Promise<{ page?: string; cat?: string }>;
 }
 
 export default async function BlogPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page ?? 1);
+  const activeCat = params.cat ?? null;
 
-  const blogCategory = await getCategoryBySlug(CATEGORY_SLUGS.BLOG);
+  // Resolve category ID for selected tab (or fetch all blog posts if none)
+  let categoryId: number | undefined;
+  let categoryIds: number[] | undefined;
+
+  if (activeCat) {
+    const cat = await getCategoryBySlug(activeCat);
+    if (cat) categoryId = cat.id;
+  } else {
+    // Fetch both subcategory IDs to show all blog content
+    const [catBlog, catNoticias] = await Promise.all([
+      getCategoryBySlug(CATEGORY_SLUGS.BLOG_POSTS),
+      getCategoryBySlug(CATEGORY_SLUGS.NOTICIAS),
+    ]);
+    const ids = [catBlog?.id, catNoticias?.id].filter((id): id is number => !!id);
+    if (ids.length > 0) categoryIds = ids;
+    else {
+      // fallback to parent "blog" category
+      const parent = await getCategoryBySlug(CATEGORY_SLUGS.BLOG);
+      if (parent) categoryId = parent.id;
+    }
+  }
 
   const { items: posts, totalPages, total } = await getPosts({
     page: currentPage,
     perPage: 12,
-    categoryId: blogCategory?.id,
+    categoryId,
+    categoryIds,
   });
 
+  const activeTab = TABS.find((t) => t.slug === activeCat) ?? TABS[0];
+  const basePath = activeCat ? `/blog?cat=${activeCat}` : "/blog";
+
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="py-12">
       {/* Header */}
-      <div className="mb-10">
+      <div className="mb-8">
         <h1 className="text-4xl font-black text-foreground mb-2">Blog de Póker</h1>
         <p className="text-muted-foreground text-lg">
           Estrategia, noticias y análisis{" "}
           <span className="text-muted-foreground/60">· {total} artículos</span>
         </p>
+      </div>
+
+      {/* Tabs */}
+      <div className="mb-8 flex gap-2 border-b border-border">
+        {TABS.map((tab) => {
+          const href = tab.slug ? `/blog?cat=${tab.slug}` : "/blog";
+          const isActive = tab.slug === activeCat;
+          return (
+            <Link
+              key={tab.label}
+              href={href}
+              className={cn(
+                "px-4 py-2 text-sm font-medium border-b-2 -mb-px transition-colors",
+                isActive
+                  ? "border-primary text-foreground"
+                  : "border-transparent text-muted-foreground hover:text-foreground"
+              )}
+            >
+              {tab.label}
+            </Link>
+          );
+        })}
       </div>
 
       {/* Grid */}
@@ -54,18 +106,14 @@ export default async function BlogPage({ searchParams }: PageProps) {
               <BlogCard key={post.id} post={post} />
             ))}
           </div>
-          <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/blog" />
+          <Pagination currentPage={currentPage} totalPages={totalPages} basePath={basePath} />
         </>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
           <span className="text-6xl mb-4 text-muted-foreground/20">♠</span>
-          <p className="text-lg text-muted-foreground">No hay artículos publicados aún.</p>
-          <Button asChild variant="outline" className="mt-6">
-            <Link href="/">
-              <ArrowLeft className="mr-2 h-4 w-4" />
-              Volver al inicio
-            </Link>
-          </Button>
+          <p className="text-lg text-muted-foreground">
+            No hay artículos en {activeTab.label} aún.
+          </p>
         </div>
       )}
     </div>

@@ -8,6 +8,10 @@ const nextConfig: NextConfig = {
         hostname: process.env.WORDPRESS_HOSTNAME || "atrpoker.com",
         pathname: "/wp-content/uploads/**",
       },
+      {
+        protocol: "https",
+        hostname: "secure.gravatar.com",
+      },
     ],
   },
 };

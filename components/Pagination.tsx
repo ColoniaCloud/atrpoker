@@ -12,6 +12,8 @@ interface PaginationProps {
 export function Pagination({ currentPage, totalPages, basePath }: PaginationProps) {
   if (totalPages <= 1) return null;
 
+  const sep = basePath.includes("?") ? "&" : "?";
+
   const pages = Array.from({ length: totalPages }, (_, i) => i + 1);
   const visiblePages = pages.filter(
     (p) => p === 1 || p === totalPages || Math.abs(p - currentPage) <= 2
@@ -22,7 +24,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
       {/* Anterior */}
       {currentPage > 1 ? (
         <Button asChild variant="outline" size="sm">
-          <Link href={`${basePath}?page=${currentPage - 1}`}>
+          <Link href={`${basePath}${sep}page=${currentPage - 1}`}>
             <ChevronLeft className="h-4 w-4 mr-1" />
             Anterior
           </Link>
@@ -53,7 +55,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
               {page === currentPage ? (
                 <span>{page}</span>
               ) : (
-                <Link href={`${basePath}?page=${page}`}>{page}</Link>
+                <Link href={`${basePath}${sep}page=${page}`}>{page}</Link>
               )}
             </Button>
           </span>
@@ -63,7 +65,7 @@ export function Pagination({ currentPage, totalPages, basePath }: PaginationProp
       {/* Siguiente */}
       {currentPage < totalPages ? (
         <Button asChild variant="outline" size="sm">
-          <Link href={`${basePath}?page=${currentPage + 1}`}>
+          <Link href={`${basePath}${sep}page=${currentPage + 1}`}>
             Siguiente
             <ChevronRight className="h-4 w-4 ml-1" />
           </Link>

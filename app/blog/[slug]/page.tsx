@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, ChevronRight } from "lucide-react";
+import { ArrowLeft, ChevronRight, Clock, Lock } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
@@ -13,6 +13,14 @@ import {
   formatDate,
   stripHtml,
 } from "@/lib/wordpress";
+import { BunnyPlayer } from "@/components/BunnyPlayer";
+import { auth, hasEscuelaPremiumAccess } from "@/lib/auth";
+import {
+  ESCUELA_SUBCATEGORIES,
+  ESCUELA_LIBRARY_IDS,
+  ESCUELA_DEFAULT_LIBRARY_ID,
+  ESCUELA_FREE_SUBCATEGORIES,
+} from "@/lib/types";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -54,7 +62,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function BlogPostPage({ params }: PageProps) {
   const { slug } = await params;
-  const post = await getPostBySlug(slug);
+  const [post, session] = await Promise.all([getPostBySlug(slug), auth()]);
 
   if (!post) notFound();
 
@@ -62,13 +70,66 @@ export default async function BlogPostPage({ params }: PageProps) {
   const author = post._embedded?.author?.[0];
   const categories = post._embedded?.["wp:term"]?.[0] ?? [];
 
+  // ── Resolver subcategoría de Escuela y library ID ───────────────────────
+  const escuelaSlugs = ESCUELA_SUBCATEGORIES.map((s) => s.slug) as string[];
+  const escuelaCatSlug = categories.find((cat) =>
+    escuelaSlugs.includes(cat.slug)
+  )?.slug ?? null;
+
+  const libraryId = escuelaCatSlug
+    ? (ESCUELA_LIBRARY_IDS[escuelaCatSlug] ?? ESCUELA_DEFAULT_LIBRARY_ID)
+    : undefined;
+
+  // ── Elegir campos de video y duración según la subcategoría ────────────
+  // curso-principiantes / yoga → bunny_video_id + duracion_del_video
+  // resto de escuela           → bunny_video_id_2 + duracion_de_la_clase
+  const isFreeEscuela = escuelaCatSlug
+    ? (ESCUELA_FREE_SUBCATEGORIES as readonly string[]).includes(escuelaCatSlug)
+    : false;
+
+  const videoId = isFreeEscuela
+    ? post.acf?.bunny_video_id
+    : (escuelaCatSlug ? post.acf?.bunny_video_id_2 : post.acf?.bunny_video_id);
+
+  const duracion = isFreeEscuela
+    ? post.acf?.duracion_del_video
+    : (escuelaCatSlug ? post.acf?.duracion_de_la_clase : post.acf?.duracion_del_video);
+
+  const hasVideo = !!videoId;
+
+  // ── Control de acceso al video ───────────────────────────────────────────
+  const userRoles = session?.user?.roles ?? [];
+  let videoAccessGranted = true;
+
+  if (hasVideo && escuelaCatSlug) {
+    const isFree = (ESCUELA_FREE_SUBCATEGORIES as readonly string[]).includes(escuelaCatSlug);
+    if (isFree) {
+      videoAccessGranted = !!session?.user; // cualquier usuario registrado
+    } else {
+      videoAccessGranted = hasEscuelaPremiumAccess(userRoles); // roles premium
+    }
+  }
+
   return (
-    <article className="mx-auto max-w-3xl px-4 sm:px-6 py-12">
+    <article className="mx-auto max-w-3xl py-12">
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
         <ChevronRight className="h-3.5 w-3.5" />
-        <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
+        {escuelaCatSlug ? (
+          <>
+            <Link href="/academia" className="hover:text-foreground transition-colors">Academia</Link>
+            <ChevronRight className="h-3.5 w-3.5" />
+            <Link
+              href={`/academia/${escuelaCatSlug}`}
+              className="hover:text-foreground transition-colors"
+            >
+              {ESCUELA_SUBCATEGORIES.find((s) => s.slug === escuelaCatSlug)?.label}
+            </Link>
+          </>
+        ) : (
+          <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
+        )}
         <ChevronRight className="h-3.5 w-3.5" />
         <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
       </nav>
@@ -109,18 +170,40 @@ export default async function BlogPostPage({ params }: PageProps) {
 
       <Separator className="mb-8" />
 
-      {/* Imagen destacada */}
-      {imageUrl && (
-        <div className="relative mb-10 aspect-video overflow-hidden rounded-xl">
-          <Image
-            src={imageUrl}
-            alt={stripHtml(post.title.rendered)}
-            fill
-            className="object-cover"
-            sizes="(max-width: 768px) 100vw, 768px"
-            priority
-          />
+      {/* Duración (posts de Academia) */}
+      {duracion && (
+        <div className="mb-6 flex items-center gap-2 text-sm text-muted-foreground">
+          <Clock className="h-4 w-4" />
+          <span>Duración: <strong className="text-foreground">{duracion}</strong></span>
         </div>
+      )}
+
+      {/* Video / imagen destacada */}
+      {hasVideo ? (
+        videoAccessGranted ? (
+          <div className="mb-10">
+            <BunnyPlayer
+              videoId={videoId!}
+              libraryId={libraryId}
+              title={stripHtml(post.title.rendered)}
+            />
+          </div>
+        ) : (
+          <LockedVideo isLoggedIn={!!session?.user} postSlug={slug} />
+        )
+      ) : (
+        imageUrl && (
+          <div className="relative mb-10 aspect-video overflow-hidden rounded-xl">
+            <Image
+              src={imageUrl}
+              alt={stripHtml(post.title.rendered)}
+              fill
+              className="object-cover"
+              sizes="(max-width: 768px) 100vw, 768px"
+              priority
+            />
+          </div>
+        )
       )}
 
       {/* Contenido WordPress */}
@@ -132,11 +215,54 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Volver */}
       <Separator className="mt-12 mb-8" />
       <Button asChild variant="outline">
-        <Link href="/blog">
+        <Link href={escuelaCatSlug ? `/academia/${escuelaCatSlug}` : "/blog"}>
           <ArrowLeft className="mr-2 h-4 w-4" />
-          Volver al Blog
+          {escuelaCatSlug ? "Volver a Academia" : "Volver al Blog"}
         </Link>
       </Button>
     </article>
+  );
+}
+
+// ─── Locked Video Overlay ─────────────────────────────────────────────────────
+
+function LockedVideo({ isLoggedIn, postSlug }: { isLoggedIn: boolean; postSlug: string }) {
+  return (
+    <div className="mb-10 flex aspect-video items-center justify-center rounded-xl border border-border bg-card">
+      <div className="flex flex-col items-center gap-4 px-8 text-center">
+        <div className="flex h-16 w-16 items-center justify-center rounded-full bg-muted">
+          <Lock className="h-7 w-7 text-muted-foreground" />
+        </div>
+        {isLoggedIn ? (
+          <>
+            <div>
+              <p className="font-semibold text-foreground">Contenido exclusivo para miembros</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Tu cuenta no tiene acceso a este contenido.
+              </p>
+            </div>
+            <Button asChild size="sm">
+              <Link href="https://wa.me/5491124932724" target="_blank" rel="noopener noreferrer">
+                Contactar para obtener acceso
+              </Link>
+            </Button>
+          </>
+        ) : (
+          <>
+            <div>
+              <p className="font-semibold text-foreground">Iniciá sesión para ver este video</p>
+              <p className="mt-1 text-sm text-muted-foreground">
+                Este contenido es exclusivo para miembros registrados.
+              </p>
+            </div>
+            <Button asChild size="sm">
+              <Link href={`/login?callbackUrl=/blog/${encodeURIComponent(postSlug)}`}>
+                Iniciar sesión
+              </Link>
+            </Button>
+          </>
+        )}
+      </div>
+    </div>
   );
 }

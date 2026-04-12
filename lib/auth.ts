@@ -84,3 +84,12 @@ export function hasStreamingAccess(roles: string[]): boolean {
 export function isAdmin(roles: string[]): boolean {
   return roles.includes("administrator");
 }
+
+// Roles con acceso a subcategorías premium de Academia
+const ACADEMIA_PREMIUM_ROLES = ["administrator", "editor", "colaborador", "player"];
+
+export function hasEscuelaPremiumAccess(roles: string[]): boolean {
+  return roles.some((role) =>
+    ACADEMIA_PREMIUM_ROLES.includes(role.toLowerCase())
+  );
+}

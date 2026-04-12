@@ -33,7 +33,7 @@ export default async function SalasPage({ searchParams }: PageProps) {
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="py-12">
       {/* Header */}
       <div className="mb-8">
         <h1 className="text-4xl font-black text-foreground mb-2">Salas de Póker Online</h1>
@@ -56,8 +56,8 @@ export default async function SalasPage({ searchParams }: PageProps) {
       {salas.length > 0 ? (
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {salas.map((sala) => (
-              <SalaCard key={sala.id} sala={sala} />
+            {salas.map((sala, i) => (
+              <SalaCard key={sala.id} sala={sala} index={i} />
             ))}
           </div>
           <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/salas" />

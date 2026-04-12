@@ -1,6 +1,9 @@
 import { auth } from "@/lib/auth";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import { ESCUELA_FREE_SUBCATEGORIES } from "@/lib/types";
+
+// ─── Roles ────────────────────────────────────────────────────────────────────
 
 const STREAMING_ROLES = (
   process.env.STREAMING_ROLES ?? "subscriber,administrator"
@@ -12,15 +15,23 @@ function hasStreamingAccess(roles: string[]): boolean {
   return roles.some((role) => STREAMING_ROLES.includes(role.toLowerCase()));
 }
 
-export default auth(async function middleware(req: NextRequest & { auth: { user: { roles?: string[] } } | null }) {
+const ACADEMIA_PREMIUM_ROLES = ["administrator", "editor", "colaborador", "player"];
+
+function hasEscuelaPremiumAccess(roles: string[]): boolean {
+  return roles.some((role) => ACADEMIA_PREMIUM_ROLES.includes(role.toLowerCase()));
+}
+
+// ─── Middleware ───────────────────────────────────────────────────────────────
+
+export default auth(async function middleware(
+  req: NextRequest & { auth: { user: { roles?: string[] } } | null }
+) {
   const { pathname } = req.nextUrl;
+  const session = req.auth;
 
-  // Proteger todas las rutas de streaming
+  // ── /streaming/* ─────────────────────────────────────────────────────────
   if (pathname.startsWith("/streaming")) {
-    const session = req.auth;
-
     if (!session?.user) {
-      // No autenticado → redirigir al login
       const loginUrl = new URL("/login", req.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
@@ -28,8 +39,29 @@ export default auth(async function middleware(req: NextRequest & { auth: { user:
 
     const roles = session.user.roles ?? [];
     if (!hasStreamingAccess(roles)) {
-      // Autenticado pero sin acceso → página de sin acceso
       return NextResponse.redirect(new URL("/sin-acceso", req.url));
+    }
+  }
+
+  // ── /academia/* ──────────────────────────────────────────────────────────
+  if (pathname.startsWith("/academia")) {
+    // Cualquier ruta de academia requiere estar autenticado
+    if (!session?.user) {
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+
+    // Para subcategorías premium, verificar roles
+    const catSlug = pathname.split("/")[2]; // "" para /academia, "curso-principiantes" para /academia/curso-principiantes
+    const isFreeCategory =
+      !catSlug || (ESCUELA_FREE_SUBCATEGORIES as readonly string[]).includes(catSlug);
+
+    if (!isFreeCategory) {
+      const roles = session.user.roles ?? [];
+      if (!hasEscuelaPremiumAccess(roles)) {
+        return NextResponse.redirect(new URL("/sin-acceso", req.url));
+      }
     }
   }
 
@@ -39,6 +71,7 @@ export default auth(async function middleware(req: NextRequest & { auth: { user:
 export const config = {
   matcher: [
     "/streaming/:path*",
-    // Agregar más rutas protegidas aquí si es necesario
+    "/academia",
+    "/academia/:path*",
   ],
 };

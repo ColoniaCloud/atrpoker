@@ -56,11 +56,51 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", "system-ui", "sans-serif"],
+        sans: ["var(--font-epilogue)", "system-ui", "sans-serif"],
+      },
+      animation: {
+        marquee: "marquee 30s linear infinite",
+        "fade-up":   "fade-up 0.7s ease-out both",
+        "fade-down": "fade-down 0.6s ease-out both",
+        "fade-in":   "fade-in 0.8s ease-out both",
+        "pulse-ring": "pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "scroll-up":   "scroll-up 22s linear infinite",
+        "scroll-down": "scroll-down 22s linear infinite",
+      },
+      keyframes: {
+        marquee: {
+          "0%":   { transform: "translateX(0)" },
+          "100%": { transform: "translateX(-50%)" },
+        },
+        "scroll-up": {
+          "0%":   { transform: "translateY(0)" },
+          "100%": { transform: "translateY(-50%)" },
+        },
+        "scroll-down": {
+          "0%":   { transform: "translateY(-50%)" },
+          "100%": { transform: "translateY(0)" },
+        },
+        "fade-up": {
+          "0%":   { opacity: "0", transform: "translateY(28px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-down": {
+          "0%":   { opacity: "0", transform: "translateY(-16px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "fade-in": {
+          "0%":   { opacity: "0" },
+          "100%": { opacity: "1" },
+        },
+        "pulse-ring": {
+          "0%":   { transform: "scale(1)",   opacity: "0.7" },
+          "60%":  { transform: "scale(1.45)", opacity: "0" },
+          "100%": { transform: "scale(1.45)", opacity: "0" },
+        },
       },
     },
   },
-  plugins: [],
+  plugins: [require("@tailwindcss/typography")],
 };
 
 export default config;

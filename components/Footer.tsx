@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
 
 const FOOTER_LINKS = {
@@ -29,17 +30,21 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-background mt-16">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+      <div className="w-[85vw] mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-1.5 font-black text-xl mb-3">
-              <span className="text-gold-400">♠</span>
-              <span>ATR</span>
-              <span className="text-gold-400">Poker</span>
+            <Link href="/" className="inline-block mb-3">
+              <Image
+                src="/brand/Isologotipo.webp"
+                alt="ATRPoker"
+                width={90}
+                height={26}
+                className="h-7 w-auto object-contain"
+              />
             </Link>
             <p className="text-sm text-muted-foreground">
-              La comunidad de póker online de Uruguay. Academia, reseñas y streaming.
+              La comunidad de póker online de Latinoamerica. Academia, reseñas y streaming.
             </p>
             <p className="text-xs text-muted-foreground/60 mt-3">
               +18 · Jugá responsablemente.

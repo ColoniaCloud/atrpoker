@@ -17,6 +17,8 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Separator } from "@/components/ui/separator";
 import { Menu, ChevronDown, LogOut, User } from "lucide-react";
 import { cn } from "@/lib/utils";
+import type { WPCoach } from "@/lib/types";
+import { stripHtml } from "@/lib/wordpress";
 
 // ─── Datos del menú ────────────────────────────────────────────────────────
 
@@ -24,7 +26,7 @@ const ACADEMIA = [
   { href: "/academia/curso-principiantes", label: "Curso Principiantes", desc: "Empezá desde cero con bases sólidas" },
   { href: "/academia/curso-teorico-practico", label: "Curso Teórico Práctico", desc: "Teoría aplicada al juego real" },
   { href: "/academia/mental-coach", label: "Mental Coach", desc: "Entrenamiento mental para el juego" },
-  { href: "/academia/clases-grupales-blueghost", label: "Clases con BlueGhost y Piagessi", desc: "Clases grupales en vivo" },
+  { href: "/academia/clases-grupales", label: "Clases con BlueGhost y Piaggesi", desc: "Clases grupales en vivo" },
   { href: "/academia/clases-grupales-straussj", label: "Clases con StraussJ", desc: "Clases grupales en vivo" },
   { href: "/academia/sesion-live", label: "Sesión Live", desc: "Sesiones en tiempo real" },
 ];
@@ -39,14 +41,6 @@ const SALAS = [
   { href: "/salas/acr-poker", label: "ACR Poker" },
 ];
 
-const COACHES = [
-  { href: "/coaches/straussj", label: "StraussJ", desc: "MTT y Cash" },
-  { href: "/coaches/blueghost", label: "Blueghost", desc: "Cash" },
-  { href: "/coaches/yerar", label: "Yerar", desc: "MTT" },
-  { href: "/coaches/juanma", label: "Juanma", desc: "Cash WPT" },
-  { href: "/coaches/josue", label: "Josué", desc: "Cash" },
-  { href: "/coaches/ludmila", label: "Ludmila", desc: "Yoga · Mental Game" },
-];
 
 const TABLAS = [
   { href: "/tablas/mid-stakes", label: "PreFlop · Mid Stakes", desc: "Rangos para stakes medios" },
@@ -55,8 +49,8 @@ const TABLAS = [
 ];
 
 const CONTENIDOS = [
-  { href: "/noticias", label: "Noticias", icon: "📰" },
-  { href: "/blog", label: "Lecturas", icon: "📖" },
+  { href: "/blog?cat=noticias", label: "Noticias", icon: "📰" },
+  { href: "/blog?cat=blog-blog", label: "Lecturas", icon: "📖" },
   { href: "/streaming", label: "Videos", icon: "🎬" },
 ];
 
@@ -69,13 +63,13 @@ function NavItem({ href, label, desc }: { href: string; label: string; desc?: st
         <Link
           href={href}
           className={cn(
-            "block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors",
-            "hover:bg-accent hover:text-accent-foreground focus:bg-accent focus:text-accent-foreground"
+            "group/item block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors",
+            "hover:bg-amber-500 focus:bg-amber-500"
           )}
         >
-          <div className="text-sm font-medium leading-none">{label}</div>
+          <div className="text-sm font-medium leading-none group-hover/item:text-zinc-950 transition-colors">{label}</div>
           {desc && (
-            <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground">{desc}</p>
+            <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground group-hover/item:text-zinc-800 transition-colors">{desc}</p>
           )}
         </Link>
       </NavigationMenuLink>
@@ -138,13 +132,19 @@ function MobileSection({
 
 // ─── Navbar ────────────────────────────────────────────────────────────────
 
-export function Navbar() {
+export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  const coachItems = coaches.map((c) => ({
+    href: `/coaches/${c.slug}`,
+    label: stripHtml(c.title.rendered),
+    desc: c.acf?.especialidad ?? c.acf?.disciplina ?? c.acf?.descripcion ?? undefined,
+  }));
+
   return (
-    <header className="sticky top-4 z-50 w-[85vw] mx-auto rounded-2xl border border-border bg-background/90 backdrop-blur-md shadow-lg">
-      <div className="flex h-14 items-center justify-between px-5 sm:px-6">
+    <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[hsl(199_55%_14%)] bg-background/70 backdrop-blur-md shadow-lg">
+      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
 
         {/* Logo */}
         <Link href="/" className="shrink-0 mr-4">
@@ -226,7 +226,7 @@ export function Navbar() {
                     </Link>
                   </div>
                   <ul className="grid grid-cols-2 gap-1">
-                    {COACHES.map((item) => (
+                    {coachItems.map((item) => (
                       <NavItem key={item.href} {...item} />
                     ))}
                   </ul>
@@ -269,10 +269,10 @@ export function Navbar() {
                         <NavigationMenuLink asChild>
                           <Link
                             href={item.href}
-                            className="flex items-center gap-3 rounded-md p-3 hover:bg-accent transition-colors"
+                            className="group/icon flex items-center gap-3 rounded-md p-3 hover:bg-amber-500 transition-colors [&:hover_span]:text-zinc-950 [&:hover_span:last-child]:text-zinc-950"
                           >
                             <span className="text-lg">{item.icon}</span>
-                            <span className="text-sm font-medium">{item.label}</span>
+                            <span className="text-sm font-medium transition-colors">{item.label}</span>
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -336,7 +336,7 @@ export function Navbar() {
               <Separator />
               <MobileSection title="Salas" items={SALAS} viewAllHref="/salas" onClose={() => setMobileOpen(false)} />
               <Separator />
-              <MobileSection title="Coaches Privados" items={COACHES} viewAllHref="/coaches" onClose={() => setMobileOpen(false)} />
+              <MobileSection title="Coaches Privados" items={coachItems} viewAllHref="/coaches" onClose={() => setMobileOpen(false)} />
               <Separator />
               <MobileSection title="Tablas PreFlop" items={TABLAS} onClose={() => setMobileOpen(false)} />
               <Separator />

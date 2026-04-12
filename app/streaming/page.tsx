@@ -31,7 +31,7 @@ export default async function StreamingPage({ searchParams }: PageProps) {
   });
 
   return (
-    <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-12">
+    <div className="py-12">
       {/* Header */}
       <div className="mb-10">
         <Badge variant="destructive" className="mb-3 gap-1.5 animate-pulse">

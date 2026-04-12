@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Clock } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { WPPost } from "@/lib/types";
@@ -14,6 +14,7 @@ export function BlogCard({ post }: BlogCardProps) {
   const imageUrl = getFeaturedImageUrl(post, "medium_large");
   const excerpt = stripHtml(post.excerpt.rendered).slice(0, 150);
   const category = post._embedded?.["wp:term"]?.[0]?.[0];
+  const duracion = post.acf?.duracion_del_video;
 
   return (
     <Card className="group flex flex-col h-full overflow-hidden bg-card border-border hover:border-muted transition-colors duration-200">
@@ -30,6 +31,13 @@ export function BlogCard({ post }: BlogCardProps) {
         ) : (
           <div className="w-full h-full bg-secondary flex items-center justify-center">
             <span className="text-4xl text-muted-foreground">♠</span>
+          </div>
+        )}
+        {/* Badge de duración (clases academia) */}
+        {duracion && (
+          <div className="absolute bottom-2 right-2 flex items-center gap-1 rounded-md bg-black/70 px-2 py-0.5 text-xs font-medium text-white backdrop-blur-sm">
+            <Clock className="h-3 w-3" />
+            {duracion}
           </div>
         )}
       </Link>
