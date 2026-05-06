@@ -124,14 +124,14 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* ── Cajero personal ───────────────────────────────── */}
+      {/* ── Asesoramiento ─────────────────────────────────── */}
       <section className="py-16 border-b border-border">
         <div className="grid grid-cols-1 gap-10 md:grid-cols-2 items-center">
           {/* Imagen */}
           <div className="flex justify-center">
             <Image
               src="/media/cajero.png"
-              alt="Cajero personal ATR Poker"
+              alt="Asesoramiento ATR Poker"
               width={480}
               height={480}
               className="rounded-2xl object-contain w-full max-w-sm md:max-w-none"
@@ -141,41 +141,31 @@ export default async function HomePage() {
           {/* Texto */}
           <div className="flex flex-col gap-6">
             <h2 className="text-4xl font-black text-foreground leading-tight">
-              Tu cajero{" "}
+              Te asesoramos en{" "}
               <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
-                personal
+                tu juego
               </span>
             </h2>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              En ATR Poker además de disfrutar de clases profesionales de póker puedes disfrutar de
-              un cajero personal disponible siempre para retiros y depósitos rápidos en las salas de
-              preferencia de ATR.
+              Te ayudamos a encontrar la sala ideal para tu estilo de juego, volumen y país.
+              Gestionamos tus depósitos y retiros de forma rápida y segura, y nos aseguramos de que
+              siempre estés jugando con el máximo rakeback disponible.
             </p>
             <p className="text-muted-foreground text-lg leading-relaxed">
-              ¿Seguís dudando? Contactanos y descubrí el catálogo completo de beneficios que tenemos
-              para jugadores y agencias de afiliados.
+              Nuestro equipo está disponible para acompañarte en cada paso: desde tu primera cuenta
+              hasta optimizar cada centavo que vuelve a tu bankroll.
             </p>
 
-            {/* Botón WhatsApp con efecto pulse */}
+            {/* Botón amber */}
             <div className="relative inline-flex self-start">
-              <span className="absolute inset-0 rounded-full bg-green-500 animate-pulse-ring" />
-              <a
-                href="https://wa.me/5491124932724"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="relative z-10 inline-flex items-center gap-2.5 rounded-full bg-green-500 hover:bg-green-400 text-white font-bold px-6 py-3 transition-colors"
+              <span className="absolute inset-0 rounded-full bg-amber-500 animate-pulse-ring" />
+              <Link
+                href="/perfil/asesoramiento"
+                className="relative z-10 inline-flex items-center gap-2.5 rounded-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold px-6 py-3 transition-colors"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  className="h-5 w-5 shrink-0"
-                >
-                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
-                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.855L.057 23.882l6.204-1.628A11.944 11.944 0 0 0 12 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 21.818a9.818 9.818 0 0 1-5.006-1.371l-.36-.214-3.724.977.994-3.624-.235-.373A9.818 9.818 0 0 1 12 2.182c5.42 0 9.818 4.398 9.818 9.818 0 5.421-4.398 9.818-9.818 9.818z" />
-                </svg>
-                Contactar por WhatsApp
-              </a>
+                <ArrowRight className="h-5 w-5 shrink-0" />
+                Asesoramiento gratuito
+              </Link>
             </div>
           </div>
         </div>
