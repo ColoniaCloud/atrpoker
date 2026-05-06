@@ -269,22 +269,11 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
   return (
     <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[hsl(199_55%_14%)] bg-background/70 backdrop-blur-md shadow-lg">
-      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
 
-        {/* Logo */}
-        <Link href="/" className="mr-4 shrink-0">
-          <Image
-            src="/brand/Isologotipo.webp"
-            alt="ATRPoker"
-            width={100}
-            height={28}
-            className="h-7 w-auto object-contain"
-            priority
-          />
-        </Link>
-
-        {/* Desktop navigation */}
-        <NavigationMenu className="hidden lg:flex">
+      {/* Desktop navigation — overlay absoluto sobre todo el header para que el
+          viewport tenga referencia al ancho completo y no recorte los mega-menus */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-16 items-center justify-center lg:flex">
+        <NavigationMenu className="pointer-events-auto">
           <NavigationMenuList>
 
             {/* ── Academia ───────────────────────────────────────────────── */}
@@ -425,9 +414,27 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
           </NavigationMenuList>
         </NavigationMenu>
+      </div>{/* /overlay absoluto desktop */}
+
+      {/* Header bar: Logo + Auth desktop + Mobile trigger */}
+      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
+        {/* Logo */}
+        <Link href="/" className="relative z-10 mr-4 shrink-0">
+          <Image
+            src="/brand/Isologotipo.webp"
+            alt="ATRPoker"
+            width={100}
+            height={28}
+            className="h-7 w-auto object-contain"
+            priority
+          />
+        </Link>
+
+        {/* Spacer — empuja Auth a la derecha sin que el NavigationMenu ocupe espacio en el flujo */}
+        <div className="flex-1" />
 
         {/* Auth — desktop */}
-        <div className="hidden lg:flex items-center gap-2 ml-4">
+        <div className="relative z-10 hidden lg:flex items-center gap-2">
           {session?.user ? (
             <UserMenuDropdown name={session.user.name ?? "Usuario"} />
           ) : (
