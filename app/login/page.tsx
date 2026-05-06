@@ -54,14 +54,14 @@ function LoginForm() {
             <span className="text-foreground">ATR</span>
             <span className="text-amber-400">Poker</span>
           </Link>
-          <p className="mt-2 text-muted-foreground">Iniciá sesión con tu cuenta WordPress</p>
+          <p className="mt-2 text-muted-foreground">Iniciá sesión con tu cuenta ATR Poker</p>
         </div>
 
         <Card>
           <CardHeader>
             <CardTitle>Iniciar sesión</CardTitle>
             <CardDescription>
-              Usá tu usuario y contraseña de WordPress.
+              Usá tu usuario y contraseña de ATR Poker.
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -74,7 +74,7 @@ function LoginForm() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div className="space-y-1.5">
                 <label htmlFor="username" className="text-sm font-medium text-foreground">
-                  Usuario de WordPress
+                  Usuario de ATR Poker
                 </label>
                 <Input
                   id="username"
@@ -126,7 +126,7 @@ function LoginForm() {
             rel="noopener noreferrer"
             className="text-primary hover:underline font-medium"
           >
-            Registrate en WordPress
+            Registrate en ATR Poker
           </a>
         </p>
       </div>

@@ -43,17 +43,17 @@ export default auth(async function middleware(
     }
   }
 
-  // ── /academia/* ──────────────────────────────────────────────────────────
-  if (pathname.startsWith("/academia")) {
-    // Cualquier ruta de academia requiere estar autenticado
+  // ── /academia/[slug] ─────────────────────────────────────────────────────
+  // Solo las páginas individuales (con slug) requieren autenticación.
+  // El listado /academia y los archivos de categoría son públicos.
+  if (pathname.startsWith("/academia/")) {
     if (!session?.user) {
       const loginUrl = new URL("/login", req.url);
       loginUrl.searchParams.set("callbackUrl", pathname);
       return NextResponse.redirect(loginUrl);
     }
 
-    // Para subcategorías premium, verificar roles
-    const catSlug = pathname.split("/")[2]; // "" para /academia, "curso-principiantes" para /academia/curso-principiantes
+    const catSlug = pathname.split("/")[2];
     const isFreeCategory =
       !catSlug || (ESCUELA_FREE_SUBCATEGORIES as readonly string[]).includes(catSlug);
 
@@ -71,7 +71,6 @@ export default auth(async function middleware(
 export const config = {
   matcher: [
     "/streaming/:path*",
-    "/academia",
     "/academia/:path*",
   ],
 };
