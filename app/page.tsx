@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { HeroBackgroundVideo } from "@/components/HeroBackgroundVideo";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, ExternalLink } from "lucide-react";
+import { ArrowRight, ExternalLink, Spade } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPosts, getSalas, getCategoryBySlug } from "@/lib/wordpress";
@@ -51,7 +51,7 @@ export default async function HomePage() {
               boxShadow: '0 0 0 2px #22c55e33',
             }}
           >
-            <span className="text-amber-400">♠</span>
+            <Spade className="h-3.5 w-3.5 text-amber-400" />
             <span className="text-white">Jugá al póker con los mejores y ganá más</span>
           </Badge>
 

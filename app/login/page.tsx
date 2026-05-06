@@ -4,7 +4,7 @@ import { useState, Suspense } from "react";
 import { signIn } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
-import { Loader2 } from "lucide-react";
+import { Loader2, Spade } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -50,7 +50,7 @@ function LoginForm() {
         {/* Logo */}
         <div className="text-center">
           <Link href="/" className="inline-flex items-center gap-1.5 font-black text-2xl">
-            <span className="text-amber-400">♠</span>
+            <Spade className="h-5 w-5 text-amber-400" />
             <span className="text-foreground">ATR</span>
             <span className="text-amber-400">Poker</span>
           </Link>

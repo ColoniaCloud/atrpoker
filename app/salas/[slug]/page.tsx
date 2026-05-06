@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowLeft, ChevronRight, Check, X, Trophy,
+  ArrowLeft, ChevronRight, Check, X, Trophy, Star,
   Globe, Network, Percent, Gift, DollarSign, BarChart2, ExternalLink,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -53,7 +53,10 @@ function StarRating({ rating }: { rating: number }) {
   return (
     <div className="flex items-center gap-1">
       {Array.from({ length: 5 }, (_, i) => (
-        <span key={i} className={`text-lg ${i < rating ? "text-amber-400" : "text-zinc-600"}`}>★</span>
+        <Star
+          key={i}
+          className={`h-4 w-4 ${i < rating ? "text-amber-400 fill-amber-400" : "text-zinc-600 fill-zinc-600"}`}
+        />
       ))}
       <span className="ml-1 text-xs text-zinc-400">({rating}/5)</span>
     </div>

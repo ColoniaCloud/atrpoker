@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, ArrowLeft, GraduationCap, Ruler, Brain, Target, Trophy, Film, Spade, type LucideIcon } from "lucide-react";
 import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
 import { ESCUELA_SUBCATEGORIES } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
@@ -15,43 +15,50 @@ interface PageProps {
 
 // Visual metadata per subcategory — complete class strings for Tailwind detection
 const SUBCAT_ACCENT: Record<string, {
-  icon: string;
+  icon: LucideIcon;
+  iconClass: string;
   desc: string;
   glow: string;
   badge: string;
 }> = {
   "curso-principiantes": {
-    icon: "🃏",
+    icon: GraduationCap,
+    iconClass: "text-emerald-400",
     desc: "Fundamentos sólidos para empezar a jugar con confianza y criterio.",
     glow: "bg-emerald-500/8",
     badge: "border-emerald-500/30 text-emerald-400",
   },
   "curso-teorico-practico": {
-    icon: "📐",
+    icon: Ruler,
+    iconClass: "text-sky-400",
     desc: "Teoría profunda llevada al juego real con análisis y ejercicios prácticos.",
     glow: "bg-sky-500/8",
     badge: "border-sky-500/30 text-sky-400",
   },
   "mental-coach": {
-    icon: "🧠",
+    icon: Brain,
+    iconClass: "text-violet-400",
     desc: "Entrenamiento mental para rendir al máximo bajo presión y gestionar el tilt.",
     glow: "bg-violet-500/8",
     badge: "border-violet-500/30 text-violet-400",
   },
   "clases-grupales": {
-    icon: "🎯",
+    icon: Target,
+    iconClass: "text-amber-400",
     desc: "Clases en vivo con BlueGhost y Piaggesi para jugadores de todos los niveles.",
     glow: "bg-amber-500/8",
     badge: "border-amber-500/30 text-amber-400",
   },
   "clases-grupales-straussj": {
-    icon: "🏆",
+    icon: Trophy,
+    iconClass: "text-orange-400",
     desc: "Estrategia de alto nivel y análisis en profundidad con el coach StraussJ.",
     glow: "bg-orange-500/8",
     badge: "border-orange-500/30 text-orange-400",
   },
   "sesion-live": {
-    icon: "🎬",
+    icon: Film,
+    iconClass: "text-rose-400",
     desc: "Análisis de manos reales en tiempo real junto a los coaches del equipo.",
     glow: "bg-rose-500/8",
     badge: "border-rose-500/30 text-rose-400",
@@ -59,7 +66,8 @@ const SUBCAT_ACCENT: Record<string, {
 };
 
 const FALLBACK_ACCENT = {
-  icon: "♠",
+  icon: Spade,
+  iconClass: "text-amber-400",
   desc: "",
   glow: "bg-amber-500/5",
   badge: "border-amber-500/30 text-amber-400",
@@ -125,7 +133,7 @@ export default async function AcademiaSubcatPage({ params, searchParams }: PageP
           {/* Content */}
           <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
-              <span className="text-4xl leading-none">{accent.icon}</span>
+              <accent.icon className={`h-9 w-9 ${accent.iconClass}`} />
               <Badge
                 variant="outline"
                 className={`px-3 py-1 text-xs uppercase tracking-widest ${accent.badge}`}
@@ -163,15 +171,16 @@ export default async function AcademiaSubcatPage({ params, searchParams }: PageP
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <span className="mb-4 text-6xl text-muted-foreground/20">♠</span>
+            <Spade className="mb-4 h-16 w-16 text-muted-foreground/20" />
             <p className="text-lg text-muted-foreground">
               No hay contenidos publicados aún.
             </p>
             <Link
               href="/academia"
-              className="mt-6 text-sm text-primary hover:underline"
+              className="mt-6 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
             >
-              ← Volver a Academia
+              <ArrowLeft className="h-3.5 w-3.5" />
+              Volver a Academia
             </Link>
           </div>
         )}

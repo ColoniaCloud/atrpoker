@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowLeft, Info } from "lucide-react";
+import { ArrowLeft, Info, Club } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getSalas } from "@/lib/wordpress";
@@ -64,7 +64,7 @@ export default async function SalasPage({ searchParams }: PageProps) {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <span className="text-6xl mb-4 text-muted-foreground/20">♣</span>
+          <Club className="mb-4 h-16 w-16 text-muted-foreground/20" />
           <p className="text-lg text-muted-foreground">No hay salas publicadas aún.</p>
           <Button asChild variant="outline" className="mt-6">
             <Link href="/">

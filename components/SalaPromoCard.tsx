@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRef } from "react";
+import { Spade } from "lucide-react";
 
 export function SalaPromoCard() {
   const cardRef = useRef<HTMLDivElement>(null);
@@ -47,8 +48,8 @@ export function SalaPromoCard() {
         />
 
         {/* Suit icons decorativos */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10 text-[160px] leading-none font-black text-zinc-900 select-none">
-          ♠
+        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10 select-none">
+          <Spade className="h-48 w-48 text-zinc-900" />
         </div>
 
         {/* Contenido */}

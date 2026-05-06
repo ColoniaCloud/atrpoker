@@ -15,62 +15,149 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Menu, ChevronDown, LogOut, User, BookOpen, Headphones } from "lucide-react";
+import {
+  Menu, ChevronDown, LogOut, User, BookOpen, Headphones,
+  Newspaper, Film, ArrowRight,
+  GraduationCap, Ruler, Brain, Target, Trophy,
+  type LucideIcon,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
-import type { WPCoach } from "@/lib/types";
+import type { WPCoach, WPSala } from "@/lib/types";
 import { stripHtml } from "@/lib/wordpress";
 import { UserMenuDropdown } from "@/components/UserMenuDropdown";
 
-// ─── Datos del menú ────────────────────────────────────────────────────────
+// ─── Datos estáticos del menú ──────────────────────────────────────────────────
 
-const ACADEMIA = [
-  { href: "/academia/curso-principiantes", label: "Curso Principiantes", desc: "Empezá desde cero con bases sólidas" },
-  { href: "/academia/curso-teorico-practico", label: "Curso Teórico Práctico", desc: "Teoría aplicada al juego real" },
-  { href: "/academia/mental-coach", label: "Mental Coach", desc: "Entrenamiento mental para el juego" },
-  { href: "/academia/clases-grupales", label: "Clases con BlueGhost y Piaggesi", desc: "Clases grupales en vivo" },
-  { href: "/academia/clases-grupales-straussj", label: "Clases con StraussJ", desc: "Clases grupales en vivo" },
-  { href: "/academia/sesion-live", label: "Sesión Live", desc: "Sesiones en tiempo real" },
+const ACADEMIA_ITEMS = [
+  { href: "/academia/curso-principiantes",     slug: "curso-principiantes",      label: "Curso Principiantes",             desc: "Empezá desde cero con bases sólidas" },
+  { href: "/academia/curso-teorico-practico",  slug: "curso-teorico-practico",   label: "Curso Teórico Práctico",          desc: "Teoría aplicada al juego real" },
+  { href: "/academia/mental-coach",            slug: "mental-coach",             label: "Mental Coach",                    desc: "Entrenamiento mental para el juego" },
+  { href: "/academia/clases-grupales",         slug: "clases-grupales",          label: "Clases con BlueGhost y Piaggesi", desc: "Clases grupales en vivo" },
+  { href: "/academia/clases-grupales-straussj",slug: "clases-grupales-straussj", label: "Clases con StraussJ",             desc: "Clases grupales en vivo" },
+  { href: "/academia/sesion-live",             slug: "sesion-live",              label: "Sesión Live",                     desc: "Sesiones en tiempo real" },
 ];
 
-const SALAS = [
-  { href: "/salas/ignition", label: "Ignition" },
-  { href: "/salas/wpt", label: "NEXA (WPT)" },
-  { href: "/salas/gg-poker", label: "GG Poker" },
-  { href: "/salas/coin-poker", label: "Coin Poker" },
-  { href: "/salas/poker-king", label: "Poker King" },
-  { href: "/salas/champion-poker", label: "Champion Poker" },
-  { href: "/salas/acr-poker", label: "ACR Poker" },
-];
+const ACADEMIA_ICON: Record<string, { icon: LucideIcon; iconClass: string }> = {
+  "curso-principiantes":      { icon: GraduationCap, iconClass: "text-emerald-400" },
+  "curso-teorico-practico":   { icon: Ruler,         iconClass: "text-sky-400"     },
+  "mental-coach":             { icon: Brain,         iconClass: "text-violet-400"  },
+  "clases-grupales":          { icon: Target,        iconClass: "text-amber-400"   },
+  "clases-grupales-straussj": { icon: Trophy,        iconClass: "text-orange-400"  },
+  "sesion-live":              { icon: Film,          iconClass: "text-rose-400"    },
+};
 
+const SALAS_SLUGS = [
+  { href: "/salas/ignition",       slug: "ignition",       label: "Ignition"        },
+  { href: "/salas/wpt",            slug: "wpt",            label: "NEXA (WPT)"      },
+  { href: "/salas/gg-poker",       slug: "gg-poker",       label: "GG Poker"        },
+  { href: "/salas/coin-poker",     slug: "coin-poker",     label: "Coin Poker"      },
+  { href: "/salas/poker-king",     slug: "poker-king",     label: "Poker King"      },
+  { href: "/salas/champion-poker", slug: "champion-poker", label: "Champion Poker"  },
+  { href: "/salas/acr-poker",      slug: "acr-poker",      label: "ACR Poker"       },
+];
 
 const TABLAS = [
-  { href: "/tablas/mid-stakes", label: "PreFlop · Mid Stakes", desc: "Rangos para stakes medios" },
-  { href: "/tablas/microlimites", label: "PreFlop · Microlímites", desc: "Rangos para microlímites" },
-  { href: "/tablas/como-usar", label: "¿Cómo usar las tablas?", desc: "Guía de uso paso a paso" },
+  { href: "/tablas/mid-stakes",   label: "PreFlop · Mid Stakes",    desc: "Rangos para stakes medios" },
+  { href: "/tablas/microlimites", label: "PreFlop · Microlímites",  desc: "Rangos para microlímites"  },
+  { href: "/tablas/como-usar",    label: "¿Cómo usar las tablas?",  desc: "Guía de uso paso a paso"   },
 ];
 
-const CONTENIDOS = [
-  { href: "/blog?cat=noticias", label: "Noticias", icon: "📰" },
-  { href: "/blog?cat=blog-blog", label: "Lecturas", icon: "📖" },
-  { href: "/streaming", label: "Videos", icon: "🎬" },
+const CONTENIDOS: { href: string; label: string; icon: LucideIcon }[] = [
+  { href: "/blog?cat=noticias",  label: "Noticias", icon: Newspaper },
+  { href: "/blog?cat=blog-blog", label: "Lecturas", icon: BookOpen  },
+  { href: "/streaming",          label: "Videos",   icon: Film      },
 ];
 
-// ─── NavItem para dropdown desktop ────────────────────────────────────────
+// ─── Componentes de items ──────────────────────────────────────────────────────
 
+// Enlace destacado "Ver todos" en la parte superior de cada dropdown
+function FeaturedLink({ href, label, desc }: { href: string; label: string; desc?: string }) {
+  return (
+    <NavigationMenuLink asChild>
+      <Link
+        href={href}
+        className="group/feat mb-3 flex items-center justify-between gap-3 rounded-xl border border-amber-500/25 bg-amber-500/[0.08] px-4 py-3 transition-colors hover:border-amber-500/60 hover:bg-amber-500/[0.18]"
+      >
+        <div>
+          <p className="text-sm font-bold text-foreground">{label}</p>
+          {desc && <p className="text-xs text-muted-foreground">{desc}</p>}
+        </div>
+        <ArrowRight className="h-4 w-4 shrink-0 text-amber-400 transition-transform group-hover/feat:translate-x-0.5" />
+      </Link>
+    </NavigationMenuLink>
+  );
+}
+
+// Item de mega menu: slot de icono (LucideIcon o imagen URL) + label + desc
+interface MegaItemProps {
+  href: string;
+  label: string;
+  desc?: string;
+  icon?: LucideIcon;
+  iconClass?: string;
+  imgUrl?: string | null;
+  imgAlt?: string;
+  fallbackInitial?: string;
+}
+
+function MegaItem({ href, label, desc, icon: Icon, iconClass, imgUrl, imgAlt, fallbackInitial }: MegaItemProps) {
+  return (
+    <li>
+      <NavigationMenuLink asChild>
+        <Link
+          href={href}
+          className="group/item flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-amber-500"
+        >
+          {/* Slot de icono */}
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted/60 transition-colors group-hover/item:bg-amber-400/20 overflow-hidden">
+            {imgUrl ? (
+              <Image
+                src={imgUrl}
+                alt={imgAlt ?? label}
+                width={28}
+                height={28}
+                className="h-7 w-7 object-contain"
+              />
+            ) : Icon ? (
+              <Icon className={cn("h-5 w-5", iconClass ?? "text-muted-foreground")} />
+            ) : fallbackInitial ? (
+              <span className="text-xs font-black text-amber-400">{fallbackInitial}</span>
+            ) : null}
+          </div>
+
+          {/* Texto */}
+          <div className="min-w-0">
+            <div className="truncate text-sm font-semibold leading-tight text-foreground transition-colors group-hover/item:text-zinc-950">
+              {label}
+            </div>
+            {desc && (
+              <p className="mt-0.5 line-clamp-1 text-xs leading-tight text-muted-foreground transition-colors group-hover/item:text-zinc-700">
+                {desc}
+              </p>
+            )}
+          </div>
+        </Link>
+      </NavigationMenuLink>
+    </li>
+  );
+}
+
+// Item simple para Tablas y Contenidos (sin imagen)
 function NavItem({ href, label, desc }: { href: string; label: string; desc?: string }) {
   return (
     <li>
       <NavigationMenuLink asChild>
         <Link
           href={href}
-          className={cn(
-            "group/item block select-none rounded-md p-3 leading-none no-underline outline-none transition-colors",
-            "hover:bg-amber-500 focus:bg-amber-500"
-          )}
+          className="group/item block select-none rounded-xl p-3 transition-colors hover:bg-amber-500"
         >
-          <div className="text-sm font-medium leading-none group-hover/item:text-zinc-950 transition-colors">{label}</div>
+          <div className="text-sm font-medium leading-none text-foreground transition-colors group-hover/item:text-zinc-950">
+            {label}
+          </div>
           {desc && (
-            <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground group-hover/item:text-zinc-800 transition-colors">{desc}</p>
+            <p className="mt-1 line-clamp-2 text-xs leading-snug text-muted-foreground transition-colors group-hover/item:text-zinc-700">
+              {desc}
+            </p>
           )}
         </Link>
       </NavigationMenuLink>
@@ -78,17 +165,27 @@ function NavItem({ href, label, desc }: { href: string; label: string; desc?: st
   );
 }
 
-// ─── Sección accordion para mobile ───────────────────────────────────────
+// ─── Sección accordion para mobile ────────────────────────────────────────────
+
+type MobileItem = {
+  href: string;
+  label: string;
+  desc?: string;
+  icon?: LucideIcon;
+  imgUrl?: string | null;
+};
 
 function MobileSection({
   title,
   items,
   viewAllHref,
+  viewAllLabel,
   onClose,
 }: {
   title: string;
-  items: { href: string; label: string; desc?: string; icon?: string }[];
+  items: MobileItem[];
   viewAllHref?: string;
+  viewAllLabel?: string;
   onClose: () => void;
 }) {
   const [open, setOpen] = useState(false);
@@ -104,14 +201,15 @@ function MobileSection({
         />
       </button>
       {open && (
-        <div className="mb-2 ml-2 space-y-1 border-l border-border pl-3">
+        <div className="mb-2 ml-2 space-y-0.5 border-l border-border pl-3">
           {viewAllHref && (
             <Link
               href={viewAllHref}
               onClick={onClose}
-              className="block py-1.5 text-xs font-medium text-primary"
+              className="flex items-center gap-1.5 py-1.5 text-xs font-semibold text-amber-400 hover:text-amber-300 transition-colors"
             >
-              Ver todos →
+              <ArrowRight className="h-3 w-3" />
+              {viewAllLabel ?? "Ver todos"}
             </Link>
           )}
           {items.map((item) => (
@@ -119,9 +217,15 @@ function MobileSection({
               key={item.href}
               href={item.href}
               onClick={onClose}
-              className="flex items-center gap-2 py-1.5 text-sm text-muted-foreground hover:text-foreground transition-colors"
+              className="flex items-center gap-2.5 rounded-lg py-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
             >
-              {item.icon && <span>{item.icon}</span>}
+              {item.imgUrl ? (
+                <div className="flex h-6 w-6 shrink-0 items-center justify-center overflow-hidden rounded">
+                  <Image src={item.imgUrl} alt={item.label} width={20} height={20} className="h-5 w-5 object-contain" />
+                </div>
+              ) : item.icon ? (
+                <item.icon className="h-4 w-4 shrink-0 text-muted-foreground" />
+              ) : null}
               {item.label}
             </Link>
           ))}
@@ -131,16 +235,36 @@ function MobileSection({
   );
 }
 
-// ─── Navbar ────────────────────────────────────────────────────────────────
+// ─── Navbar ────────────────────────────────────────────────────────────────────
 
-export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
+export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; salas?: WPSala[] }) {
   const { data: session } = useSession();
   const [mobileOpen, setMobileOpen] = useState(false);
 
+  // Mapa slug → sala para obtener el favicon rápido
+  const salaMap = new Map(salas.map((s) => [s.slug, s]));
+
+  // Items de coaches con imagen destacada
   const coachItems = coaches.map((c) => ({
     href: `/coaches/${c.slug}`,
     label: stripHtml(c.title.rendered),
-    desc: c.acf?.especialidad ?? c.acf?.disciplina ?? c.acf?.descripcion ?? undefined,
+    desc: c.acf?.especialidad ?? c.acf?.disciplina ?? undefined,
+    imgUrl: c._embedded?.["wp:featuredmedia"]?.[0]?.source_url ?? null,
+  }));
+
+  // Items de salas con favicon
+  const salaItems = SALAS_SLUGS.map((s) => {
+    const sala = salaMap.get(s.slug);
+    const icono = sala?.acf?.icono_de_la_sala;
+    const iconoUrl = typeof icono === "object" && icono ? icono.url : null;
+    return { ...s, imgUrl: iconoUrl };
+  });
+
+  // Items de academia con iconos para mobile
+  const academiaItems: MobileItem[] = ACADEMIA_ITEMS.map((a) => ({
+    href: a.href,
+    label: a.label,
+    icon: ACADEMIA_ICON[a.slug]?.icon,
   }));
 
   return (
@@ -148,7 +272,7 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
       <div className="flex h-16 items-center justify-between px-6 sm:px-8">
 
         {/* Logo */}
-        <Link href="/" className="shrink-0 mr-4">
+        <Link href="/" className="mr-4 shrink-0">
           <Image
             src="/brand/Isologotipo.webp"
             alt="ATRPoker"
@@ -163,79 +287,93 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
         <NavigationMenu className="hidden lg:flex">
           <NavigationMenuList>
 
-            {/* Academia */}
+            {/* ── Academia ───────────────────────────────────────────────── */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
                 Academia
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[540px] p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Academia de Póker
-                    </p>
-                    <Link href="/academia" className="text-xs text-primary hover:underline">
-                      Ver todo →
-                    </Link>
-                  </div>
-                  <ul className="grid grid-cols-2 gap-1">
-                    {ACADEMIA.map((item) => (
-                      <NavItem key={item.href} {...item} />
-                    ))}
+                <div className="w-[580px] p-4">
+                  <FeaturedLink
+                    href="/academia"
+                    label="Ver toda la Academia"
+                    desc="Cursos, clases grupales, coaching mental y sesiones en vivo"
+                  />
+                  <ul className="grid grid-cols-2 gap-0.5">
+                    {ACADEMIA_ITEMS.map((item) => {
+                      const meta = ACADEMIA_ICON[item.slug];
+                      return (
+                        <MegaItem
+                          key={item.href}
+                          href={item.href}
+                          label={item.label}
+                          desc={item.desc}
+                          icon={meta?.icon}
+                          iconClass={meta?.iconClass}
+                        />
+                      );
+                    })}
                   </ul>
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {/* Salas */}
+            {/* ── Salas ──────────────────────────────────────────────────── */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
                 Salas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[320px] p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Salas de Póker
-                    </p>
-                    <Link href="/salas" className="text-xs text-primary hover:underline">
-                      Ver todas →
-                    </Link>
-                  </div>
-                  <ul className="grid gap-1">
-                    {SALAS.map((item) => (
-                      <NavItem key={item.href} label={item.label} href={item.href} />
+                <div className="w-[420px] p-4">
+                  <FeaturedLink
+                    href="/salas"
+                    label="Ver todas las salas"
+                    desc="Reseñas, bonos exclusivos y rakeback"
+                  />
+                  <ul className="grid grid-cols-2 gap-0.5">
+                    {salaItems.map((item) => (
+                      <MegaItem
+                        key={item.href}
+                        href={item.href}
+                        label={item.label}
+                        imgUrl={item.imgUrl}
+                        fallbackInitial={item.label.charAt(0)}
+                      />
                     ))}
                   </ul>
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {/* Coaches */}
+            {/* ── Coaches ────────────────────────────────────────────────── */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
                 Coaches
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[420px] p-4">
-                  <div className="mb-3 flex items-center justify-between">
-                    <p className="text-xs font-semibold uppercase tracking-wider text-muted-foreground">
-                      Coaches Privados
-                    </p>
-                    <Link href="/coaches" className="text-xs text-primary hover:underline">
-                      Ver todos →
-                    </Link>
-                  </div>
-                  <ul className="grid grid-cols-2 gap-1">
+                <div className="w-[520px] p-4">
+                  <FeaturedLink
+                    href="/coaches"
+                    label="Ver todos los coaches"
+                    desc="Coaching privado y grupal con los mejores jugadores"
+                  />
+                  <ul className="grid grid-cols-2 gap-0.5">
                     {coachItems.map((item) => (
-                      <NavItem key={item.href} {...item} />
+                      <MegaItem
+                        key={item.href}
+                        href={item.href}
+                        label={item.label}
+                        desc={item.desc}
+                        imgUrl={item.imgUrl}
+                        fallbackInitial={item.label.charAt(0)}
+                      />
                     ))}
                   </ul>
                 </div>
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {/* Tablas */}
+            {/* ── Tablas ─────────────────────────────────────────────────── */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
                 Tablas
@@ -245,7 +383,7 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Tablas PreFlop
                   </p>
-                  <ul className="grid gap-1">
+                  <ul className="grid gap-0.5">
                     {TABLAS.map((item) => (
                       <NavItem key={item.href} {...item} />
                     ))}
@@ -254,7 +392,7 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
               </NavigationMenuContent>
             </NavigationMenuItem>
 
-            {/* Contenidos */}
+            {/* ── Contenidos ─────────────────────────────────────────────── */}
             <NavigationMenuItem>
               <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
                 Contenidos
@@ -264,16 +402,18 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Contenidos
                   </p>
-                  <ul className="grid gap-1">
+                  <ul className="grid gap-0.5">
                     {CONTENIDOS.map((item) => (
                       <li key={item.href}>
                         <NavigationMenuLink asChild>
                           <Link
                             href={item.href}
-                            className="group/icon flex items-center gap-3 rounded-md p-3 hover:bg-amber-500 transition-colors [&:hover_span]:text-zinc-950 [&:hover_span:last-child]:text-zinc-950"
+                            className="group/icon flex items-center gap-3 rounded-xl p-3 transition-colors hover:bg-amber-500"
                           >
-                            <span className="text-lg">{item.icon}</span>
-                            <span className="text-sm font-medium transition-colors">{item.label}</span>
+                            <item.icon className="h-5 w-5 shrink-0 text-muted-foreground transition-colors group-hover/icon:text-zinc-950" />
+                            <span className="text-sm font-medium text-foreground transition-colors group-hover/icon:text-zinc-950">
+                              {item.label}
+                            </span>
                           </Link>
                         </NavigationMenuLink>
                       </li>
@@ -319,15 +459,41 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
             </div>
 
             <nav className="space-y-1">
-              <MobileSection title="Academia" items={ACADEMIA} viewAllHref="/academia" onClose={() => setMobileOpen(false)} />
+              <MobileSection
+                title="Academia"
+                items={academiaItems}
+                viewAllHref="/academia"
+                viewAllLabel="Ver toda la Academia"
+                onClose={() => setMobileOpen(false)}
+              />
               <Separator />
-              <MobileSection title="Salas" items={SALAS} viewAllHref="/salas" onClose={() => setMobileOpen(false)} />
+              <MobileSection
+                title="Salas"
+                items={salaItems}
+                viewAllHref="/salas"
+                viewAllLabel="Ver todas las salas"
+                onClose={() => setMobileOpen(false)}
+              />
               <Separator />
-              <MobileSection title="Coaches Privados" items={coachItems} viewAllHref="/coaches" onClose={() => setMobileOpen(false)} />
+              <MobileSection
+                title="Coaches Privados"
+                items={coachItems}
+                viewAllHref="/coaches"
+                viewAllLabel="Ver todos los coaches"
+                onClose={() => setMobileOpen(false)}
+              />
               <Separator />
-              <MobileSection title="Tablas PreFlop" items={TABLAS} onClose={() => setMobileOpen(false)} />
+              <MobileSection
+                title="Tablas PreFlop"
+                items={TABLAS}
+                onClose={() => setMobileOpen(false)}
+              />
               <Separator />
-              <MobileSection title="Contenidos" items={CONTENIDOS} onClose={() => setMobileOpen(false)} />
+              <MobileSection
+                title="Contenidos"
+                items={CONTENIDOS}
+                onClose={() => setMobileOpen(false)}
+              />
             </nav>
 
             <Separator className="my-4" />

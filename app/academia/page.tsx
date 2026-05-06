@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, GraduationCap, Ruler, Brain, Target, Trophy, Film, Spade, type LucideIcon } from "lucide-react";
 import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
 import { ESCUELA_SUBCATEGORIES } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
@@ -27,49 +27,49 @@ interface PageProps {
 
 // Visual metadata per subcategory — all class strings are complete so Tailwind detects them
 const SUBCAT_META: Record<string, {
-  icon: string;
+  icon: LucideIcon;
   desc: string;
   cardHover: string;
   tag: string;
   arrow: string;
 }> = {
   "curso-principiantes": {
-    icon: "🃏",
+    icon: GraduationCap,
     desc: "Arrancá desde cero y dominá los fundamentos del juego con bases sólidas.",
     cardHover: "hover:border-emerald-500/50 hover:bg-emerald-500/5",
     tag: "border-emerald-500/25 bg-emerald-500/10 text-emerald-400",
     arrow: "text-emerald-400",
   },
   "curso-teorico-practico": {
-    icon: "📐",
+    icon: Ruler,
     desc: "Teoría profunda aplicada directamente al juego real y al análisis de manos.",
     cardHover: "hover:border-sky-500/50 hover:bg-sky-500/5",
     tag: "border-sky-500/25 bg-sky-500/10 text-sky-400",
     arrow: "text-sky-400",
   },
   "mental-coach": {
-    icon: "🧠",
+    icon: Brain,
     desc: "Entrenamiento mental para rendir al máximo bajo presión y gestionar emociones.",
     cardHover: "hover:border-violet-500/50 hover:bg-violet-500/5",
     tag: "border-violet-500/25 bg-violet-500/10 text-violet-400",
     arrow: "text-violet-400",
   },
   "clases-grupales": {
-    icon: "🎯",
+    icon: Target,
     desc: "Clases en vivo con BlueGhost y Piaggesi para jugadores de todos los niveles.",
     cardHover: "hover:border-amber-500/50 hover:bg-amber-500/5",
     tag: "border-amber-500/25 bg-amber-500/10 text-amber-400",
     arrow: "text-amber-400",
   },
   "clases-grupales-straussj": {
-    icon: "🏆",
+    icon: Trophy,
     desc: "Estrategia de alto nivel directamente con el coach StraussJ.",
     cardHover: "hover:border-orange-500/50 hover:bg-orange-500/5",
     tag: "border-orange-500/25 bg-orange-500/10 text-orange-400",
     arrow: "text-orange-400",
   },
   "sesion-live": {
-    icon: "🎬",
+    icon: Film,
     desc: "Análisis de manos reales junto a los coaches en tiempo real.",
     cardHover: "hover:border-rose-500/50 hover:bg-rose-500/5",
     tag: "border-rose-500/25 bg-rose-500/10 text-rose-400",
@@ -78,7 +78,7 @@ const SUBCAT_META: Record<string, {
 };
 
 const FALLBACK_META = {
-  icon: "♠",
+  icon: Spade,
   desc: "",
   cardHover: "hover:border-border",
   tag: "border-border bg-muted/40 text-muted-foreground",
@@ -167,7 +167,7 @@ export default async function AcademiaPage({ searchParams }: PageProps) {
                     )}
                   >
                     <div className="flex items-start justify-between">
-                      <span className="text-3xl leading-none">{meta.icon}</span>
+                      <meta.icon className={cn("h-7 w-7", meta.arrow)} />
                       <ArrowRight
                         className={cn(
                           "h-4 w-4 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100",
@@ -226,7 +226,7 @@ export default async function AcademiaPage({ searchParams }: PageProps) {
           </>
         ) : (
           <div className="flex flex-col items-center justify-center py-24 text-center">
-            <span className="mb-4 text-6xl text-muted-foreground/20">♠</span>
+            <Spade className="mb-4 h-16 w-16 text-muted-foreground/20" />
             <p className="text-lg text-muted-foreground">
               No hay contenidos publicados
               {activeSubcat ? ` en ${activeSubcat.label}` : ""} aún.

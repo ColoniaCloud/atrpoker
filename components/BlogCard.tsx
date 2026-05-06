@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight, Clock } from "lucide-react";
+import { ArrowRight, Clock, Spade } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import type { WPPost } from "@/lib/types";
@@ -30,7 +30,7 @@ export function BlogCard({ post }: BlogCardProps) {
           />
         ) : (
           <div className="w-full h-full bg-secondary flex items-center justify-center">
-            <span className="text-4xl text-muted-foreground">♠</span>
+            <Spade className="h-10 w-10 text-muted-foreground" />
           </div>
         )}
         {/* Badge de duración (clases academia) */}

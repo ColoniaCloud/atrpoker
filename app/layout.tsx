@@ -6,7 +6,7 @@ import { Footer } from "@/components/Footer";
 import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { PageTransition } from "@/components/PageTransition";
-import { getCoaches } from "@/lib/wordpress";
+import { getCoaches, getSalas } from "@/lib/wordpress";
 
 const epilogue = Epilogue({
   subsets: ["latin"],
@@ -33,13 +33,16 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
-  const coaches = await getCoaches();
+  const [coaches, { items: salas }] = await Promise.all([
+    getCoaches(),
+    getSalas({ perPage: 20 }),
+  ]);
 
   return (
     <html lang="es" className={epilogue.variable}>
       <body className="flex flex-col min-h-screen">
         <SessionProvider>
-          <Navbar coaches={coaches} />
+          <Navbar coaches={coaches} salas={salas} />
           <main className="flex-1 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto">
             <PageTransition>{children}</PageTransition>
           </main>

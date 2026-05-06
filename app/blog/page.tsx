@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Spade } from "lucide-react";
 import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
 import { CATEGORY_SLUGS } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
@@ -110,7 +111,7 @@ export default async function BlogPage({ searchParams }: PageProps) {
         </>
       ) : (
         <div className="flex flex-col items-center justify-center py-24 text-center">
-          <span className="text-6xl mb-4 text-muted-foreground/20">♠</span>
+          <Spade className="mb-4 h-16 w-16 text-muted-foreground/20" />
           <p className="text-lg text-muted-foreground">
             No hay artículos en {activeTab.label} aún.
           </p>
