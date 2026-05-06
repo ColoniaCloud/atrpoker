@@ -2,8 +2,6 @@ import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { auth } from "@/lib/auth";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 const TIPO_LABELS: Record<string, string> = {
   sala:      "Elección de sala",
   deposito:  "Depósito",
@@ -13,6 +11,7 @@ const TIPO_LABELS: Record<string, string> = {
 };
 
 export async function POST(req: Request) {
+  const resend = new Resend(process.env.RESEND_API_KEY);
   const session = await auth();
   if (!session?.user) {
     return NextResponse.json({ error: "No autorizado" }, { status: 401 });
