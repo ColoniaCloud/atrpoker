@@ -5,6 +5,7 @@ import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
 import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
+import { PageTransition } from "@/components/PageTransition";
 import { getCoaches } from "@/lib/wordpress";
 
 const epilogue = Epilogue({
@@ -39,7 +40,9 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body className="flex flex-col min-h-screen">
         <SessionProvider>
           <Navbar coaches={coaches} />
-          <main className="flex-1 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto">{children}</main>
+          <main className="flex-1 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto">
+            <PageTransition>{children}</PageTransition>
+          </main>
           <Footer />
           <WhatsAppFloat />
         </SessionProvider>

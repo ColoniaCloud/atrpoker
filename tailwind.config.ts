@@ -60,12 +60,13 @@ const config: Config = {
       },
       animation: {
         marquee: "marquee 30s linear infinite",
-        "fade-up":   "fade-up 0.7s ease-out both",
-        "fade-down": "fade-down 0.6s ease-out both",
-        "fade-in":   "fade-in 0.8s ease-out both",
+        "fade-up":    "fade-up 0.7s ease-out both",
+        "fade-down":  "fade-down 0.6s ease-out both",
+        "fade-in":    "fade-in 0.8s ease-out both",
         "pulse-ring": "pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
         "scroll-up":   "scroll-up 22s linear infinite",
         "scroll-down": "scroll-down 22s linear infinite",
+        "page-enter": "page-enter 0.28s ease-out both",
       },
       keyframes: {
         marquee: {
@@ -96,6 +97,10 @@ const config: Config = {
           "0%":   { transform: "scale(1)",   opacity: "0.7" },
           "60%":  { transform: "scale(1.45)", opacity: "0" },
           "100%": { transform: "scale(1.45)", opacity: "0" },
+        },
+        "page-enter": {
+          "0%":   { opacity: "0", transform: "translateY(7px)" },
+          "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
     },
