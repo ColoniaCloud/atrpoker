@@ -526,16 +526,14 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                   <BookOpen className="h-4 w-4 shrink-0" />
                   Mi academia
                 </Link>
-                <a
-                  href="https://wa.me/5491124932724"
-                  target="_blank"
-                  rel="noopener noreferrer"
+                <Link
+                  href="/perfil/asesoramiento"
                   onClick={() => setMobileOpen(false)}
                   className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
                 >
                   <Headphones className="h-4 w-4 shrink-0" />
                   Soporte
-                </a>
+                </Link>
                 <button
                   onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }}
                   className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"

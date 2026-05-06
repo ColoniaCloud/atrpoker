@@ -11,14 +11,9 @@ interface Props {
 }
 
 const MENU_ITEMS = [
-  { label: "Mi cuenta",   href: "/perfil",    icon: User,       external: false },
-  { label: "Mi academia", href: "/academia",   icon: BookOpen,   external: false },
-  {
-    label: "Soporte",
-    href: "https://wa.me/5491124932724",
-    icon: Headphones,
-    external: true,
-  },
+  { label: "Mi cuenta",   href: "/perfil",                  icon: User,       external: false },
+  { label: "Mi academia", href: "/academia",                 icon: BookOpen,   external: false },
+  { label: "Soporte",     href: "/perfil/asesoramiento",    icon: Headphones, external: false },
 ] as const;
 
 function getInitial(name: string): string {
@@ -90,33 +85,18 @@ export function UserMenuDropdown({ name }: Props) {
 
           {/* Options */}
           <div className="p-1.5">
-            {MENU_ITEMS.map((item) =>
-              item.external ? (
-                <a
-                  key={item.label}
-                  href={item.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  role="menuitem"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors duration-150 hover:bg-muted hover:text-foreground"
-                >
-                  <item.icon className="h-4 w-4 shrink-0" />
-                  {item.label}
-                </a>
-              ) : (
-                <Link
-                  key={item.label}
-                  href={item.href}
-                  role="menuitem"
-                  onClick={() => setOpen(false)}
-                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors duration-150 hover:bg-muted hover:text-foreground"
-                >
-                  <item.icon className="h-4 w-4 shrink-0" />
-                  {item.label}
-                </Link>
-              )
-            )}
+            {MENU_ITEMS.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                role="menuitem"
+                onClick={() => setOpen(false)}
+                className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors duration-150 hover:bg-muted hover:text-foreground"
+              >
+                <item.icon className="h-4 w-4 shrink-0" />
+                {item.label}
+              </Link>
+            ))}
 
             <div className="my-1.5 h-px bg-border" />
 

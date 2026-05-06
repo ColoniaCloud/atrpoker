@@ -10,7 +10,9 @@ import {
   Loader2,
   CheckCircle2,
   AlertCircle,
+  MessageCircle,
 } from "lucide-react";
+import { WhatsAppChatModal } from "@/components/WhatsAppChatModal";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Badge } from "@/components/ui/badge";
@@ -34,6 +36,7 @@ export default function AsesoramientoPage() {
   const [asunto,  setAsunto]  = useState("");
   const [mensaje, setMensaje] = useState("");
   const [estado,  setEstado]  = useState<Estado>("idle");
+  const [waOpen,  setWaOpen]  = useState(false);
 
   useEffect(() => {
     if (status === "unauthenticated") {
@@ -234,19 +237,23 @@ export default function AsesoramientoPage() {
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-sm text-muted-foreground">
-            ¿Preferís hablar directo?{" "}
-            <a
-              href="https://wa.me/5491124932724"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="text-foreground hover:text-amber-400 transition-colors font-medium"
+          {/* WhatsApp direct option */}
+          <div className="mt-6 flex flex-col items-center gap-3 rounded-2xl border border-border bg-card p-5 text-center">
+            <p className="text-sm text-muted-foreground">
+              ¿Preferís hablar directo con nuestro equipo?
+            </p>
+            <button
+              onClick={() => setWaOpen(true)}
+              className="inline-flex items-center gap-2 rounded-full bg-[#25D366] px-6 py-2.5 text-sm font-bold text-white shadow-sm transition-colors hover:bg-[#1ebe5d]"
             >
-              Escribinos por WhatsApp →
-            </a>
-          </p>
+              <MessageCircle className="h-4 w-4" />
+              Abrir chat de WhatsApp
+            </button>
+          </div>
         </div>
       </div>
+
+      <WhatsAppChatModal open={waOpen} onClose={() => setWaOpen(false)} />
     </>
   );
 }
