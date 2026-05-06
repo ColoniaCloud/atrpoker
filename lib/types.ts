@@ -234,22 +234,19 @@ export const ESCUELA_SUBCATEGORIES = [
   { slug: "curso-teorico-practico", label: "Curso Teórico Práctico" },
   { slug: "mental-coach", label: "Mental Coach" },
   { slug: "sesion-live", label: "Sesión Live" },
-  { slug: "yoga", label: "Yoga" },
 ] as const;
 
 // ─── Bunny Stream Library IDs por subcategoría ────────────────────────────────
 // curso-principiantes → 510800
-// yoga                → 516035
 // resto de escuela    → 581821
 export const ESCUELA_LIBRARY_IDS: Record<string, string> = {
   "curso-principiantes": "510800",
-  "yoga": "516035",
 };
 export const ESCUELA_DEFAULT_LIBRARY_ID = "581821";
 
 // ─── Control de acceso a Academia ─────────────────────────────────────────────
 // Acceso libre (cualquier usuario registrado):
-export const ESCUELA_FREE_SUBCATEGORIES = ["curso-principiantes", "yoga"] as const;
+export const ESCUELA_FREE_SUBCATEGORIES = ["curso-principiantes"] as const;
 
 // Roles con acceso a subcategorías premium:
 export const ESCUELA_PREMIUM_ROLES = ["administrator", "editor", "colaborador", "player"] as const;

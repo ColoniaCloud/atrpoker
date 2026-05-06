@@ -15,6 +15,7 @@ import {
 } from "@/lib/wordpress";
 import { BunnyPlayer } from "@/components/BunnyPlayer";
 import { auth, hasEscuelaPremiumAccess } from "@/lib/auth";
+import { buildBunnyEmbedUrl } from "@/lib/bunny";
 import {
   ESCUELA_SUBCATEGORIES,
   ESCUELA_LIBRARY_IDS,
@@ -96,6 +97,10 @@ export default async function BlogPostPage({ params }: PageProps) {
     : (escuelaCatSlug ? post.acf?.duracion_de_la_clase : post.acf?.duracion_del_video);
 
   const hasVideo = !!videoId;
+
+  const bunnyEmbedUrl = hasVideo && libraryId
+    ? buildBunnyEmbedUrl(libraryId, videoId!, {})
+    : undefined;
 
   // ── Control de acceso al video ───────────────────────────────────────────
   const userRoles = session?.user?.roles ?? [];
@@ -183,8 +188,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         videoAccessGranted ? (
           <div className="mb-10">
             <BunnyPlayer
-              videoId={videoId!}
-              libraryId={libraryId}
+              src={bunnyEmbedUrl}
               title={stripHtml(post.title.rendered)}
             />
           </div>

@@ -6,8 +6,9 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { Separator } from "@/components/ui/separator";
 import { getPostBySlug, getCategoryBySlug, stripHtml } from "@/lib/wordpress";
-import { CATEGORY_SLUGS } from "@/lib/types";
+import { CATEGORY_SLUGS, ESCUELA_DEFAULT_LIBRARY_ID } from "@/lib/types";
 import { BunnyPlayer } from "@/components/BunnyPlayer";
+import { buildBunnyEmbedUrl } from "@/lib/bunny";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -37,6 +38,10 @@ export default async function StreamingPlayerPage({ params }: PageProps) {
   const hasVideo = !!acf?.bunny_video_id;
   const isLive = acf?.is_live;
 
+  const bunnyEmbedUrl = hasVideo
+    ? buildBunnyEmbedUrl(ESCUELA_DEFAULT_LIBRARY_ID, acf!.bunny_video_id!)
+    : undefined;
+
   return (
     <div className="py-8">
       {/* Breadcrumb */}
@@ -64,7 +69,7 @@ export default async function StreamingPlayerPage({ params }: PageProps) {
       {hasVideo ? (
         <div className="mb-8">
           <BunnyPlayer
-            videoId={acf!.bunny_video_id!}
+            src={bunnyEmbedUrl}
             title={stripHtml(post.title.rendered)}
           />
         </div>

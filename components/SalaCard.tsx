@@ -45,6 +45,7 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
   const bonificacion = acf?.bonificacion?.trim() || null;
   const estado = acf?.estado || null;
   const deposito = acf?.deposito_minimo ? String(acf.deposito_minimo).trim() : null;
+  const description = stripHtml(sala.excerpt?.rendered ?? "").trim();
 
   const delay = `${index * 60}ms`;
 
@@ -93,6 +94,13 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
           )}
         </div>
 
+        {/* Descripción corta */}
+        {description && (
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+            {description}
+          </p>
+        )}
+
         {/* Rakeback */}
         {rakeback && (
           <div className="flex items-baseline gap-1.5">
@@ -107,7 +115,8 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
 
         {/* Bonificación */}
         {bonificacion && (
-          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-3">
+          <p className="text-xs text-muted-foreground leading-relaxed line-clamp-2">
+            <span className="font-medium text-foreground/60">Bono:</span>{" "}
             {bonificacion}
           </p>
         )}

@@ -15,10 +15,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/sheet";
 import { Separator } from "@/components/ui/separator";
-import { Menu, ChevronDown, LogOut, User } from "lucide-react";
+import { Menu, ChevronDown, LogOut, User, BookOpen, Headphones } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { WPCoach } from "@/lib/types";
 import { stripHtml } from "@/lib/wordpress";
+import { UserMenuDropdown } from "@/components/UserMenuDropdown";
 
 // ─── Datos del menú ────────────────────────────────────────────────────────
 
@@ -288,21 +289,7 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
         {/* Auth — desktop */}
         <div className="hidden lg:flex items-center gap-2 ml-4">
           {session?.user ? (
-            <>
-              <span className="flex items-center gap-1.5 text-sm text-muted-foreground">
-                <User className="h-3.5 w-3.5" />
-                {session.user.name}
-              </span>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={() => signOut({ callbackUrl: "/" })}
-                className="gap-1.5"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                Salir
-              </Button>
-            </>
+            <UserMenuDropdown name={session.user.name ?? "Usuario"} />
           ) : (
             <Button asChild size="sm">
               <Link href="/login">Iniciar sesión</Link>
@@ -346,18 +333,43 @@ export function Navbar({ coaches = [] }: { coaches?: WPCoach[] }) {
             <Separator className="my-4" />
 
             {session?.user ? (
-              <div className="space-y-2">
-                <p className="text-sm text-muted-foreground">
-                  Conectado como <strong className="text-foreground">{session.user.name}</strong>
+              <div className="space-y-1">
+                <p className="mb-3 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
+                  Mi cuenta — {session.user.name}
                 </p>
-                <Button
-                  variant="outline"
-                  className="w-full gap-2"
-                  onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }}
+                <Link
+                  href="/perfil"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
                 >
-                  <LogOut className="h-4 w-4" />
-                  Cerrar sesión
-                </Button>
+                  <User className="h-4 w-4 shrink-0" />
+                  Mi cuenta
+                </Link>
+                <Link
+                  href="/academia"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <BookOpen className="h-4 w-4 shrink-0" />
+                  Mi academia
+                </Link>
+                <a
+                  href="https://wa.me/5491124932724"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <Headphones className="h-4 w-4 shrink-0" />
+                  Soporte
+                </a>
+                <button
+                  onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }}
+                  className="flex w-full items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-red-400 transition-colors hover:bg-red-500/10 hover:text-red-300"
+                >
+                  <LogOut className="h-4 w-4 shrink-0" />
+                  Salir
+                </button>
               </div>
             ) : (
               <Button asChild className="w-full">

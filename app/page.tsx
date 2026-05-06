@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { HeroBackgroundVideo } from "@/components/HeroBackgroundVideo";
 import Link from "next/link";
 import Image from "next/image";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, ExternalLink } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPosts, getSalas, getCategoryBySlug } from "@/lib/wordpress";
@@ -83,63 +83,45 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Logo carousel — full-bleed ────────────────────── */}
-      <div className="relative left-1/2 -translate-x-1/2 w-screen">
-        <SalaLogoCarousel salas={salas} />
-      </div>
-
-      {/* ── Academia — CTA + grid de subcategorías ────────── */}
-      <section className="py-16 border-b border-border">
-        <div className="grid grid-cols-1 gap-10 md:grid-cols-[40%_60%] items-start">
-
-          {/* Columna izquierda — 40% */}
-          <div className="flex flex-col gap-6">
-            <Badge variant="outline" className="self-start border-amber-500/40 text-amber-400 px-3 py-1 text-xs uppercase tracking-widest">
-              Gratis
-            </Badge>
-            <h2 className="text-3xl font-black text-foreground leading-tight">
-              Academia de póker online con{" "}
-              <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
-                coachs de alto nivel
-              </span>
-            </h2>
-            <p className="text-muted-foreground text-base leading-relaxed">
-              En ATR Póker te damos la posibilidad de acceder a un curso completo de poker online
-              creado por coachs ganadores de alto nivel. Además podrás participar del canal de
-              Discord donde podrás preguntar lo que quieras.
+      {/* ── Salas destacadas ──────────────────────────────── */}
+      <section className="py-16">
+        <div className="mb-8 flex items-end justify-between">
+          <div>
+            <h2 className="text-3xl font-bold text-foreground">Salas de Póker</h2>
+            <p className="mt-1 text-muted-foreground">
+              Las mejores salas con reseñas y bonos exclusivos
             </p>
-            <Button
-              asChild
-              size="lg"
-              className="self-start bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold"
-            >
-              <Link href="/academia">
-                Ir a la Academia <ArrowRight className="ml-2 h-4 w-4" />
+          </div>
+          {salas.length > 0 && (
+            <Button asChild variant="outline" className="hidden sm:flex">
+              <Link href="/salas">
+                Ver todas <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-          </div>
+          )}
+        </div>
 
-          {/* Columna derecha — 60% — grid de subcategorías */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
-            {ESCUELA_SUBCATEGORIES.map((sub) => (
-              <Link
-                key={sub.slug}
-                href={`/academia/${sub.slug}`}
-                className="group flex items-center gap-3 rounded-xl border border-[hsl(199_60%_12%)] px-5 py-4 transition-colors hover:border-amber-500/60 hover:bg-amber-500/5"
-              >
-                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[hsl(199_60%_14%)] text-muted-foreground group-hover:border-amber-500/50 group-hover:text-amber-400 transition-colors">
-                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-4 w-4">
-                    <polygon points="5 3 19 12 5 21 5 3" />
-                  </svg>
-                </span>
-                <span className="text-sm font-medium text-foreground group-hover:text-amber-400 transition-colors">
-                  {sub.label}
-                </span>
-              </Link>
+        {salas.length > 0 ? (
+          <>
+            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+              {salas.map((sala, i) => (
+                <SalaCard key={sala.id} sala={sala} index={i} />
+              ))}
+              <SalaPromoCard />
+            </div>
+            <div className="mt-6 text-center sm:hidden">
+              <Button asChild variant="outline">
+                <Link href="/salas">Ver todas las salas</Link>
+              </Button>
+            </div>
+          </>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+            {Array.from({ length: 7 }).map((_, i) => (
+              <Skeleton key={i} className="h-56 w-full" />
             ))}
           </div>
-
-        </div>
+        )}
       </section>
 
       {/* ── Cajero personal ───────────────────────────────── */}
@@ -199,45 +181,58 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── Salas destacadas ──────────────────────────────── */}
-      <section className="py-16">
-        <div className="mb-8 flex items-end justify-between">
-          <div>
-            <h2 className="text-3xl font-bold text-foreground">Salas de Póker</h2>
-            <p className="mt-1 text-muted-foreground">
-              Las mejores salas con reseñas y bonos exclusivos
+      {/* ── Academia — CTA + grid de subcategorías ────────── */}
+      <section className="py-16 border-b border-border">
+        <div className="grid grid-cols-1 gap-10 md:grid-cols-[40%_60%] items-start">
+
+          {/* Columna izquierda — 40% */}
+          <div className="flex flex-col gap-6">
+            <Badge variant="outline" className="self-start border-amber-500/40 text-amber-400 px-3 py-1 text-xs uppercase tracking-widest">
+              Gratis
+            </Badge>
+            <h2 className="text-3xl font-black text-foreground leading-tight">
+              Academia de póker online con{" "}
+              <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
+                coachs de alto nivel
+              </span>
+            </h2>
+            <p className="text-muted-foreground text-base leading-relaxed">
+              En ATR Póker te damos la posibilidad de acceder a un curso completo de poker online
+              creado por coachs ganadores de alto nivel. Además podrás participar del canal de
+              Discord donde podrás preguntar lo que quieras.
             </p>
-          </div>
-          {salas.length > 0 && (
-            <Button asChild variant="outline" className="hidden sm:flex">
-              <Link href="/salas">
-                Ver todas <ArrowRight className="ml-2 h-4 w-4" />
+            <Button
+              asChild
+              size="lg"
+              className="self-start bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold"
+            >
+              <Link href="/academia">
+                Ir a la Academia <ArrowRight className="ml-2 h-4 w-4" />
               </Link>
             </Button>
-          )}
-        </div>
+          </div>
 
-        {salas.length > 0 ? (
-          <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-              {salas.map((sala, i) => (
-                <SalaCard key={sala.id} sala={sala} index={i} />
-              ))}
-              <SalaPromoCard />
-            </div>
-            <div className="mt-6 text-center sm:hidden">
-              <Button asChild variant="outline">
-                <Link href="/salas">Ver todas las salas</Link>
-              </Button>
-            </div>
-          </>
-        ) : (
-          <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
-            {Array.from({ length: 7 }).map((_, i) => (
-              <Skeleton key={i} className="h-56 w-full" />
+          {/* Columna derecha — 60% — grid de subcategorías */}
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+            {ESCUELA_SUBCATEGORIES.map((sub) => (
+              <Link
+                key={sub.slug}
+                href={`/academia/${sub.slug}`}
+                className="group flex items-center gap-4 rounded-xl border border-[hsl(199_60%_12%)] px-6 py-5 transition-colors hover:border-amber-500/60 hover:bg-amber-500/5"
+              >
+                <span className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-[hsl(199_60%_14%)] text-muted-foreground group-hover:border-amber-500/50 group-hover:text-amber-400 transition-colors">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </span>
+                <span className="text-base font-medium text-foreground group-hover:text-amber-400 transition-colors">
+                  {sub.label}
+                </span>
+              </Link>
             ))}
           </div>
-        )}
+
+        </div>
       </section>
 
       {/* ── Blog ──────────────────────────────────────────── */}
@@ -280,6 +275,145 @@ export default async function HomePage() {
               typeof ico === "object" && ico !== null && "url" in ico
           )}
       />
+
+      {/* ── Logo carousel — full-bleed ──── */}
+      <div className="relative left-1/2 -translate-x-1/2 w-screen">
+        <SalaLogoCarousel salas={salas} />
+      </div>
+
+      {/* ── Billeteras recomendadas ──────────────────────────── */}
+      <section className="py-20">
+        <div className="mb-10 text-center">
+          <Badge
+            variant="outline"
+            className="mb-4 border-amber-500/40 text-amber-400 px-3 py-1 text-xs uppercase tracking-widest"
+          >
+            Métodos de pago
+          </Badge>
+          <h2 className="text-3xl font-bold text-foreground">
+            Billeteras recomendadas
+          </h2>
+          <p className="mt-2 text-muted-foreground max-w-md mx-auto">
+            Mové tus fondos rápido y seguro con las plataformas que usan los mejores jugadores de la región
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+          {/* ── Bitget ── */}
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-cyan-500/40 transition-all duration-300 flex flex-col">
+            <div className="absolute inset-0 bg-gradient-to-br from-cyan-500/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+            <div className="relative flex flex-col items-center text-center gap-6 p-8 flex-1">
+              {/* Logo */}
+              <a
+                href="https://share.bitget.com/u/H1PVU1TV"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full h-20 flex items-center justify-center"
+              >
+                <Image
+                  src="/bitget.png"
+                  alt="Bitget"
+                  width={200}
+                  height={72}
+                  className="object-contain max-h-full w-auto transition-transform duration-300 group-hover:scale-105"
+                />
+              </a>
+
+              {/* Text */}
+              <div className="space-y-3 flex-1">
+                <h3 className="text-xl font-black text-foreground">Bitget</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  Uno de los{" "}
+                  <span className="text-foreground/80 font-medium">exchanges cripto más grandes del mundo</span>{" "}
+                  con más de 45 millones de usuarios. Recargá y retirá fondos de tus salas de forma rápida, segura y con comisiones mínimas.
+                </p>
+              </div>
+
+              {/* Feature chips */}
+              <div className="flex flex-wrap justify-center gap-2 w-full">
+                {["Spot & Futuros", "Copy Trading", "Crypto & Fiat", "KYC simple"].map((f) => (
+                  <span
+                    key={f}
+                    className="text-[11px] px-2.5 py-1 rounded-full border border-cyan-500/25 bg-cyan-500/10 text-cyan-400 font-medium"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a
+                href="https://share.bitget.com/u/H1PVU1TV"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-zinc-950 font-bold px-6 py-3.5 transition-colors duration-200"
+              >
+                <ExternalLink className="h-4 w-4 shrink-0" />
+                Abrir cuenta en Bitget
+              </a>
+            </div>
+          </div>
+
+          {/* ── LuxonPay ── */}
+          <div className="group relative overflow-hidden rounded-2xl border border-border bg-card hover:border-violet-500/40 transition-all duration-300 flex flex-col">
+            <div className="absolute inset-0 bg-gradient-to-br from-violet-500/8 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+
+            <div className="relative flex flex-col items-center text-center gap-6 p-8 flex-1">
+              {/* Logo */}
+              <a
+                href="https://web.luxon.com/register#a_aid=3000020"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full h-20 flex items-center justify-center"
+              >
+                <Image
+                  src="/luxon.webp"
+                  alt="LuxonPay"
+                  width={200}
+                  height={72}
+                  className="object-contain max-h-full w-auto transition-transform duration-300 group-hover:scale-105"
+                />
+              </a>
+
+              {/* Text */}
+              <div className="space-y-3 flex-1">
+                <h3 className="text-xl font-black text-foreground">LuxonPay</h3>
+                <p className="text-muted-foreground text-sm leading-relaxed">
+                  La{" "}
+                  <span className="text-foreground/80 font-medium">billetera digital creada para jugadores de póker</span>.{" "}
+                  Depósitos y retiros instantáneos en las principales salas, soporte dedicado y las mejores tasas de cambio de la región.
+                </p>
+              </div>
+
+              {/* Feature chips */}
+              <div className="flex flex-wrap justify-center gap-2 w-full">
+                {["Depósitos instantáneos", "Retiros rápidos", "Soporte 24/7", "Para jugadores"].map((f) => (
+                  <span
+                    key={f}
+                    className="text-[11px] px-2.5 py-1 rounded-full border border-violet-500/25 bg-violet-500/10 text-violet-400 font-medium"
+                  >
+                    {f}
+                  </span>
+                ))}
+              </div>
+
+              {/* CTA */}
+              <a
+                href="https://web.luxon.com/register#a_aid=3000020"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full flex items-center justify-center gap-2 rounded-xl bg-violet-600 hover:bg-violet-500 text-white font-bold px-6 py-3.5 transition-colors duration-200"
+              >
+                <ExternalLink className="h-4 w-4 shrink-0" />
+                Abrir cuenta en LuxonPay
+              </a>
+            </div>
+          </div>
+
+        </div>
+      </section>
     </>
   );
 }

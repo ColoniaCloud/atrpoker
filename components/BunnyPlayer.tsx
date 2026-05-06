@@ -10,8 +10,10 @@ const DEFAULT_LIBRARY_ID = "510800";
 // ─── BunnyPlayer ─────────────────────────────────────────────────────────────
 
 interface BunnyPlayerProps {
-  /** ID del video en Bunny Stream. Reemplazá con el ID real del video. */
-  videoId: string;
+  /** URL pre-firmada generada server-side con buildBunnyEmbedUrl(). Tiene prioridad sobre videoId/libraryId. */
+  src?: string;
+  /** ID del video en Bunny Stream (solo si no se pasa src). */
+  videoId?: string;
   /** ID de la biblioteca Bunny Stream. Por defecto: 510800 (Curso Principiantes). */
   libraryId?: string;
   /** Título del iframe (accesibilidad). */
@@ -27,6 +29,7 @@ interface BunnyPlayerProps {
 }
 
 export function BunnyPlayer({
+  src: srcProp,
   videoId,
   libraryId = DEFAULT_LIBRARY_ID,
   title = "Video",
@@ -35,7 +38,6 @@ export function BunnyPlayer({
   loop = false,
   className,
 }: BunnyPlayerProps) {
-  // Construir query params dinámicamente — solo incluye los que difieren del default
   const params = new URLSearchParams({
     autoplay: String(autoplay),
     muted: String(muted),
@@ -44,9 +46,7 @@ export function BunnyPlayer({
     responsive: "true",
   });
 
-  // Embed URL oficial de Bunny:
-  // https://iframe.mediadelivery.net/embed/{LIBRARY_ID}/{VIDEO_ID}?params
-  const src = `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?${params}`;
+  const src = srcProp ?? `https://iframe.mediadelivery.net/embed/${libraryId}/${videoId}?${params}`;
 
   return (
     <div
@@ -61,7 +61,6 @@ export function BunnyPlayer({
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"
         allowFullScreen
         loading="lazy"
-        referrerPolicy="no-referrer"
         className="absolute inset-0 h-full w-full border-0"
       />
     </div>
