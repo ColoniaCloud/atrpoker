@@ -76,7 +76,7 @@ function FeaturedLink({ href, label, desc }: { href: string; label: string; desc
     <NavigationMenuLink asChild>
       <Link
         href={href}
-        className="group/feat mb-3 flex items-center justify-between gap-3 rounded-xl border border-amber-500/25 bg-amber-500/[0.08] px-4 py-3 transition-colors hover:border-amber-500/60 hover:bg-amber-500/[0.18]"
+        className="group/feat mb-3 flex items-center justify-between gap-3 rounded-xl bg-amber-500/[0.08] px-4 py-3 transition-colors hover:bg-amber-500/[0.18]"
       >
         <div>
           <p className="text-sm font-bold text-foreground">{label}</p>
@@ -109,7 +109,7 @@ function MegaItem({ href, label, desc, icon: Icon, iconClass, imgUrl, imgAlt, fa
           className="group/item flex items-center gap-3 rounded-xl p-2.5 transition-colors hover:bg-amber-500"
         >
           {/* Slot de icono */}
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-muted/60 transition-colors group-hover/item:bg-amber-400/20 overflow-hidden">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-zinc-800 transition-colors group-hover/item:bg-zinc-700 overflow-hidden">
             {imgUrl ? (
               <Image
                 src={imgUrl}
@@ -278,7 +278,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Academia ───────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
                 Academia
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -309,7 +309,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Salas ──────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
                 Salas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -336,7 +336,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Coaches ────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
                 Coaches
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -364,7 +364,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Tablas ─────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
                 Tablas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -383,7 +383,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Contenidos ─────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent text-sm font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
                 Contenidos
               </NavigationMenuTrigger>
               <NavigationMenuContent>
