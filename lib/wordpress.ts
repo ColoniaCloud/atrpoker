@@ -7,6 +7,7 @@ import type {
   WPUser,
   WPJWTResponse,
   PaginatedResponse,
+  Progreso,
 } from "./types";
 
 const WP_URL = process.env.WORDPRESS_URL || "https://atrpoker.com";
@@ -423,4 +424,49 @@ export function formatDate(dateString: string): string {
     month: "long",
     day: "numeric",
   });
+}
+
+// ─── Progreso del curso (WP user meta) ──────────────────────────────────────
+// Requiere endpoint custom en WordPress:
+//   GET/POST /wp-json/atrpoker/v1/progreso
+// Ver: /wordpress-snippets/register-progreso-endpoint.php
+
+const PROGRESO_ENDPOINT = `${WP_URL}/wp-json/atrpoker/v1/progreso`;
+
+export async function getProgreso(token: string): Promise<Progreso> {
+  try {
+    const res = await fetch(PROGRESO_ENDPOINT, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      cache: "no-store",
+    });
+    if (!res.ok) return {};
+    const data = await res.json();
+    return (data as Progreso) ?? {};
+  } catch {
+    return {};
+  }
+}
+
+export async function saveProgreso(
+  token: string,
+  slug: string,
+  completed: boolean
+): Promise<boolean> {
+  try {
+    const res = await fetch(PROGRESO_ENDPOINT, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ slug, completed }),
+      cache: "no-store",
+    });
+    return res.ok;
+  } catch {
+    return false;
+  }
 }

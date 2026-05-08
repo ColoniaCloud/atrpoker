@@ -65,6 +65,15 @@ export default auth(async function middleware(
     }
   }
 
+  // ── /estudia/* ──────────────────────────────────────────────────────────
+  if (pathname.startsWith("/estudia")) {
+    if (!session?.user) {
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
   return NextResponse.next();
 });
 
@@ -72,5 +81,7 @@ export const config = {
   matcher: [
     "/streaming/:path*",
     "/academia/:path*",
+    "/estudia/:path*",
+    "/estudia",
   ],
 };

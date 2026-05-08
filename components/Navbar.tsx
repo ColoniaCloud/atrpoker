@@ -18,7 +18,7 @@ import { Separator } from "@/components/ui/separator";
 import {
   Menu, ChevronDown, LogOut, User, BookOpen, Headphones,
   Newspaper, Film, ArrowRight,
-  GraduationCap, Ruler, Brain, Target, Trophy,
+  GraduationCap, Ruler, Brain, Target, Trophy, BookMarked,
   type LucideIcon,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -63,9 +63,10 @@ const TABLAS = [
 ];
 
 const CONTENIDOS: { href: string; label: string; icon: LucideIcon }[] = [
-  { href: "/blog?cat=noticias",  label: "Noticias", icon: Newspaper },
-  { href: "/blog?cat=blog-blog", label: "Lecturas", icon: BookOpen  },
-  { href: "/streaming",          label: "Videos",   icon: Film      },
+  { href: "/blog?cat=noticias",  label: "Noticias",               icon: Newspaper  },
+  { href: "/blog?cat=blog-blog", label: "Lecturas",               icon: BookOpen   },
+  { href: "/streaming",          label: "Videos",                 icon: Film       },
+  { href: "/estudia",            label: "Estudia progresivamente", icon: BookMarked },
 ];
 
 // ─── Componentes de items ──────────────────────────────────────────────────────
@@ -261,11 +262,14 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
   });
 
   // Items de academia con iconos para mobile
-  const academiaItems: MobileItem[] = ACADEMIA_ITEMS.map((a) => ({
-    href: a.href,
-    label: a.label,
-    icon: ACADEMIA_ICON[a.slug]?.icon,
-  }));
+  const academiaItems: MobileItem[] = [
+    { href: "/estudia", label: "Estudia Progresivamente", icon: BookMarked },
+    ...ACADEMIA_ITEMS.map((a) => ({
+      href: a.href,
+      label: a.label,
+      icon: ACADEMIA_ICON[a.slug]?.icon,
+    })),
+  ];
 
   return (
     <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[hsl(199_55%_14%)] bg-background/70 backdrop-blur-md shadow-lg">
@@ -287,6 +291,11 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                     href="/academia"
                     label="Ver toda la Academia"
                     desc="Cursos, clases grupales, coaching mental y sesiones en vivo"
+                  />
+                  <FeaturedLink
+                    href="/estudia"
+                    label="Estudia Progresivamente"
+                    desc="Seguí el curso en orden y medí tu avance"
                   />
                   <ul className="grid grid-cols-2 gap-0.5">
                     {ACADEMIA_ITEMS.map((item) => {

@@ -81,6 +81,11 @@ export interface StreamingACF {
   duracion_de_la_clase?: string; // Duración — resto de subcategorías de Escuela
 }
 
+// ─── Progreso del curso ─────────────────────────────────────────────────────
+
+/** Mapa de slug de post → completado (true/false). Guardado en WP user meta. */
+export type Progreso = Record<string, boolean>;
+
 // ─── Sala (Custom Post Type) ─────────────────────────────────────────────────
 
 export interface WPSala {

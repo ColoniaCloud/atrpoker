@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useRef, useId } from "react";
 import { cn } from "@/lib/utils";
 
 // ─── Bunny Stream Library ID para "Curso Principiantes" ───────────────────────
@@ -24,6 +25,8 @@ interface BunnyPlayerProps {
   muted?: boolean;
   /** Repetir el video al terminar. Por defecto: false. */
   loop?: boolean;
+  /** Callback cuando el video termina. Se usa para marcar como completado. */
+  onEnded?: () => void;
   /** Clases CSS adicionales para el contenedor. */
   className?: string;
 }
@@ -36,8 +39,36 @@ export function BunnyPlayer({
   autoplay = false,
   muted = false,
   loop = false,
+  onEnded,
   className,
 }: BunnyPlayerProps) {
+  const iframeRef = useRef<HTMLIFrameElement>(null);
+  const playerId = useId();
+
+  // Escucha mensajes postMessage del player Bunny Stream para detectar "ended"
+  useEffect(() => {
+    if (!onEnded) return;
+
+    function handleMessage(e: MessageEvent) {
+      if (iframeRef.current && e.source !== iframeRef.current.contentWindow) return;
+      try {
+        const data =
+          typeof e.data === "string" ? (JSON.parse(e.data) as unknown) : e.data;
+        if (
+          data &&
+          typeof data === "object" &&
+          (data as Record<string, unknown>).event === "ended"
+        ) {
+          onEnded?.();
+        }
+      } catch {
+        // Ignorar mensajes no JSON
+      }
+    }
+
+    window.addEventListener("message", handleMessage);
+    return () => window.removeEventListener("message", handleMessage);
+  }, [onEnded, playerId]);
   const params = new URLSearchParams({
     autoplay: String(autoplay),
     muted: String(muted),
@@ -56,6 +87,7 @@ export function BunnyPlayer({
       )}
     >
       <iframe
+        ref={iframeRef}
         src={src}
         title={title}
         allow="accelerometer; gyroscope; autoplay; encrypted-media; picture-in-picture"

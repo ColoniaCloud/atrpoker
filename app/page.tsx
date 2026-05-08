@@ -130,7 +130,7 @@ export default async function HomePage() {
           {/* Imagen */}
           <div className="flex justify-center">
             <Image
-              src="/media/cajero.png"
+              src="/media/mesas.png"
               alt="Asesoramiento ATR Poker"
               width={480}
               height={480}
