@@ -45,7 +45,7 @@ export function HeroSlider() {
   return (
     <div className="relative">
       <h1
-        className={`mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-foreground text-center sm:text-left transition-all ${
+        className={`mb-6 text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black leading-tight text-foreground text-center transition-all ${
           isTransitioning
             ? "opacity-0 translate-x-8 blur-sm"
             : "opacity-100 translate-x-0 blur-0"
@@ -77,7 +77,7 @@ export function HeroSlider() {
       </h1>
 
       <p
-        className={`mx-auto mb-8 max-w-2xl text-base sm:text-lg lg:text-xl text-muted-foreground text-center sm:text-left transition-all ${
+        className={`mx-auto mb-8 max-w-2xl text-base sm:text-lg lg:text-xl text-muted-foreground text-center transition-all ${
           isTransitioning
             ? "opacity-0 -translate-x-8 blur-sm"
             : "opacity-100 translate-x-0 blur-0"
