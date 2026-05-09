@@ -30,8 +30,8 @@ export function Footer() {
 
   return (
     <footer className="border-t border-border bg-background mt-16">
-      <div className="w-[85vw] mx-auto px-4 py-12">
-        <div className="grid grid-cols-1 md:grid-cols-5 gap-8">
+      <div className="w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto px-4 py-12">
+        <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-block mb-3">
@@ -54,7 +54,7 @@ export function Footer() {
           {/* Links */}
           {Object.entries(FOOTER_LINKS).map(([section, links]) => (
             <div key={section}>
-              <h3 className="text-xs font-semibold text-foreground/70 mb-3 uppercase tracking-wider">
+              <h3 className="text-xs font-semibold text-white mb-3 uppercase tracking-wider">
                 {section}
               </h3>
               <ul className="space-y-2">

@@ -40,23 +40,38 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const imageUrl = getFeaturedImageUrl(post, "large");
   const description = stripHtml(post.excerpt.rendered).slice(0, 160);
   const title = stripHtml(post.title.rendered);
+  const canonicalUrl = `https://atrpoker.com/blog/${slug}`;
 
   return {
     title,
     description,
+    alternates: {
+      canonical: canonicalUrl,
+    },
     openGraph: {
       title,
       description,
       type: "article",
+      url: canonicalUrl,
       publishedTime: post.date_gmt,
       modifiedTime: post.modified,
-      images: imageUrl ? [{ url: imageUrl }] : [],
+      images: imageUrl ? [{
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: title,
+      }] : [{
+        url: "https://atrpoker.com/brand/Isologotipo.webp",
+        width: 1200,
+        height: 630,
+        alt: title,
+      }],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      images: imageUrl ? [imageUrl] : [],
+      images: imageUrl ? [imageUrl] : ["https://atrpoker.com/brand/Isologotipo.webp"],
     },
   };
 }

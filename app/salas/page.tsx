@@ -11,9 +11,26 @@ export const metadata: Metadata = {
   title: "Salas de Póker Online",
   description:
     "Reseñas completas de las mejores salas de póker online: bonos, códigos de descuento, software, variantes y más.",
+  alternates: {
+    canonical: "https://atrpoker.com/salas",
+  },
   openGraph: {
     title: "Salas de Póker Online | ATRPoker",
     description: "Reseñas de las mejores salas de póker online con bonos exclusivos.",
+    type: "website",
+    url: "https://atrpoker.com/salas",
+    images: [{
+      url: "https://atrpoker.com/brand/Isologotipo.webp",
+      width: 1200,
+      height: 630,
+      alt: "Salas de Póker Online ATRPoker",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Salas de Póker Online | ATRPoker",
+    description: "Reseñas de las mejores salas de póker online con bonos exclusivos.",
+    images: ["https://atrpoker.com/brand/Isologotipo.webp"],
   },
 };
 
@@ -27,10 +44,16 @@ export default async function SalasPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page ?? 1);
 
-  const { items: salas, totalPages, total } = await getSalas({
+  const { items: salasRaw, totalPages, total } = await getSalas({
     page: currentPage,
     perPage: 12,
   });
+
+  // Ignition siempre primero como sala destacada
+  const salas = [
+    ...salasRaw.filter((s) => s.slug === "ignition"),
+    ...salasRaw.filter((s) => s.slug !== "ignition"),
+  ];
 
   return (
     <div className="py-12">
@@ -57,7 +80,7 @@ export default async function SalasPage({ searchParams }: PageProps) {
         <>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
             {salas.map((sala, i) => (
-              <SalaCard key={sala.id} sala={sala} index={i} />
+              <SalaCard key={sala.id} sala={sala} index={i} featured={sala.slug === "ignition"} />
             ))}
           </div>
           <Pagination currentPage={currentPage} totalPages={totalPages} basePath="/salas" />

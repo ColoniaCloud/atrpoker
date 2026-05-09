@@ -12,7 +12,7 @@ export function WhatsAppFloat() {
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Cerrar chat" : "Abrir chat de WhatsApp"}
-        className="fixed bottom-6 right-6 z-40 flex h-14 w-14 items-center justify-center rounded-full shadow-lg transition-colors duration-200 bg-[#25D366] hover:bg-[#1ebe5d]"
+        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-40 flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full shadow-lg transition-colors duration-200 bg-[#25D366] hover:bg-[#1ebe5d]"
       >
         {open ? (
           <X className="h-6 w-6 text-white" />

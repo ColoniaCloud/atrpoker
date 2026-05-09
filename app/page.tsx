@@ -13,20 +13,48 @@ import { SalaPromoCard } from "@/components/SalaPromoCard";
 import { Skeleton } from "@/components/ui/skeleton";
 import { SalaLogoCarousel } from "@/components/SalaLogoCarousel";
 import { SalaIconsWall } from "@/components/SalaIconsWall";
+import { HeroSlider } from "@/components/HeroSlider";
 
 export const metadata: Metadata = {
   title: "ATRPoker — Póker Online en Latinoamerica",
   description:
     "Las mejores salas de póker online, reseñas, bonos exclusivos, academia, streaming en vivo y la comunidad de póker más grande de Latinoamerica.",
+  alternates: {
+    canonical: "https://atrpoker.com",
+  },
+  openGraph: {
+    title: "ATRPoker — Póker Online en Latinoamerica",
+    description: "Las mejores salas de póker online, reseñas, bonos exclusivos, academia, streaming en vivo y la comunidad de póker más grande de Latinoamerica.",
+    type: "website",
+    url: "https://atrpoker.com",
+    images: [{
+      url: "https://atrpoker.com/brand/Isologotipo.webp",
+      width: 1200,
+      height: 630,
+      alt: "ATRPoker - Póker Online en Latinoamerica",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "ATRPoker — Póker Online en Latinoamerica",
+    description: "Las mejores salas de póker online, reseñas, bonos exclusivos, academia, streaming en vivo y la comunidad de póker más grande de Latinoamerica.",
+    images: ["https://atrpoker.com/brand/Isologotipo.webp"],
+  },
 };
 
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [blogCategory, { items: salas }] = await Promise.all([
+  const [blogCategory, { items: salasRaw }] = await Promise.all([
     getCategoryBySlug(CATEGORY_SLUGS.BLOG),
     getSalas({ perPage: 20 }),
   ]);
+
+  // Ignition siempre primera como sala destacada
+  const salas = [
+    ...salasRaw.filter((s) => s.slug === "ignition"),
+    ...salasRaw.filter((s) => s.slug !== "ignition"),
+  ];
 
   const { items: blogPosts } = await getPosts({
     perPage: 3,
@@ -41,32 +69,20 @@ export default async function HomePage() {
 
         {/* Glow central */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-[600px] w-[600px] rounded-full bg-primary/5 blur-3xl" />
+          <div className="h-[300px] w-[300px] sm:h-[450px] sm:w-[450px] lg:h-[600px] lg:w-[600px] rounded-full bg-primary/5 blur-3xl" />
         </div>
 
         <div className="relative mx-auto w-full max-w-4xl text-center px-4">
           <Badge
-            className="mb-6 gap-1.5 px-4 py-1.5 text-sm border-green-500 bg-green-500/30 text-white hover:bg-green-500/30 hover:border-green-500"
-            style={{
-              boxShadow: '0 0 0 2px #22c55e33',
-            }}
+            className="mb-6 gap-1.5 px-4 py-1.5 text-sm text-white border-0 bg-transparent hover:bg-transparent"
           >
             <Spade className="h-3.5 w-3.5 text-amber-400" />
             <span className="text-white">Jugá al póker con los mejores y ganá más</span>
           </Badge>
 
-          <h1 className="mb-6 text-5xl font-black leading-tight text-foreground md:text-6xl">
-            No podes jugar al póker{" "}
-            <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
-              sin nuestro rakeback
-            </span>
-          </h1>
+          <HeroSlider />
 
-          <p className="mx-auto mb-10 max-w-2xl text-xl text-muted-foreground">
-            Somos la escuela de póker de latinoamerica que ofrece el mejor rakeback en la mayoría de las salas más conocidas.
-          </p>
-
-          <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
+          <div className="flex flex-row flex-wrap items-center justify-center gap-4">
             <Button
               asChild
               size="lg"
@@ -103,9 +119,9 @@ export default async function HomePage() {
 
         {salas.length > 0 ? (
           <>
-            <div className="grid grid-cols-2 sm:grid-cols-4 gap-5">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-5">
               {salas.map((sala, i) => (
-                <SalaCard key={sala.id} sala={sala} index={i} />
+                <SalaCard key={sala.id} sala={sala} index={i} featured={sala.slug === "ignition"} />
               ))}
               <SalaPromoCard />
             </div>
@@ -130,11 +146,11 @@ export default async function HomePage() {
           {/* Imagen */}
           <div className="flex justify-center">
             <Image
-              src="/media/mesas.png"
+              src="/media/fichas.png"
               alt="Asesoramiento ATR Poker"
               width={480}
               height={480}
-              className="rounded-2xl object-contain w-full max-w-sm md:max-w-none"
+              className="rounded-2xl object-contain w-full max-w-sm md:max-w-none animate-floating"
             />
           </div>
 

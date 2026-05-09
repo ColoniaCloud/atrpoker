@@ -56,7 +56,9 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-epilogue)", "system-ui", "sans-serif"],
+        sans: ["var(--font-inter)", "system-ui", "sans-serif"],
+        heading: ["var(--font-unbounded)", "system-ui", "sans-serif"],
+        oswald: ["var(--font-oswald)", "system-ui", "sans-serif"],
       },
       animation: {
         marquee: "marquee 30s linear infinite",
@@ -64,9 +66,11 @@ const config: Config = {
         "fade-down":  "fade-down 0.6s ease-out both",
         "fade-in":    "fade-in 0.8s ease-out both",
         "pulse-ring": "pulse-ring 2.2s cubic-bezier(0.4, 0, 0.6, 1) infinite",
+        "border-glow": "border-glow 2.4s ease-in-out infinite",
         "scroll-up":   "scroll-up 22s linear infinite",
         "scroll-down": "scroll-down 22s linear infinite",
         "page-enter": "page-enter 0.28s ease-out both",
+        "floating": "floating 3s ease-in-out infinite",
       },
       keyframes: {
         marquee: {
@@ -98,9 +102,17 @@ const config: Config = {
           "60%":  { transform: "scale(1.45)", opacity: "0" },
           "100%": { transform: "scale(1.45)", opacity: "0" },
         },
+        "border-glow": {
+          "0%, 100%": { boxShadow: "0 0 8px rgba(251,191,36,0.15), 0 0 0 1px rgba(251,191,36,0.35)" },
+          "50%":      { boxShadow: "0 0 20px rgba(251,191,36,0.35), 0 0 0 1px rgba(251,191,36,0.70)" },
+        },
         "page-enter": {
           "0%":   { opacity: "0", transform: "translateY(7px)" },
           "100%": { opacity: "1", transform: "translateY(0)" },
+        },
+        "floating": {
+          "0%, 100%": { transform: "translateY(0px)" },
+          "50%":      { transform: "translateY(-12px)" },
         },
       },
     },

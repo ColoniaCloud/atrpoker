@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Epilogue } from "next/font/google";
+import { Unbounded, Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
 import { Footer } from "@/components/Footer";
@@ -8,10 +8,24 @@ import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { PageTransition } from "@/components/PageTransition";
 import { getCoaches, getSalas } from "@/lib/wordpress";
 
-const epilogue = Epilogue({
+const unbounded = Unbounded({
   subsets: ["latin"],
-  weight: ["400", "800"],
-  variable: "--font-epilogue",
+  weight: ["400", "700", "900"],
+  variable: "--font-unbounded",
+  display: "swap",
+});
+
+const inter = Inter({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-inter",
+  display: "swap",
+});
+
+const oswald = Oswald({
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-oswald",
   display: "swap",
 });
 
@@ -39,7 +53,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   ]);
 
   return (
-    <html lang="es" className={epilogue.variable}>
+    <html lang="es" className={`${unbounded.variable} ${inter.variable} ${oswald.variable}`}>
       <body className="flex flex-col min-h-screen">
         <SessionProvider>
           <Navbar coaches={coaches} salas={salas} />

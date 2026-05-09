@@ -113,7 +113,7 @@ export default async function AcademiaSubcatPage({ params, searchParams }: PageP
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/90 via-zinc-900/50 to-background" />
         {/* Colored glow per subcategory */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className={`h-[380px] w-[700px] rounded-full blur-3xl ${accent.glow}`} />
+          <div className={`h-[200px] w-[350px] sm:h-[300px] sm:w-[550px] lg:h-[380px] lg:w-[700px] rounded-full blur-3xl ${accent.glow}`} />
         </div>
 
         <div className="relative mx-auto w-full max-w-3xl px-4">

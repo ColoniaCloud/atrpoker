@@ -43,7 +43,7 @@ export function CursoProgress({
           <p className="text-xs font-semibold uppercase tracking-wider text-amber-400">
             ATR pts
           </p>
-          <p className="text-lg font-black leading-none text-amber-300">
+          <p className="font-oswald text-lg font-semibold leading-none text-amber-300">
             {pts.toLocaleString("es-AR")}
           </p>
         </div>

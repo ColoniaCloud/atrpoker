@@ -272,7 +272,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
   ];
 
   return (
-    <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[hsl(199_55%_14%)] bg-background/70 backdrop-blur-md shadow-lg">
+    <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[rgba(255,255,255,0.08)] bg-background/70 backdrop-blur-md shadow-lg">
 
       {/* Desktop navigation — overlay absoluto sobre todo el header para que el
           viewport tenga referencia al ancho completo y no recorte los mega-menus */}

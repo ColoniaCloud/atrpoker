@@ -36,12 +36,39 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   const imageUrl = getFeaturedImageUrl(sala, "large");
   const description = stripHtml(sala.excerpt?.rendered ?? "").slice(0, 160);
-  const title = `${stripHtml(sala.title.rendered)} — Reseña y Bono`;
+  const salaName = stripHtml(sala.title.rendered);
+  const title = `${salaName} — Reseña y Bono`;
+  const canonicalUrl = `https://atrpoker.com/salas/${slug}`;
 
   return {
     title,
     description,
-    openGraph: { title, description, images: imageUrl ? [{ url: imageUrl }] : [] },
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      title,
+      description,
+      type: "website",
+      url: canonicalUrl,
+      images: imageUrl ? [{
+        url: imageUrl,
+        width: 1200,
+        height: 630,
+        alt: `Logo de ${salaName}`,
+      }] : [{
+        url: "https://atrpoker.com/brand/Isologotipo.webp",
+        width: 1200,
+        height: 630,
+        alt: salaName,
+      }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description,
+      images: imageUrl ? [imageUrl] : ["https://atrpoker.com/brand/Isologotipo.webp"],
+    },
   };
 }
 
@@ -133,43 +160,75 @@ function FichaDeLaSala({ nombre, acf }: FichaProps) {
   const beneficios = [beneficio_atr_1, beneficio_atr_2, beneficio_atr_3].filter(Boolean);
 
   return (
-    <div className="overflow-hidden rounded-xl border border-border">
-      <table className="w-full text-sm">
-        <tbody>
-          {rows.map((row, i) => (
-            <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-muted/30"}>
-              <td className="w-44 px-4 py-3 align-middle">
-                <div className="flex items-center gap-2 text-muted-foreground font-medium whitespace-nowrap">
-                  {row.icon}
-                  {row.label}
-                </div>
-              </td>
-              <td className="px-4 py-3 align-middle">{row.value}</td>
-            </tr>
-          ))}
-
-          {beneficios.length > 0 && (
-            <>
-              <tr className="bg-muted/60">
-                <td colSpan={2} className="px-4 py-2">
-                  <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
-                    Beneficios ATR
-                  </span>
-                </td>
-              </tr>
+    <>
+      {/* Mobile: Stack layout con <dl> */}
+      <div className="sm:hidden space-y-3">
+        {rows.map((row, i) => (
+          <div key={i} className="rounded-lg border border-border bg-card p-3">
+            <dt className="flex items-center gap-2 text-xs font-medium text-muted-foreground mb-1.5">
+              {row.icon}
+              {row.label}
+            </dt>
+            <dd className="text-sm font-semibold pl-6">{row.value}</dd>
+          </div>
+        ))}
+        
+        {beneficios.length > 0 && (
+          <div className="rounded-lg border border-border bg-card p-3">
+            <dt className="text-xs font-bold uppercase tracking-widest text-muted-foreground mb-3">
+              Beneficios ATR
+            </dt>
+            <dd className="space-y-2">
               {beneficios.map((b, i) => (
-                <tr key={`ben-${i}`} className={i % 2 === 0 ? "bg-card" : "bg-muted/30"}>
-                  <td className="w-12 px-4 py-3 align-middle">
-                    <Check className="h-4 w-4 text-green-500" />
-                  </td>
-                  <td className="px-4 py-3 align-middle text-sm text-foreground/80">{b}</td>
-                </tr>
+                <div key={i} className="flex items-start gap-2">
+                  <Check className="h-4 w-4 text-green-500 shrink-0 mt-0.5" />
+                  <span className="text-sm text-foreground/80">{b}</span>
+                </div>
               ))}
-            </>
-          )}
-        </tbody>
-      </table>
-    </div>
+            </dd>
+          </div>
+        )}
+      </div>
+
+      {/* Desktop: Table layout */}
+      <div className="hidden sm:block overflow-hidden rounded-xl border border-border">
+        <table className="w-full text-sm">
+          <tbody>
+            {rows.map((row, i) => (
+              <tr key={i} className={i % 2 === 0 ? "bg-card" : "bg-muted/30"}>
+                <td className="w-44 px-4 py-3 align-middle">
+                  <div className="flex items-center gap-2 text-muted-foreground font-medium whitespace-nowrap">
+                    {row.icon}
+                    {row.label}
+                  </div>
+                </td>
+                <td className="px-4 py-3 align-middle">{row.value}</td>
+              </tr>
+            ))}
+
+            {beneficios.length > 0 && (
+              <>
+                <tr className="bg-muted/60">
+                  <td colSpan={2} className="px-4 py-2">
+                    <span className="text-xs font-bold uppercase tracking-widest text-muted-foreground">
+                      Beneficios ATR
+                    </span>
+                  </td>
+                </tr>
+                {beneficios.map((b, i) => (
+                  <tr key={`ben-${i}`} className={i % 2 === 0 ? "bg-card" : "bg-muted/30"}>
+                    <td className="w-12 px-4 py-3 align-middle">
+                      <Check className="h-4 w-4 text-green-500" />
+                    </td>
+                    <td className="px-4 py-3 align-middle text-sm text-foreground/80">{b}</td>
+                  </tr>
+                ))}
+              </>
+            )}
+          </tbody>
+        </table>
+      </div>
+    </>
   );
 }
 

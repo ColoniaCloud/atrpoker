@@ -182,7 +182,7 @@ export function EstudiaPageClient({
           {/* Módulo actual */}
           <div className="flex items-center gap-2 rounded-xl border border-border/40 bg-background/60 px-3 py-2">
             <span className="text-xs text-muted-foreground">Módulo actual</span>
-            <span className="ml-auto max-w-[180px] truncate text-right text-xs font-semibold text-foreground">
+            <span className="ml-auto max-w-[50%] sm:max-w-[180px] truncate text-right text-xs font-semibold text-foreground">
               {currentSection.label}
             </span>
           </div>
@@ -192,7 +192,7 @@ export function EstudiaPageClient({
             <Trophy className="h-5 w-5 shrink-0 text-amber-400" />
             <div>
               <p className="text-xs text-muted-foreground">Puntos ATR ganados</p>
-              <p className="text-xl font-black leading-none text-amber-300">
+              <p className="font-oswald text-xl font-semibold leading-none text-amber-300">
                 {pts.toLocaleString("es-AR")}{" "}
                 <span className="text-xs font-semibold text-amber-500">pts</span>
               </p>

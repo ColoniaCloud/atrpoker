@@ -20,8 +20,8 @@
     --card-foreground: 0 0% 98%;
     --popover: 0 0% 5%;
     --popover-foreground: 0 0% 98%;
-    --primary: 199 89% 48%;
-    --primary-foreground: 0 0% 2%;
+    --primary: 142 70% 40%;
+    --primary-foreground: 0 0% 5%;
     --secondary: 0 0% 14%;
     --secondary-foreground: 0 0% 98%;
     --muted: 0 0% 14%;
@@ -32,8 +32,8 @@
     --destructive-foreground: 0 0% 98%;
     --border: 0 0% 14%;
     --input: 0 0% 14%;
-    --ring: 199 89% 48%;
-    --radius: 0.5rem;
+    --ring: 142 70% 40%;
+    --radius: 0.35rem;
   }
 
   * {
@@ -43,12 +43,12 @@
 
   body {
     @apply bg-background text-foreground antialiased;
-    font-family: var(--font-epilogue), system-ui, sans-serif;
+    font-family: var(--font-inter), system-ui, sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: var(--font-epilogue), system-ui, sans-serif;
-    font-weight: 800;
+    font-family: var(--font-unbounded), system-ui, sans-serif;
+    font-weight: 700;
   }
 
   /* Contenido HTML de WordPress */

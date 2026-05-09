@@ -121,7 +121,7 @@ export default async function AcademiaPage({ searchParams }: PageProps) {
         <div className="absolute inset-0 bg-gradient-to-b from-zinc-900/90 via-zinc-900/50 to-background" />
         {/* Glow */}
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center">
-          <div className="h-[380px] w-[700px] rounded-full bg-amber-500/6 blur-3xl" />
+          <div className="h-[200px] w-[350px] sm:h-[300px] sm:w-[550px] lg:h-[380px] lg:w-[700px] rounded-full bg-amber-500/6 blur-3xl" />
         </div>
 
         <div className="relative mx-auto w-full max-w-3xl text-center px-4">

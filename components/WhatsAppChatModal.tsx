@@ -59,7 +59,7 @@ export function WhatsAppChatModal({ open, onClose }: Props) {
 
       {/* Chat card */}
       <div
-        className={`fixed bottom-24 right-6 z-[100] w-[320px] overflow-hidden rounded-2xl shadow-2xl shadow-black/50 transition-all duration-300 ${
+        className={`fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-[320px] z-[100] overflow-hidden rounded-2xl shadow-2xl shadow-black/50 transition-all duration-300 ${
           open
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-4 scale-95 opacity-0"

@@ -17,6 +17,7 @@ interface LogoObject {
 interface SalaCardProps {
   sala: WPSala;
   index?: number;
+  featured?: boolean;
 }
 
 const ESTADO_STYLES: Record<string, string> = {
@@ -31,7 +32,7 @@ const ESTADO_LABELS: Record<string, string> = {
   mantenimiento: "Mantenimiento",
 };
 
-export function SalaCard({ sala, index = 0 }: SalaCardProps) {
+export function SalaCard({ sala, index = 0, featured = false }: SalaCardProps) {
   const { acf } = sala;
   const salaName = stripHtml(sala.title.rendered);
 
@@ -51,7 +52,7 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
 
   return (
     <div
-      className="group h-full rounded-2xl border border-border bg-card overflow-hidden flex flex-col animate-fade-up hover:border-amber-500/40 transition-colors duration-300"
+      className={`group h-full rounded-2xl border bg-card overflow-hidden flex flex-col animate-fade-up transition-colors duration-300 ${featured ? "border-amber-400/70 animate-border-glow shadow-[0_0_16px_rgba(251,191,36,0.18)]" : "border-border hover:border-amber-500/40"}`}
       style={{ animationDelay: delay }}
     >
       {/* Logo / cabecera */}
@@ -82,13 +83,19 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
         <div className="flex flex-wrap items-center gap-1.5">
           {estado && ESTADO_STYLES[estado] && (
             <span
-              className={`inline-flex items-center rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${ESTADO_STYLES[estado]}`}
+              className={`inline-flex items-center gap-1 rounded-sm border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${ESTADO_STYLES[estado]}`}
             >
+              {estado === "activa" && (
+                <span className="relative flex h-1.5 w-1.5 shrink-0">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
+                  <span className="relative inline-flex h-1.5 w-1.5 rounded-full bg-green-400" />
+                </span>
+              )}
               {ESTADO_LABELS[estado] ?? estado}
             </span>
           )}
           {red && (
-            <span className="inline-flex items-center rounded-full border border-border bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
+            <span className="inline-flex items-center rounded-sm border border-border bg-muted/40 px-2 py-0.5 text-[10px] font-medium text-muted-foreground uppercase tracking-wide">
               {red}
             </span>
           )}
@@ -104,7 +111,7 @@ export function SalaCard({ sala, index = 0 }: SalaCardProps) {
         {/* Rakeback */}
         {rakeback && (
           <div className="flex items-baseline gap-1.5">
-            <span className="text-2xl font-black text-amber-400 leading-none">
+            <span className="font-oswald text-xl sm:text-2xl font-semibold text-amber-400 leading-none">
               {rakeback}
             </span>
             <span className="text-xs font-semibold text-muted-foreground uppercase tracking-wide">

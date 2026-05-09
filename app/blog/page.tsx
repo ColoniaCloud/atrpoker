@@ -11,9 +11,26 @@ export const metadata: Metadata = {
   title: "Blog de Póker",
   description:
     "Artículos sobre estrategia de póker, análisis de torneos, noticias y consejos para mejorar tu juego.",
+  alternates: {
+    canonical: "https://atrpoker.com/blog",
+  },
   openGraph: {
     title: "Blog de Póker | ATRPoker",
     description: "Estrategia, noticias y análisis de póker en Latinoamerica.",
+    type: "website",
+    url: "https://atrpoker.com/blog",
+    images: [{
+      url: "https://atrpoker.com/brand/Isologotipo.webp",
+      width: 1200,
+      height: 630,
+      alt: "Blog de Póker ATRPoker",
+    }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Blog de Póker | ATRPoker",
+    description: "Estrategia, noticias y análisis de póker en Latinoamerica.",
+    images: ["https://atrpoker.com/brand/Isologotipo.webp"],
   },
 };
 

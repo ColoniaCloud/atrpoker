@@ -23,7 +23,7 @@ export function IframePlayer({ src, title, height = 700, linkTo, linkLabel }: Pr
   }
 
   return (
-    <div className="mx-auto w-full max-w-[860px]">
+    <div className="mx-auto w-full max-w-full lg:max-w-[860px] px-4 sm:px-0">
       {/* Barra superior decorativa */}
       <div className="flex items-center gap-2 rounded-t-2xl border border-b-0 border-border bg-card px-4 py-3">
         <span className="h-3 w-3 rounded-full bg-red-500/60" />

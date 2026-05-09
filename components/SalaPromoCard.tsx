@@ -1,44 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { useRef } from "react";
-import { Spade } from "lucide-react";
+import Image from "next/image";
+import { useSession } from "next-auth/react";
 
 export function SalaPromoCard() {
-  const cardRef = useRef<HTMLDivElement>(null);
-
-  function handleMouseMove(e: React.MouseEvent<HTMLDivElement>) {
-    const card = cardRef.current;
-    if (!card) return;
-    const rect = card.getBoundingClientRect();
-    const x = ((e.clientX - rect.left) / rect.width) * 100;
-    const y = ((e.clientY - rect.top) / rect.height) * 100;
-    card.style.setProperty("--mx", `${x}%`);
-    card.style.setProperty("--my", `${y}%`);
-  }
-
-  function handleMouseLeave() {
-    const card = cardRef.current;
-    if (!card) return;
-    card.style.setProperty("--mx", "85%");
-    card.style.setProperty("--my", "85%");
-  }
+  const { data: session } = useSession();
 
   return (
     <div className="h-full w-full">
-      <div
-        ref={cardRef}
-        onMouseMove={handleMouseMove}
-        onMouseLeave={handleMouseLeave}
-        className="relative h-full w-full rounded-2xl overflow-hidden flex flex-col items-start justify-center gap-6 px-6 py-10 text-left cursor-default select-none"
-        style={{
-          background:
-            "radial-gradient(circle at var(--mx, 85%) var(--my, 85%), #c2410c 0%, #ea580c 35%, #f97316 65%, #fbbf24 100%)",
-          "--mx": "85%",
-          "--my": "85%",
-        } as React.CSSProperties}
-      >
-        {/* Noise texture overlay for depth */}
+      <div className="relative h-full w-full rounded-2xl overflow-hidden flex flex-col items-center justify-center gap-6 px-6 py-10 bg-gradient-to-br from-amber-500 via-amber-600 to-orange-600">
+        {/* Noise texture overlay */}
         <div
           className="pointer-events-none absolute inset-0 opacity-[0.04]"
           style={{
@@ -47,34 +19,28 @@ export function SalaPromoCard() {
           }}
         />
 
-        {/* Suit icons decorativos */}
-        <div className="pointer-events-none absolute inset-0 flex items-center justify-center opacity-10 select-none">
-          <Spade className="h-48 w-48 text-zinc-900" />
-        </div>
-
         {/* Contenido */}
-        <div className="relative z-10 flex flex-col items-start gap-5">
-          <div className="flex flex-col items-start gap-1">
-            <span className="text-4xl font-black tracking-tight text-white leading-tight drop-shadow">
-              APRENDÉ,
-            </span>
-            <span className="text-4xl font-black tracking-tight text-white leading-tight drop-shadow">
-              JUGÁ,
-            </span>
-            <span className="text-4xl font-black tracking-tight text-white leading-tight drop-shadow">
-              GANÁ.
-            </span>
-          </div>
+        <div className="relative z-10 flex flex-col items-center gap-5 text-center">
+          {/* Logo ATR */}
+          <Image
+            src="/brand/Isologotipo.webp"
+            alt="ATRPoker"
+            width={120}
+            height={35}
+            className="h-8 sm:h-10 w-auto object-contain drop-shadow-lg"
+          />
 
-          <span className="text-base font-bold tracking-[0.25em] text-orange-200 uppercase">
-            ATRPOKER
-          </span>
+          {/* Título */}
+          <h3 className="text-xl sm:text-2xl lg:text-3xl font-black tracking-tight text-white leading-tight drop-shadow-md px-2">
+            Jugá con los mejores y ganá más
+          </h3>
 
+          {/* Botón condicional */}
           <Link
-            href="/academia"
-            className="mt-1 inline-flex items-center justify-center rounded-full bg-white/15 hover:bg-white/25 border border-white/30 hover:border-white/50 text-white font-bold text-sm px-7 py-2.5 transition-all duration-200 backdrop-blur-sm"
+            href={session ? "/academia" : "/login"}
+            className="mt-2 inline-flex items-center justify-center rounded-full bg-white hover:bg-white/90 text-zinc-900 font-bold text-sm px-8 py-3 transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
           >
-            REGISTRATE HOY
+            {session ? "IR A ACADEMIA" : "REGISTRATE"}
           </Link>
         </div>
       </div>
