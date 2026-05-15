@@ -58,7 +58,7 @@ export function SalaCard({ sala, index = 0, featured = false }: SalaCardProps) {
       {/* Logo / cabecera */}
       <Link
         href={`/salas/${sala.slug}`}
-        className="flex items-center justify-center h-32 px-6 bg-zinc-900/60 border-b border-border hover:bg-zinc-900/80 transition-colors"
+        className="flex items-center justify-center h-32 px-6 bg-zinc-900/60 border-b border-border hover:bg-zinc-900/80 transition-colors overflow-hidden"
         title={salaName}
       >
         {logo ? (
@@ -67,7 +67,7 @@ export function SalaCard({ sala, index = 0, featured = false }: SalaCardProps) {
             alt={logo.alt || salaName}
             width={logo.width || 200}
             height={logo.height || 80}
-            className="object-contain max-h-20 w-auto max-w-[180px] transition-transform duration-300 group-hover:scale-105"
+            className="object-contain max-h-20 max-w-full w-auto h-auto transition-transform duration-300 group-hover:scale-125"
             draggable={false}
           />
         ) : (

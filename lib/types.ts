@@ -211,6 +211,29 @@ export interface WPJWTResponse {
   user_display_name: string;
 }
 
+export interface WPRegisterPayload {
+  username: string;
+  email: string;
+  password: string;
+  name?: string;
+}
+
+export interface WPRegisterResponse {
+  success: boolean;
+  user_id: number;
+  token: string | null;
+  user_email?: string;
+  user_nicename?: string;
+  user_display_name?: string;
+  message?: string;
+}
+
+export interface WPRegisterError {
+  code: string;
+  message: string;
+  data?: { status?: number };
+}
+
 // ─── Pagination ──────────────────────────────────────────────────────────────
 
 export interface PaginatedResponse<T> {

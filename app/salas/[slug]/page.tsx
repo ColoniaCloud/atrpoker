@@ -383,36 +383,18 @@ export default async function SalaPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* ── Barra de dirección simulada ── */}
-            {acf?.web && (
+            {/* ── Botón Registrate en esta sala ── */}
+            {acf?.link_de_afiliado && (
               <div className="mt-8">
-                <div className="flex items-center gap-2 rounded-xl border border-border bg-muted/40 px-3 py-2.5">
-                  {/* Dot controls (decorativos) */}
-                  <div className="flex gap-1.5 flex-shrink-0">
-                    <span className="h-2.5 w-2.5 rounded-full bg-red-500/60" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-amber-500/60" />
-                    <span className="h-2.5 w-2.5 rounded-full bg-green-500/60" />
-                  </div>
-                  {/* URL bar */}
-                  <div className="flex flex-1 items-center gap-2 rounded-md border border-border bg-background/60 px-3 py-1.5 min-w-0">
-                    <Globe className="h-3 w-3 text-muted-foreground flex-shrink-0" />
-                    <span className="flex-1 truncate font-mono text-xs text-muted-foreground select-none">
-                      {acf.web}
-                    </span>
-                  </div>
-                  {/* Botón ir a la web */}
-                  {acf.link_de_afiliado && (
-                    <a
-                      href={acf.link_de_afiliado}
-                      target="_blank"
-                      rel="noopener noreferrer sponsored"
-                      className="flex-shrink-0 flex items-center gap-1.5 rounded-lg bg-primary px-3 py-1.5 text-xs font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
-                    >
-                      <ExternalLink className="h-3 w-3" />
-                      Ir a la web
-                    </a>
-                  )}
-                </div>
+                <a
+                  href={acf.link_de_afiliado}
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary px-5 py-3 text-sm font-bold text-primary-foreground hover:bg-primary/90 transition-colors"
+                >
+                  <ExternalLink className="h-4 w-4" />
+                  Registrate en esta sala
+                </a>
               </div>
             )}
 

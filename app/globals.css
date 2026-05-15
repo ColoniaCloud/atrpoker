@@ -16,22 +16,22 @@
   :root {
     --background: 199 85% 5%;
     --foreground: 0 0% 98%;
-    --card: 0 0% 7%;
+    --card: 199 70% 4%;
     --card-foreground: 0 0% 98%;
-    --popover: 0 0% 5%;
+    --popover: 199 70% 4%;
     --popover-foreground: 0 0% 98%;
     --primary: 142 70% 40%;
     --primary-foreground: 0 0% 5%;
-    --secondary: 0 0% 14%;
+    --secondary: 199 45% 12%;
     --secondary-foreground: 0 0% 98%;
-    --muted: 0 0% 14%;
+    --muted: 199 45% 12%;
     --muted-foreground: 0 0% 63.9%;
-    --accent: 0 0% 14%;
+    --accent: 199 45% 12%;
     --accent-foreground: 0 0% 98%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 98%;
-    --border: 0 0% 14%;
-    --input: 0 0% 14%;
+    --border: 199 40% 14%;
+    --input: 199 40% 12%;
     --ring: 142 70% 40%;
     --radius: 0.35rem;
   }

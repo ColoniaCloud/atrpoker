@@ -16,6 +16,7 @@ function LoginForm() {
   const searchParams = useSearchParams();
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
   const error = searchParams.get("error");
+  const registered = searchParams.get("registered");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -65,6 +66,13 @@ function LoginForm() {
             </CardDescription>
           </CardHeader>
           <CardContent>
+            {registered && !formError && (
+              <Alert className="mb-4 border-emerald-500/40 bg-emerald-500/10">
+                <AlertDescription>
+                  Cuenta creada. Iniciá sesión con tus credenciales.
+                </AlertDescription>
+              </Alert>
+            )}
             {formError && (
               <Alert variant="destructive" className="mb-4">
                 <AlertDescription>{formError}</AlertDescription>
@@ -120,14 +128,12 @@ function LoginForm() {
 
         <p className="text-center text-sm text-muted-foreground">
           ¿No tenés cuenta?{" "}
-          <a
-            href={`${process.env.NEXT_PUBLIC_WP_URL ?? ""}/wp-login.php?action=register`}
-            target="_blank"
-            rel="noopener noreferrer"
+          <Link
+            href={`/registro${callbackUrl !== "/" ? `?callbackUrl=${encodeURIComponent(callbackUrl)}` : ""}`}
             className="text-primary hover:underline font-medium"
           >
             Registrate en ATR Poker
-          </a>
+          </Link>
         </p>
       </div>
     </div>

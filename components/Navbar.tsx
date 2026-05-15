@@ -128,11 +128,11 @@ function MegaItem({ href, label, desc, icon: Icon, iconClass, imgUrl, imgAlt, fa
 
           {/* Texto */}
           <div className="min-w-0">
-            <div className="truncate text-sm font-semibold leading-tight text-foreground transition-colors group-hover/item:text-zinc-950">
+            <div className="text-sm font-semibold leading-tight text-foreground transition-colors group-hover/item:text-zinc-950">
               {label}
             </div>
             {desc && (
-              <p className="mt-0.5 line-clamp-1 text-xs leading-tight text-muted-foreground transition-colors group-hover/item:text-zinc-700">
+              <p className="mt-0.5 text-xs leading-tight text-muted-foreground transition-colors group-hover/item:text-zinc-700">
                 {desc}
               </p>
             )}
@@ -302,7 +302,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 Academia
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[580px] p-4">
+                <div className="min-w-[760px] w-max p-4">
                   <FeaturedLink
                     href="/academia"
                     label="Ver toda la Academia"
@@ -338,7 +338,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 Salas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[420px] p-4">
+                <div className="min-w-[420px] w-max p-4">
                   <FeaturedLink
                     href="/salas"
                     label="Ver todas las salas"
@@ -365,7 +365,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 Coaches
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[520px] p-4">
+                <div className="min-w-[720px] w-max p-4">
                   <FeaturedLink
                     href="/coaches"
                     label="Ver todos los coaches"
@@ -393,7 +393,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 Tablas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[360px] p-4">
+                <div className="min-w-[360px] w-max p-4">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Tablas PreFlop
                   </p>
@@ -412,7 +412,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 Contenidos
               </NavigationMenuTrigger>
               <NavigationMenuContent>
-                <div className="w-[240px] p-4">
+                <div className="min-w-[240px] w-max p-4">
                   <p className="mb-3 text-xs font-semibold uppercase tracking-wider text-muted-foreground">
                     Contenidos
                   </p>
@@ -445,9 +445,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
           {session?.user ? (
             <UserMenuDropdown name={session.user.name ?? "Usuario"} />
           ) : (
-            <Button asChild size="sm">
-              <Link href="/login">Iniciar sesión</Link>
-            </Button>
+            <UserMenuDropdown name={null} />
           )}
         </div>
         </div>{/* /desktop nav+auth */}

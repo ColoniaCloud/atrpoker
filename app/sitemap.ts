@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
 import { getPostSlugs, getSalaSlugs } from "@/lib/wordpress";
+import { getSiteUrl } from "@/lib/site-url";
 
-const BASE_URL = process.env.NEXTAUTH_URL || "https://atrpoker.com";
+const BASE_URL = getSiteUrl();
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const [postSlugs, salaSlugs] = await Promise.all([

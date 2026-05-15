@@ -6,6 +6,9 @@ import type {
   WPMedia,
   WPUser,
   WPJWTResponse,
+  WPRegisterPayload,
+  WPRegisterResponse,
+  WPRegisterError,
   PaginatedResponse,
   Progreso,
 } from "./types";
@@ -408,6 +411,53 @@ export async function getWPCurrentUser(token: string): Promise<WPUser | null> {
     return res.json() as Promise<WPUser>;
   } catch {
     return null;
+  }
+}
+
+// Registro de usuarios vía endpoint custom (snippet PHP atrpoker/v1/register).
+// Devuelve { ok: true, data } en éxito o { ok: false, error } con mensaje
+// localizado en español para mostrar en el formulario.
+export async function wpRegister(
+  payload: WPRegisterPayload
+): Promise<
+  | { ok: true; data: WPRegisterResponse }
+  | { ok: false; error: { code: string; message: string; status: number } }
+> {
+  try {
+    const res = await fetch(`${WP_URL}/wp-json/atrpoker/v1/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload),
+      cache: "no-store",
+    });
+
+    const json = (await res.json()) as WPRegisterResponse | WPRegisterError;
+
+    if (!res.ok) {
+      const err = json as WPRegisterError;
+      return {
+        ok: false,
+        error: {
+          code: err.code ?? "unknown_error",
+          message: err.message ?? "No se pudo completar el registro.",
+          status: err.data?.status ?? res.status,
+        },
+      };
+    }
+
+    return { ok: true, data: json as WPRegisterResponse };
+  } catch (err) {
+    return {
+      ok: false,
+      error: {
+        code: "network_error",
+        message:
+          err instanceof Error
+            ? err.message
+            : "Error de red al contactar el servidor.",
+        status: 0,
+      },
+    };
   }
 }
 

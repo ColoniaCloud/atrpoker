@@ -7,6 +7,7 @@ import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { PageTransition } from "@/components/PageTransition";
 import { getCoaches, getSalas } from "@/lib/wordpress";
+import { getSiteUrl } from "@/lib/site-url";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -36,7 +37,7 @@ export const metadata: Metadata = {
   },
   description:
     "Las mejores salas de póker online, reseñas, bonos, academia, coaches y streaming en vivo. La comunidad de póker de Latinoamerica.",
-  metadataBase: new URL(process.env.NEXTAUTH_URL || "https://atrpoker.com"),
+  metadataBase: new URL(getSiteUrl()),
   openGraph: {
     siteName: "ATRPoker",
     locale: "es_UY",
