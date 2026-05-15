@@ -3,6 +3,7 @@ import Credentials from "next-auth/providers/credentials";
 import { wpLogin, getWPCurrentUser } from "./wordpress";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  trustHost: true,
   providers: [
     Credentials({
       name: "WordPress",
