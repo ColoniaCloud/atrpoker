@@ -86,9 +86,9 @@ export default function AsesoramientoPage() {
         <div className="relative mx-auto w-full max-w-3xl px-4">
           <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground/70">
             <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+            <ChevronRight className="h-3 w-3 shrink-0" />
             <Link href="/perfil" className="hover:text-foreground transition-colors">Mi cuenta</Link>
-            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+            <ChevronRight className="h-3 w-3 shrink-0" />
             <span className="text-foreground/60">Asesoramiento</span>
           </nav>
 

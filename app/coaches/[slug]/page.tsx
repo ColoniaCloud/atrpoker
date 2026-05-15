@@ -127,7 +127,7 @@ export default async function CoachPage({ params }: PageProps) {
                 variant="outline"
                 className="mb-5 gap-2 px-4 py-1.5 text-sm border-amber-500/40 text-amber-400 bg-zinc-950/60"
               >
-                <Trophy className="h-3.5 w-3.5" />
+                <Trophy className="h-4 w-4" />
                 {especialidad}
               </Badge>
             </div>
@@ -196,9 +196,9 @@ export default async function CoachPage({ params }: PageProps) {
         {/* Breadcrumb */}
         <nav className="mb-10 flex items-center gap-1.5 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-          <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3 w-3" />
           <Link href="/coaches" className="hover:text-foreground transition-colors">Coaches</Link>
-          <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3 w-3" />
           <span className="truncate text-foreground/70">{name}</span>
         </nav>
 

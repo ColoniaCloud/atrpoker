@@ -47,7 +47,7 @@ export default async function StreamingPlayerPage({ params }: PageProps) {
       {/* Breadcrumb */}
       <nav className="mb-6 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/streaming" className="hover:text-foreground transition-colors">Streaming</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-4 w-4" />
         <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
       </nav>
 

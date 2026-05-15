@@ -112,7 +112,7 @@ export function EstudiaPageClient({
               variant="outline"
               className="mb-3 border-amber-500/30 text-amber-400"
             >
-              <BookOpen className="mr-1.5 h-3.5 w-3.5" />
+              <BookOpen className="mr-1.5 h-4 w-4" />
               Curso estructurado
             </Badge>
             <h1 className="text-3xl font-black tracking-tight text-foreground">
@@ -253,7 +253,7 @@ export function EstudiaPageClient({
             {/* Mensaje de bonus */}
             {remaining > 0 && (
               <div className="mb-4 flex items-center gap-2 rounded-lg border border-amber-500/20 bg-amber-500/[0.06] px-3 py-2 text-xs text-amber-400">
-                <Star className="h-3.5 w-3.5 shrink-0" />
+                <Star className="h-4 w-4 shrink-0" />
                 Completá las {remaining} clase
                 {remaining !== 1 ? "s" : ""} restante
                 {remaining !== 1 ? "s" : ""} para ganar{" "}

@@ -271,7 +271,7 @@ export default async function SalaPage({ params }: PageProps) {
               variant="outline"
               className="mb-6 gap-2 px-4 py-1.5 text-sm border-amber-500/40 text-amber-400 bg-zinc-950/60"
             >
-              <Trophy className="h-3.5 w-3.5" />
+              <Trophy className="h-4 w-4" />
               Rakeback ATR:{" "}
               <span className="font-bold">
                 {acf?.rakeback ? String(acf.rakeback) : "Consultanos"}
@@ -332,9 +332,9 @@ export default async function SalaPage({ params }: PageProps) {
         {/* Breadcrumb */}
         <nav className="mb-10 flex items-center gap-1.5 text-sm text-muted-foreground">
           <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-          <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3 w-3" />
           <Link href="/salas" className="hover:text-foreground transition-colors">Salas</Link>
-          <ChevronRight className="h-3.5 w-3.5" />
+          <ChevronRight className="h-3 w-3" />
           <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: sala.title.rendered }} />
         </nav>
 
@@ -395,7 +395,7 @@ export default async function SalaPage({ params }: PageProps) {
                   </div>
                   {/* URL bar */}
                   <div className="flex flex-1 items-center gap-2 rounded-md border border-border bg-background/60 px-3 py-1.5 min-w-0">
-                    <Globe className="h-3.5 w-3.5 text-muted-foreground flex-shrink-0" />
+                    <Globe className="h-3 w-3 text-muted-foreground flex-shrink-0" />
                     <span className="flex-1 truncate font-mono text-xs text-muted-foreground select-none">
                       {acf.web}
                     </span>

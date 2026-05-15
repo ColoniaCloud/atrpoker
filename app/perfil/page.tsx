@@ -130,7 +130,7 @@ export default function PerfilPage() {
             <Link href="/" className="hover:text-foreground transition-colors">
               Inicio
             </Link>
-            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+            <ChevronRight className="h-3 w-3 shrink-0" />
             <span className="text-foreground/60">Mi perfil</span>
           </nav>
 
@@ -161,7 +161,7 @@ export default function PerfilPage() {
               </h1>
               {user.email && (
                 <div className="flex items-center justify-center gap-1.5 text-sm text-muted-foreground sm:justify-start">
-                  <Mail className="h-3.5 w-3.5" />
+                  <Mail className="h-4 w-4" />
                   {user.email}
                 </div>
               )}
@@ -242,7 +242,7 @@ export default function PerfilPage() {
                   </Link>
                 ) : (
                   <div className="flex shrink-0 items-center gap-1 text-xs text-muted-foreground/60">
-                    <Lock className="h-3.5 w-3.5" />
+                    <Lock className="h-4 w-4" />
                     Sin acceso
                   </div>
                 )}

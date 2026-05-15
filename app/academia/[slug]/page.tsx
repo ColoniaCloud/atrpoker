@@ -122,11 +122,11 @@ export default async function AcademiaSubcatPage({ params, searchParams }: PageP
             <Link href="/" className="hover:text-foreground transition-colors">
               Inicio
             </Link>
-            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+            <ChevronRight className="h-3 w-3 shrink-0" />
             <Link href="/academia" className="hover:text-foreground transition-colors">
               Academia
             </Link>
-            <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+            <ChevronRight className="h-3 w-3 shrink-0" />
             <span className="text-foreground/60">{subcat.label}</span>
           </nav>
 
@@ -179,7 +179,7 @@ export default async function AcademiaSubcatPage({ params, searchParams }: PageP
               href="/academia"
               className="mt-6 inline-flex items-center gap-1.5 text-sm text-primary hover:underline"
             >
-              <ArrowLeft className="h-3.5 w-3.5" />
+              <ArrowLeft className="h-4 w-4" />
               Volver a Academia
             </Link>
           </div>

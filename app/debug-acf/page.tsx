@@ -3,7 +3,7 @@
 
 import { notFound } from "next/navigation";
 
-const WP_URL = process.env.WORDPRESS_URL || "https://atrpoker.com";
+const WP_URL = process.env.WORDPRESS_URL || "https://atr.academy";
 
 interface PageProps {
   searchParams: Promise<{ slug?: string }>;

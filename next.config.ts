@@ -5,7 +5,7 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: process.env.WORDPRESS_HOSTNAME || "atrpoker.com",
+        hostname: process.env.WORDPRESS_HOSTNAME || "atr.academy",
         pathname: "/wp-content/uploads/**",
       },
       {

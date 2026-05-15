@@ -21,8 +21,8 @@ cp .env.example .env.local
 Editar `.env.local`:
 
 ```env
-WORDPRESS_URL=https://atrpoker.com
-WORDPRESS_HOSTNAME=atrpoker.com
+WORDPRESS_URL=https://atr.academy
+WORDPRESS_HOSTNAME=atr.academy
 NEXTAUTH_SECRET=   # openssl rand -base64 32
 NEXTAUTH_URL=http://localhost:3000
 STREAMING_ROLES=subscriber,administrator

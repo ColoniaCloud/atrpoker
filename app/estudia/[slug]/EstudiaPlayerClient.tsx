@@ -77,7 +77,7 @@ export function EstudiaPlayerClient({
         <Link href="/estudia" className="hover:text-foreground transition-colors">
           Estudia Progresivamente
         </Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-4 w-4" />
         <span
           className="truncate text-foreground/70"
           dangerouslySetInnerHTML={{ __html: post.title.rendered }}

@@ -135,11 +135,11 @@ export default async function BlogPostPage({ params }: PageProps) {
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-3 w-3" />
         {escuelaCatSlug ? (
           <>
             <Link href="/academia" className="hover:text-foreground transition-colors">Academia</Link>
-            <ChevronRight className="h-3.5 w-3.5" />
+            <ChevronRight className="h-3 w-3" />
             <Link
               href={`/academia/${escuelaCatSlug}`}
               className="hover:text-foreground transition-colors"
@@ -150,7 +150,7 @@ export default async function BlogPostPage({ params }: PageProps) {
         ) : (
           <Link href="/blog" className="hover:text-foreground transition-colors">Blog</Link>
         )}
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-3 w-3" />
         <span className="truncate text-foreground/70" dangerouslySetInnerHTML={{ __html: post.title.rendered }} />
       </nav>
 

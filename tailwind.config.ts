@@ -9,6 +9,16 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      zIndex: {
+        base:    "0",
+        raised:  "10",
+        sticky:  "20",
+        float:   "40",
+        navbar:  "50",
+        overlay: "100",
+        modal:   "110",
+        toast:   "200",
+      },
       colors: {
         gold: {
           400: "#fbbf24",

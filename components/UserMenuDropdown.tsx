@@ -58,7 +58,7 @@ export function UserMenuDropdown({ name }: Props) {
         <span className="max-w-[140px] truncate">{name}</span>
         <ChevronDown
           className={cn(
-            "h-3.5 w-3.5 shrink-0 transition-transform duration-200",
+            "h-3 w-3 shrink-0 transition-transform duration-200",
             open && "rotate-180"
           )}
         />

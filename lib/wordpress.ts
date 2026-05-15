@@ -10,10 +10,18 @@ import type {
   Progreso,
 } from "./types";
 
-const WP_URL = process.env.WORDPRESS_URL || "https://atrpoker.com";
+const WP_URL = process.env.WORDPRESS_URL || "https://atr.academy";
 const API_BASE = `${WP_URL}/wp-json/wp/v2`;
 
 // ─── Fetch helper ─────────────────────────────────────────────────────────────
+
+function wpAuthHeader(): Record<string, string> {
+  const user = process.env.WP_APP_USER;
+  const pass = process.env.WP_APP_PASSWORD;
+  if (!user || !pass) return {};
+  const token = Buffer.from(`${user}:${pass}`).toString("base64");
+  return { Authorization: `Basic ${token}` };
+}
 
 async function wpFetch<T>(
   path: string,
@@ -21,7 +29,7 @@ async function wpFetch<T>(
 ): Promise<T> {
   const url = path.startsWith("http") ? path : `${API_BASE}${path}`;
   const res = await fetch(url, {
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", ...wpAuthHeader() },
     ...options,
   });
 

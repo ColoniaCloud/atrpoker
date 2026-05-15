@@ -76,7 +76,7 @@ export default async function HomePage() {
           <Badge
             className="mb-6 gap-1.5 px-4 py-1.5 text-sm text-white border-0 bg-transparent hover:bg-transparent"
           >
-            <Spade className="h-3.5 w-3.5 text-amber-400" />
+            <Spade className="h-4 w-4 text-amber-400" />
             <span className="text-white">Jugá al póker con los mejores y ganá más</span>
           </Badge>
 

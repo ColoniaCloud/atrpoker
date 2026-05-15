@@ -274,15 +274,31 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
   return (
     <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[rgba(255,255,255,0.08)] bg-background/70 backdrop-blur-md shadow-lg">
 
-      {/* Desktop navigation — overlay absoluto sobre todo el header para que el
-          viewport tenga referencia al ancho completo y no recorte los mega-menus */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 hidden h-16 items-center justify-center lg:flex">
-        <NavigationMenu className="pointer-events-auto">
+      {/* Header bar: Logo + Nav desktop + Auth + Mobile trigger */}
+      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
+        {/* Logo */}
+        <Link href="/" className="relative z-10 mr-4 shrink-0">
+          <Image
+            src="/brand/Isologotipo.webp"
+            alt="ATRPoker"
+            width={100}
+            height={28}
+            className="h-7 w-auto object-contain"
+            priority
+          />
+        </Link>
+
+        {/* Spacer */}
+        <div className="flex-1" />
+
+        {/* Desktop navigation + Auth alineados a la derecha */}
+        <div className="hidden lg:flex items-center gap-1">
+        <NavigationMenu>
           <NavigationMenuList>
 
             {/* ── Academia ───────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium hover:bg-amber-500 hover:text-zinc-950 data-[state=open]:bg-amber-500/20">
                 Academia
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -318,7 +334,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Salas ──────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium hover:bg-amber-500 hover:text-zinc-950 data-[state=open]:bg-amber-500/20">
                 Salas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -345,7 +361,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Coaches ────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium hover:bg-amber-500 hover:text-zinc-950 data-[state=open]:bg-amber-500/20">
                 Coaches
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -373,7 +389,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Tablas ─────────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium hover:bg-amber-500 hover:text-zinc-950 data-[state=open]:bg-amber-500/20">
                 Tablas
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -392,7 +408,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
             {/* ── Contenidos ─────────────────────────────────────────────── */}
             <NavigationMenuItem>
-              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium">
+              <NavigationMenuTrigger className="bg-transparent px-2.5 py-1.5 text-[clamp(11px,1.1vw,13px)] font-medium hover:bg-amber-500 hover:text-zinc-950 data-[state=open]:bg-amber-500/20">
                 Contenidos
               </NavigationMenuTrigger>
               <NavigationMenuContent>
@@ -423,27 +439,9 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
           </NavigationMenuList>
         </NavigationMenu>
-      </div>{/* /overlay absoluto desktop */}
 
-      {/* Header bar: Logo + Auth desktop + Mobile trigger */}
-      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
-        {/* Logo */}
-        <Link href="/" className="relative z-10 mr-4 shrink-0">
-          <Image
-            src="/brand/Isologotipo.webp"
-            alt="ATRPoker"
-            width={100}
-            height={28}
-            className="h-7 w-auto object-contain"
-            priority
-          />
-        </Link>
-
-        {/* Spacer — empuja Auth a la derecha sin que el NavigationMenu ocupe espacio en el flujo */}
-        <div className="flex-1" />
-
-        {/* Auth — desktop */}
-        <div className="relative z-10 hidden lg:flex items-center gap-2">
+        {/* Auth — desktop (pegado al menú) */}
+        <div className="ml-2 flex items-center gap-2">
           {session?.user ? (
             <UserMenuDropdown name={session.user.name ?? "Usuario"} />
           ) : (
@@ -452,6 +450,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
             </Button>
           )}
         </div>
+        </div>{/* /desktop nav+auth */}
 
         {/* Mobile — Sheet */}
         <Sheet open={mobileOpen} onOpenChange={setMobileOpen}>

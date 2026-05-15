@@ -15,9 +15,9 @@ export default function MicrolimitesPage() {
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-3 w-3" />
         <Link href="/tablas" className="hover:text-foreground transition-colors">Tablas</Link>
-        <ChevronRight className="h-3.5 w-3.5" />
+        <ChevronRight className="h-3 w-3" />
         <span className="text-foreground/70">Microlímites</span>
       </nav>
 

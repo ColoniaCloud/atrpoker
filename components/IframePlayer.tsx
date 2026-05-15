@@ -36,7 +36,7 @@ export function IframePlayer({ src, title, height = 700, linkTo, linkLabel }: Pr
           onClick={handleFullscreen}
           className="ml-2 flex shrink-0 items-center gap-1.5 rounded-md border border-border bg-zinc-900 hover:bg-zinc-800 px-3 py-1.5 text-xs font-medium text-foreground/80 hover:text-foreground transition-colors"
         >
-          <Maximize2 className="h-3.5 w-3.5" />
+          <Maximize2 className="h-4 w-4" />
           Pantalla completa
         </button>
         {linkTo && linkLabel && (

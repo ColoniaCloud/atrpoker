@@ -51,7 +51,7 @@ export function WhatsAppChatModal({ open, onClose }: Props) {
     <>
       {/* Backdrop — closes on click, fully transparent */}
       <div
-        className={`fixed inset-0 z-[99] transition-opacity duration-200 ${
+        className={`fixed inset-0 z-overlay transition-opacity duration-200 ${
           open ? "pointer-events-auto opacity-100" : "pointer-events-none opacity-0"
         }`}
         onClick={onClose}
@@ -59,7 +59,7 @@ export function WhatsAppChatModal({ open, onClose }: Props) {
 
       {/* Chat card */}
       <div
-        className={`fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-[320px] z-[100] overflow-hidden rounded-2xl shadow-2xl shadow-black/50 transition-all duration-300 ${
+        className={`fixed bottom-24 right-4 left-4 sm:left-auto sm:right-6 sm:w-[320px] z-modal overflow-hidden rounded-2xl shadow-2xl shadow-black/50 transition-all duration-300 ${
           open
             ? "pointer-events-auto translate-y-0 scale-100 opacity-100"
             : "pointer-events-none translate-y-4 scale-95 opacity-0"

@@ -49,7 +49,7 @@ export function AcademiaFilterSelect({ subcategories, activeCat }: Props) {
             : "border-border text-foreground hover:border-foreground/25 hover:shadow-md"
         )}
       >
-        <LayoutGrid className="h-3.5 w-3.5 shrink-0 text-amber-400" />
+        <LayoutGrid className="h-4 w-4 shrink-0 text-amber-400" />
         <span className="flex-1 text-left">{activeLabel}</span>
         <ChevronDown
           className={cn(

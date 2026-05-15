@@ -143,7 +143,7 @@ export function SalaCard({ sala, index = 0, featured = false }: SalaCardProps) {
           href={`/salas/${sala.slug}`}
           className="flex-1 flex items-center justify-center gap-1.5 rounded-lg border border-border bg-transparent hover:bg-muted text-foreground/70 hover:text-foreground font-semibold text-xs py-2.5 transition-colors duration-200"
         >
-          <Eye className="h-3.5 w-3.5" />
+          <Eye className="h-4 w-4" />
           VER SALA
         </Link>
 
@@ -160,7 +160,7 @@ export function SalaCard({ sala, index = 0, featured = false }: SalaCardProps) {
               onClick={onClick}
               className="flex-1 flex items-center justify-center gap-1.5 rounded-lg bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold text-xs py-2.5 transition-colors duration-200"
             >
-              <ExternalLink className="h-3.5 w-3.5" />
+              <ExternalLink className="h-4 w-4" />
               JUGÁ AHORA
             </button>
           )}

@@ -53,9 +53,9 @@ export default function ComoUsarPage() {
       {/* Breadcrumb */}
       <nav className="mb-10 flex items-center gap-1.5 text-sm text-muted-foreground/70">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>
-        <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+        <ChevronRight className="h-3 w-3 shrink-0" />
         <Link href="/tablas" className="hover:text-foreground transition-colors">Tablas</Link>
-        <ChevronRight className="h-3.5 w-3.5 shrink-0" />
+        <ChevronRight className="h-3 w-3 shrink-0" />
         <span className="text-foreground/60">¿Cómo usar las tablas?</span>
       </nav>
 

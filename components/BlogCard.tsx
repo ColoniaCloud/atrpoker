@@ -73,7 +73,7 @@ export function BlogCard({ post }: BlogCardProps) {
           className="mt-4 text-sm font-medium text-primary hover:underline inline-flex items-center gap-1"
         >
           Leer más
-          <ArrowRight className="h-3.5 w-3.5" />
+          <ArrowRight className="h-4 w-4" />
         </Link>
       </CardContent>
     </Card>
