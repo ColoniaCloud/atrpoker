@@ -14,7 +14,7 @@ import {
   stripHtml,
 } from "@/lib/wordpress";
 import { BunnyPlayer } from "@/components/BunnyPlayer";
-import { auth, hasEscuelaPremiumAccess } from "@/lib/auth";
+import { auth } from "@/lib/auth";
 import { buildBunnyEmbedUrl } from "@/lib/bunny";
 import {
   ESCUELA_SUBCATEGORIES,
@@ -118,16 +118,12 @@ export default async function BlogPostPage({ params }: PageProps) {
     : undefined;
 
   // ── Control de acceso al video ───────────────────────────────────────────
-  const userRoles = session?.user?.roles ?? [];
+  // Los videos de Academia están disponibles para cualquier usuario registrado.
+  // El gating por progreso vive en /estudia/[slug] (Estudia Progresivamente).
   let videoAccessGranted = true;
 
   if (hasVideo && escuelaCatSlug) {
-    const isFree = (ESCUELA_FREE_SUBCATEGORIES as readonly string[]).includes(escuelaCatSlug);
-    if (isFree) {
-      videoAccessGranted = !!session?.user; // cualquier usuario registrado
-    } else {
-      videoAccessGranted = hasEscuelaPremiumAccess(userRoles); // roles premium
-    }
+    videoAccessGranted = !!session?.user;
   }
 
   return (
