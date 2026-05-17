@@ -16,6 +16,7 @@ import {
   Mail,
   GraduationCap,
   ChevronRight,
+  BarChart3,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -87,6 +88,7 @@ export default function PerfilPage() {
 
   const { user } = session;
   const roles = user.roles ?? [];
+  const isAdmin = roles.some((r) => r.toLowerCase() === "administrator");
   const initials = getInitials(user.name);
   const premiumAccess = hasPremiumAccess(roles);
   const streamingAccess = hasStreamingAccess(roles);
@@ -112,6 +114,13 @@ export default function PerfilPage() {
       href: "/streaming",
       unlocked: streamingAccess,
       icon: Play,
+    },
+    {
+      label: "Panel de administración",
+      desc: "Métricas, visitas y registro de errores",
+      href: "/perfil/admin",
+      unlocked: isAdmin,
+      icon: BarChart3,
     },
   ];
 

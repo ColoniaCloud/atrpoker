@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 import { auth } from "@/lib/auth";
+import { recordServerError } from "@/lib/admin-telemetry";
 
 const TIPO_LABELS: Record<string, string> = {
   sala:      "Elección de sala",
@@ -65,6 +66,15 @@ export async function POST(req: Request) {
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("Resend error:", err);
+    recordServerError({
+      message: "Error enviando ticket de soporte",
+      stack: err instanceof Error ? err.stack : undefined,
+      path: "/api/soporte",
+      userName: userName !== "—" ? userName : undefined,
+      userEmail: userEmail !== "—" ? userEmail : undefined,
+      roles: session.user.roles ?? [],
+      extra: err instanceof Error ? err.message : String(err),
+    });
     return NextResponse.json({ error: "Error al enviar el ticket" }, { status: 500 });
   }
 }
