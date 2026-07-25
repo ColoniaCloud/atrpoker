@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { getWpToken } from "@/lib/wp-token";
 import { getPostBySlug, getProgreso } from "@/lib/wordpress";
 import { buildBunnyEmbedUrl } from "@/lib/bunny";
 import { ESCUELA_LIBRARY_IDS, ESCUELA_DEFAULT_LIBRARY_ID } from "@/lib/types";
@@ -45,7 +46,7 @@ export default async function EstudiaSlugPage({ params }: PageProps) {
   const [post, progreso] = await Promise.all([
     getPostBySlug(slug),
     (async (): Promise<Progreso> => {
-      const token = (session.user as { wpToken?: string }).wpToken;
+      const token = await getWpToken();
       return token ? getProgreso(token) : {};
     })(),
   ]);

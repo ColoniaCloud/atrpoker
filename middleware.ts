@@ -56,6 +56,16 @@ export default auth(async function middleware(
     }
   }
 
+  // ── /perfil/* ───────────────────────────────────────────────────────────
+  // Requiere sesión iniciada (mensajería, perfil, soporte, admin).
+  if (pathname.startsWith("/perfil")) {
+    if (!session?.user) {
+      const loginUrl = new URL("/login", req.url);
+      loginUrl.searchParams.set("callbackUrl", pathname);
+      return NextResponse.redirect(loginUrl);
+    }
+  }
+
   return NextResponse.next();
 });
 
@@ -65,5 +75,6 @@ export const config = {
     "/academia/:path*",
     "/estudia/:path*",
     "/estudia",
+    "/perfil/:path*",
   ],
 };

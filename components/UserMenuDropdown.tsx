@@ -11,6 +11,7 @@ import {
   LogOut,
   LogIn,
   UserPlus,
+  MessagesSquare,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -21,6 +22,7 @@ interface Props {
 
 const MENU_ITEMS_LOGGED = [
   { label: "Mi cuenta", href: "/perfil", icon: User },
+  { label: "Mensajes", href: "/perfil/mensajes", icon: MessagesSquare },
   { label: "Mi academia", href: "/academia", icon: BookOpen },
   { label: "Soporte", href: "/perfil/asesoramiento", icon: Headphones },
 ] as const;

@@ -3,6 +3,7 @@ import { redirect } from "next/navigation";
 import { Activity, AlertTriangle, ArrowLeft, Globe, ServerCrash } from "lucide-react";
 import { auth } from "@/lib/auth";
 import { getTelemetrySummary } from "@/lib/admin-telemetry";
+import { ModeracionMensajes } from "@/components/ModeracionMensajes";
 
 function formatDate(value: string): string {
   try {
@@ -143,6 +144,10 @@ export default async function PerfilAdminPage() {
             </div>
           )}
         </div>
+      </div>
+
+      <div className="mt-8">
+        <ModeracionMensajes />
       </div>
     </section>
   );

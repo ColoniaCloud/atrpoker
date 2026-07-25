@@ -12,7 +12,8 @@ declare module "next-auth" {
       name?: string | null;
       email?: string | null;
       image?: string | null;
-      wpToken?: string;
+      // wpToken NO se expone en la sesión del cliente: vive en el JWT cifrado
+      // y se lee server-side con getWpToken() (lib/wp-token.ts).
       roles: string[];
     };
   }

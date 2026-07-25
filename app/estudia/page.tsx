@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { auth } from "@/lib/auth";
+import { getWpToken } from "@/lib/wp-token";
 import { getProgreso } from "@/lib/wordpress";
 import { EstudiaPageClient } from "@/components/EstudiaPageClient";
 import type { Progreso } from "@/lib/types";
@@ -17,7 +18,7 @@ export default async function EstudiaPage() {
     redirect("/login?callbackUrl=/estudia");
   }
 
-  const token = (session.user as { wpToken?: string }).wpToken;
+  const token = await getWpToken();
   const progreso: Progreso = token ? await getProgreso(token) : {};
 
   return (

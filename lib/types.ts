@@ -86,6 +86,76 @@ export interface StreamingACF {
 /** Mapa de slug de post → completado (true/false). Guardado en WP user meta. */
 export type Progreso = Record<string, boolean>;
 
+// ─── Mensajería interna ──────────────────────────────────────────────────────
+// Requiere endpoints custom en WordPress:
+//   /wp-json/atrpoker/v1/mensajes/* y /usuarios/buscar
+// Ver: /documentos/register-mensajes-endpoint.php (ignorado por git)
+
+export type EstadoSolicitud = "pendiente" | "aceptada";
+
+/** Datos públicos mínimos de un usuario para la UI de mensajería. */
+export interface UsuarioPublico {
+  id: number;
+  nombre: string;
+  avatar: string;
+}
+
+/** Un mensaje dentro de un hilo. */
+export interface Mensaje {
+  id: number;
+  cuerpo: string;
+  mio: boolean;
+  autor_id?: number;
+  creado_at: string;
+}
+
+/** Fila de la bandeja (lista de conversaciones). */
+export interface ConversacionResumen {
+  id: number;
+  estado: EstadoSolicitud;
+  con: UsuarioPublico;
+  ultimo_mensaje: {
+    cuerpo: string;
+    mio: boolean;
+    creado_at: string;
+  } | null;
+  no_leidos: number;
+  bloqueado: boolean;
+  ultimo_at: string;
+}
+
+/** Cabecera de una conversación al abrir el hilo. */
+export interface ConversacionDetalle {
+  id: number;
+  estado: EstadoSolicitud;
+  inicie_yo: boolean;
+  con: UsuarioPublico;
+  bloqueado: boolean;
+}
+
+/** Respuesta de GET /mensajes/conversaciones/{id}. */
+export interface HiloRespuesta {
+  conversacion: ConversacionDetalle;
+  mensajes: Mensaje[];
+}
+
+/** Datos server-only para notificar por email (nunca se envían al cliente). */
+export interface NotificarDatos {
+  email: string;
+  nombre: string;
+  de: string;
+}
+
+/** Fila del panel de moderación (usuarios reportados). */
+export interface ReporteModeracion {
+  usuario: UsuarioPublico;
+  total: number;
+  distintos: number;
+  ultimo_motivo: string;
+  ultimo_at: string;
+  suspendido: boolean;
+}
+
 // ─── Sala (Custom Post Type) ─────────────────────────────────────────────────
 
 export interface WPSala {

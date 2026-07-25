@@ -25,6 +25,8 @@ import { cn } from "@/lib/utils";
 import type { WPCoach, WPSala } from "@/lib/types";
 import { stripHtml } from "@/lib/wordpress";
 import { UserMenuDropdown } from "@/components/UserMenuDropdown";
+import { MensajesBell } from "@/components/MensajesBell";
+import { MessagesSquare } from "lucide-react";
 
 // ─── Datos estáticos del menú ──────────────────────────────────────────────────
 
@@ -442,6 +444,7 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
 
         {/* Auth — desktop (pegado al menú) */}
         <div className="ml-2 flex items-center gap-2">
+          <MensajesBell />
           {session?.user ? (
             <UserMenuDropdown name={session.user.name ?? "Usuario"} />
           ) : (
@@ -523,6 +526,14 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
                 >
                   <User className="h-4 w-4 shrink-0" />
                   Mi cuenta
+                </Link>
+                <Link
+                  href="/perfil/mensajes"
+                  onClick={() => setMobileOpen(false)}
+                  className="flex items-center gap-2.5 rounded-xl px-3 py-2.5 text-sm text-foreground/70 transition-colors hover:bg-muted hover:text-foreground"
+                >
+                  <MessagesSquare className="h-4 w-4 shrink-0" />
+                  Mensajes
                 </Link>
                 <Link
                   href="/academia"

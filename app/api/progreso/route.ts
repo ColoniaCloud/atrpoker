@@ -1,34 +1,20 @@
-import { auth } from "@/lib/auth";
+import { requireWpToken } from "@/lib/api-auth";
 import { getProgreso, saveProgreso } from "@/lib/wordpress";
 import { NextResponse } from "next/server";
 
 // GET /api/progreso — devuelve el progreso del usuario autenticado
 export async function GET() {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-  }
+  const auth = await requireWpToken();
+  if (!auth.ok) return auth.response;
 
-  const token = (session.user as { wpToken?: string }).wpToken;
-  if (!token) {
-    return NextResponse.json({ error: "Token no disponible" }, { status: 401 });
-  }
-
-  const progreso = await getProgreso(token);
+  const progreso = await getProgreso(auth.token);
   return NextResponse.json(progreso);
 }
 
 // POST /api/progreso — guarda el estado de un video
 export async function POST(req: Request) {
-  const session = await auth();
-  if (!session?.user) {
-    return NextResponse.json({ error: "No autenticado" }, { status: 401 });
-  }
-
-  const token = (session.user as { wpToken?: string }).wpToken;
-  if (!token) {
-    return NextResponse.json({ error: "Token no disponible" }, { status: 401 });
-  }
+  const auth = await requireWpToken();
+  if (!auth.ok) return auth.response;
 
   let body: unknown;
   try {
@@ -50,7 +36,7 @@ export async function POST(req: Request) {
   }
 
   const { slug, completed } = body as { slug: string; completed: boolean };
-  const ok = await saveProgreso(token, slug, completed);
+  const ok = await saveProgreso(auth.token, slug, completed);
 
   if (!ok) {
     // El endpoint de WordPress todavía no está disponible — fallback OK

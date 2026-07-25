@@ -50,8 +50,9 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
     },
 
     async session({ session, token }) {
-      // Pasar roles y token WP a la sesión del cliente
-      session.user.wpToken = token.wpToken as string | undefined;
+      // Solo roles van a la sesión del cliente. El wpToken queda en el JWT
+      // cifrado (cookie) y se lee server-side con getWpToken() — nunca se
+      // expone al browser vía useSession() / /api/auth/session.
       session.user.roles = (token.roles as string[]) ?? [];
       return session;
     },
