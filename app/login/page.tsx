@@ -17,6 +17,7 @@ function LoginForm() {
   const callbackUrl = searchParams.get("callbackUrl") ?? "/";
   const error = searchParams.get("error");
   const registered = searchParams.get("registered");
+  const reset = searchParams.get("reset");
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -73,6 +74,13 @@ function LoginForm() {
                 </AlertDescription>
               </Alert>
             )}
+            {reset && !formError && (
+              <Alert className="mb-4 border-emerald-500/40 bg-emerald-500/10">
+                <AlertDescription>
+                  Contraseña actualizada. Iniciá sesión con tu contraseña nueva.
+                </AlertDescription>
+              </Alert>
+            )}
             {formError && (
               <Alert variant="destructive" className="mb-4">
                 <AlertDescription>{formError}</AlertDescription>
@@ -96,9 +104,17 @@ function LoginForm() {
               </div>
 
               <div className="space-y-1.5">
-                <label htmlFor="password" className="text-sm font-medium text-foreground">
-                  Contraseña
-                </label>
+                <div className="flex items-center justify-between">
+                  <label htmlFor="password" className="text-sm font-medium text-foreground">
+                    Contraseña
+                  </label>
+                  <Link
+                    href="/recuperar-contrasena"
+                    className="text-xs text-muted-foreground hover:text-primary hover:underline"
+                  >
+                    ¿Olvidaste tu contraseña?
+                  </Link>
+                </div>
                 <Input
                   id="password"
                   type="password"

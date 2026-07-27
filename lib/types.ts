@@ -113,6 +113,8 @@ export interface Mensaje {
 export interface ConversacionResumen {
   id: number;
   estado: EstadoSolicitud;
+  /** true si yo inicié esta conversación (relevante cuando estado="pendiente"). */
+  inicie_yo: boolean;
   con: UsuarioPublico;
   ultimo_mensaje: {
     cuerpo: string;

@@ -353,7 +353,7 @@ export async function getCoachSlugs(): Promise<string[]> {
 
 export async function getMedia(id: number): Promise<WPMedia | null> {
   try {
-    return wpFetch<WPMedia>(`/media/${id}`, { next: { revalidate: 86400 } });
+    return await wpFetch<WPMedia>(`/media/${id}`, { next: { revalidate: 86400 } });
   } catch (err) {
     console.warn(`[getMedia] Failed to resolve media ID ${id}:`, err);
     return null;

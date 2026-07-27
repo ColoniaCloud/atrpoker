@@ -396,8 +396,15 @@ export function MensajesInbox() {
                 <Avatar user={c.con} />
                 <div className="min-w-0 flex-1">
                   <div className="flex items-center justify-between gap-2">
-                    <span className="truncate text-sm font-semibold text-foreground">
-                      {c.con.nombre}
+                    <span className="flex min-w-0 items-center gap-1.5">
+                      <span className="truncate text-sm font-semibold text-foreground">
+                        {c.con.nombre}
+                      </span>
+                      {tab === "bandeja" && c.estado === "pendiente" && c.inicie_yo && (
+                        <span className="shrink-0 rounded-full bg-muted px-1.5 py-0.5 text-[9px] font-semibold uppercase tracking-wide text-muted-foreground">
+                          Pendiente
+                        </span>
+                      )}
                     </span>
                     {c.ultimo_mensaje && (
                       <span className="shrink-0 text-[10px] text-muted-foreground">
