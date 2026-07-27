@@ -118,11 +118,16 @@ export async function getPostBySlug(slug: string): Promise<WPPost | null> {
 }
 
 export async function getPostSlugs(): Promise<string[]> {
-  const posts = await wpFetch<{ slug: string }[]>(
-    `/posts?per_page=100&status=publish&_fields=slug`,
-    { next: { revalidate: 3600 } }
-  );
-  return posts.map((p) => p.slug);
+  try {
+    const posts = await wpFetch<{ slug: string }[]>(
+      `/posts?per_page=100&status=publish&_fields=slug`,
+      { next: { revalidate: 3600 } }
+    );
+    return posts.map((p) => p.slug);
+  } catch (err) {
+    console.warn("[getPostSlugs] Failed to fetch post slugs:", err);
+    return [];
+  }
 }
 
 // ─── Categorías ──────────────────────────────────────────────────────────────
