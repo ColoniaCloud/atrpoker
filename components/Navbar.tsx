@@ -281,11 +281,11 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
         {/* Logo */}
         <Link href="/" className="relative z-10 mr-4 shrink-0">
           <Image
-            src="/brand/Isologotipo.webp"
+            src="/brand/logo.svg"
             alt="ATRPoker"
-            width={100}
-            height={28}
-            className="h-7 w-auto object-contain"
+            width={141}
+            height={36}
+            className="h-9 w-auto object-contain"
             priority
           />
         </Link>

@@ -155,6 +155,17 @@ NEXTAUTH_URL=https://atrpoker.com
 NEXTAUTH_SECRET=...
 ```
 
+## Informes
+
+Cuando se genera un informe (auditoría, análisis, reporte de estado, etc.):
+
+1. Publicarlo siempre como **Artifact**, no como texto plano en el chat.
+2. Registrar la entrada en `documentos/informes.md` con el formato:
+   ```
+   TIPO - DD/M/AA - enlace_al_artifact
+   ```
+   Ejemplo: `SEO - 28/7/26 - https://claude.ai/code/artifact/xxxxx`
+
 ## Pendientes / notas
 
 - El video `/public/videos/hero.mp4` debe existir en el repo o en el servidor
