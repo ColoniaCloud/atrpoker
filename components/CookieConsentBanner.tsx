@@ -47,7 +47,7 @@ export function CookieConsentBanner() {
   if (!visible) return null;
 
   return (
-    <div className="fixed inset-x-0 bottom-0 z-modal border-t border-border bg-background/97 shadow-[0_-4px_24px_rgba(0,0,0,0.25)] backdrop-blur-md">
+    <div className="fixed inset-x-0 bottom-0 z-modal border-t border-border bg-background shadow-[0_-4px_24px_rgba(0,0,0,0.35)]">
       <div className="mx-auto w-[92vw] max-w-3xl py-4 sm:py-5">
         <p className="text-sm text-muted-foreground">
           Usamos cookies necesarias para el funcionamiento del sitio y, si lo permitís, cookies de
