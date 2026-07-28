@@ -23,10 +23,10 @@ export function SalaPromoCard() {
         <div className="relative z-10 flex flex-col items-center gap-5 text-center">
           {/* Logo ATR */}
           <Image
-            src="/brand/Isologotipo.webp"
+            src="/brand/logo.svg"
             alt="ATRPoker"
             width={120}
-            height={35}
+            height={31}
             className="h-8 sm:h-10 w-auto object-contain drop-shadow-lg"
           />
 

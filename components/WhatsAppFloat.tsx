@@ -1,18 +1,32 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
+import { cn } from "@/lib/utils";
 import { WhatsAppChatModal } from "./WhatsAppChatModal";
 
 export function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
+  const [nearFooter, setNearFooter] = useState(false);
+
+  useEffect(() => {
+    const footer = document.getElementById("site-footer");
+    if (!footer) return;
+
+    const observer = new IntersectionObserver(([entry]) => setNearFooter(entry.isIntersecting));
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
 
   return (
     <>
       <button
         onClick={() => setOpen((o) => !o)}
         aria-label={open ? "Cerrar chat" : "Abrir chat de WhatsApp"}
-        className="fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-float flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full shadow-lg transition-colors duration-200 bg-[#25D366] hover:bg-[#1ebe5d]"
+        className={cn(
+          "fixed bottom-4 right-4 sm:bottom-6 sm:right-6 z-float flex h-12 w-12 sm:h-14 sm:w-14 items-center justify-center rounded-full shadow-lg transition-all duration-300 bg-[#25D366] hover:bg-[#1ebe5d]",
+          nearFooter && "pointer-events-none translate-y-6 opacity-0"
+        )}
       >
         {open ? (
           <X className="h-6 w-6 text-white" />

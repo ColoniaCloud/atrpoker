@@ -17,7 +17,7 @@ import { Sheet, SheetContent, SheetTitle, SheetTrigger } from "@/components/ui/s
 import { Separator } from "@/components/ui/separator";
 import {
   Menu, ChevronDown, LogOut, User, BookOpen, Headphones,
-  Newspaper, Film, ArrowRight,
+  Newspaper, Film, ArrowRight, Mail,
   GraduationCap, Ruler, Brain, Target, Trophy, BookMarked,
   type LucideIcon,
 } from "lucide-react";
@@ -26,7 +26,10 @@ import type { WPCoach, WPSala } from "@/lib/types";
 import { stripHtml } from "@/lib/wordpress";
 import { UserMenuDropdown } from "@/components/UserMenuDropdown";
 import { MensajesBell } from "@/components/MensajesBell";
+import { SocialLinks } from "@/components/SocialLinks";
 import { MessagesSquare } from "lucide-react";
+
+const SITE_WIDTH = "w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto";
 
 // ─── Datos estáticos del menú ──────────────────────────────────────────────────
 
@@ -274,18 +277,32 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
   ];
 
   return (
-    <header className="sticky top-4 z-50 w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto rounded-2xl border border-[rgba(255,255,255,0.08)] bg-background/70 backdrop-blur-md shadow-lg">
+    <header className="sticky top-0 z-navbar w-full border-b border-[rgba(255,255,255,0.08)] bg-background/90 backdrop-blur-md">
+
+      {/* Topbar: mail a la izquierda, redes a la derecha */}
+      <div className="hidden border-b border-[rgba(255,255,255,0.06)] bg-black/20 sm:block">
+        <div className={cn("flex h-9 items-center justify-between", SITE_WIDTH)}>
+          <a
+            href="mailto:hola@atrpoker.com"
+            className="flex items-center gap-1.5 text-xs text-muted-foreground transition-colors hover:text-foreground"
+          >
+            <Mail className="h-3.5 w-3.5" />
+            hola@atrpoker.com
+          </a>
+          <SocialLinks />
+        </div>
+      </div>
 
       {/* Header bar: Logo + Nav desktop + Auth + Mobile trigger */}
-      <div className="flex h-16 items-center justify-between px-6 sm:px-8">
+      <div className={cn("flex h-16 items-center justify-between px-6 sm:px-8", SITE_WIDTH)}>
         {/* Logo */}
         <Link href="/" className="relative z-10 mr-4 shrink-0">
           <Image
             src="/brand/logo.svg"
             alt="ATRPoker"
-            width={141}
-            height={36}
-            className="h-9 w-auto object-contain"
+            width={157}
+            height={40}
+            className="h-10 w-auto object-contain"
             priority
           />
         </Link>
@@ -465,10 +482,10 @@ export function Navbar({ coaches = [], salas = [] }: { coaches?: WPCoach[]; sala
             <div className="mb-6 mt-2">
               <Link href="/" onClick={() => setMobileOpen(false)}>
                 <Image
-                  src="/brand/Isologotipo.webp"
+                  src="/brand/logo.svg"
                   alt="ATRPoker"
                   width={90}
-                  height={26}
+                  height={23}
                   className="h-7 w-auto object-contain"
                 />
               </Link>

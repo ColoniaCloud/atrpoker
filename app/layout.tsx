@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import { Unbounded, Inter, Oswald } from "next/font/google";
 import "./globals.css";
 import { Navbar } from "@/components/Navbar";
@@ -7,6 +8,7 @@ import { SessionProvider } from "@/components/SessionProvider";
 import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { PageTransition } from "@/components/PageTransition";
 import { TelemetryTracker } from "@/components/TelemetryTracker";
+import { ConsentGates } from "@/components/ConsentGates";
 import { getCoaches, getSalas } from "@/lib/wordpress";
 import { getSiteUrl } from "@/lib/site-url";
 
@@ -57,6 +59,20 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="es" className={`${unbounded.variable} ${inter.variable} ${oswald.variable}`}>
       <body className="flex flex-col min-h-screen">
+        <Script id="consent-mode-default" strategy="beforeInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){ window.dataLayer.push(arguments); }
+            window.gtag = gtag;
+            gtag('consent', 'default', {
+              ad_storage: 'denied',
+              analytics_storage: 'denied',
+              ad_user_data: 'denied',
+              ad_personalization: 'denied',
+              wait_for_update: 500
+            });
+          `}
+        </Script>
         <SessionProvider>
           <TelemetryTracker />
           <Navbar coaches={coaches} salas={salas} />
@@ -65,6 +81,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
           </main>
           <Footer />
           <WhatsAppFloat />
+          <ConsentGates />
         </SessionProvider>
       </body>
     </html>

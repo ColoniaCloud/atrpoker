@@ -1,6 +1,8 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Separator } from "@/components/ui/separator";
+import { SocialLinks } from "@/components/SocialLinks";
+import { CookiePrefsButton } from "@/components/CookiePrefsButton";
 
 const FOOTER_LINKS = {
   Aprender: [
@@ -29,17 +31,17 @@ export function Footer() {
   const year = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-border bg-background mt-16">
+    <footer id="site-footer" className="border-t border-border bg-background mt-16">
       <div className="w-[90vw] md:w-[85vw] lg:w-[75vw] xl:w-[70vw] 2xl:w-[65vw] mx-auto px-4 py-12">
         <div className="grid grid-cols-1 md:grid-cols-5 gap-6 md:gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
             <Link href="/" className="inline-block mb-3">
               <Image
-                src="/brand/Isologotipo.webp"
+                src="/brand/logo.svg"
                 alt="ATRPoker"
                 width={90}
-                height={26}
+                height={23}
                 className="h-7 w-auto object-contain"
               />
             </Link>
@@ -49,6 +51,7 @@ export function Footer() {
             <p className="text-xs text-muted-foreground/60 mt-3">
               +18 · Jugá responsablemente.
             </p>
+            <SocialLinks className="mt-4" iconClassName="h-4 w-4" />
           </div>
 
           {/* Links */}
@@ -68,6 +71,11 @@ export function Footer() {
                     </Link>
                   </li>
                 ))}
+                {section === "Legal" && (
+                  <li>
+                    <CookiePrefsButton />
+                  </li>
+                )}
               </ul>
             </div>
           ))}
