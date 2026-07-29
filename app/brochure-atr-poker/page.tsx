@@ -14,13 +14,14 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { getSalas } from "@/lib/wordpress";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   title: "Brochure ATR Poker",
   description:
     "ATR Poker es una academia de poker profesional enfocada en la formación integral de jugadores. Rakeback exclusivo, academia, coaching y agentes ATR.",
   alternates: {
-    canonical: "https://atrpoker.com/brochure-atr-poker",
+    canonical: `${getSiteUrl()}/brochure-atr-poker`,
   },
 };
 

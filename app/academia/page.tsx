@@ -8,11 +8,15 @@ import { Pagination } from "@/components/Pagination";
 import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
 import { AcademiaFilterSelect } from "@/components/AcademiaFilterSelect";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   title: "Academia de Póker | ATRPoker",
   description:
     "Cursos, clases grupales, coaching mental y sesiones en vivo para llevar tu juego al siguiente nivel.",
+  alternates: {
+    canonical: `${getSiteUrl()}/academia`,
+  },
   openGraph: {
     title: "Academia de Póker | ATRPoker",
     description: "Formación y desarrollo para jugadores de póker de todos los niveles.",

@@ -9,7 +9,15 @@ export default function robots(): MetadataRoute.Robots {
       {
         userAgent: "*",
         allow: "/",
-        disallow: ["/streaming/", "/sin-acceso", "/login", "/api/"],
+        disallow: [
+          "/streaming/",
+          "/sin-acceso",
+          "/login",
+          "/api/",
+          "/perfil/",
+          "/debug-acf",
+          "/video",
+        ],
       },
     ],
     sitemap: `${BASE_URL}/sitemap.xml`,

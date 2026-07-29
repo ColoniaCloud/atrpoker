@@ -6,13 +6,14 @@ import { Alert, AlertDescription } from "@/components/ui/alert";
 import { getSalas } from "@/lib/wordpress";
 import { SalaCard } from "@/components/SalaCard";
 import { Pagination } from "@/components/Pagination";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   title: "Salas de Póker Online",
   description:
     "Reseñas completas de las mejores salas de póker online: bonos, códigos de descuento, software, variantes y más.",
   alternates: {
-    canonical: "https://atrpoker.com/salas",
+    canonical: `${getSiteUrl()}/salas`,
   },
   openGraph: {
     title: "Salas de Póker Online | ATRPoker",

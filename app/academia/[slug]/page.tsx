@@ -7,6 +7,7 @@ import { ESCUELA_SUBCATEGORIES } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
 import { Pagination } from "@/components/Pagination";
 import { Badge } from "@/components/ui/badge";
+import { getSiteUrl } from "@/lib/site-url";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -84,6 +85,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${subcat.label} | Academia ATRPoker`,
     description: `Contenidos de ${subcat.label} en la Academia de Póker de ATRPoker.`,
+    alternates: {
+      canonical: `${getSiteUrl()}/academia/${slug}`,
+    },
   };
 }
 

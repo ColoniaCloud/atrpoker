@@ -9,8 +9,10 @@ import { WhatsAppFloat } from "@/components/WhatsAppFloat";
 import { PageTransition } from "@/components/PageTransition";
 import { TelemetryTracker } from "@/components/TelemetryTracker";
 import { ConsentGates } from "@/components/ConsentGates";
+import { GoogleAnalytics } from "@/components/GoogleAnalytics";
 import { getCoaches, getSalas } from "@/lib/wordpress";
 import { getSiteUrl } from "@/lib/site-url";
+import { organizationSchema, websiteSchema } from "@/lib/json-ld";
 
 const unbounded = Unbounded({
   subsets: ["latin"],
@@ -48,6 +50,9 @@ export const metadata: Metadata = {
   },
   twitter: { card: "summary_large_image" },
   robots: { index: true, follow: true },
+  verification: {
+    google: process.env.GOOGLE_SITE_VERIFICATION,
+  },
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
@@ -59,6 +64,16 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="es" className={`${unbounded.variable} ${inter.variable} ${oswald.variable}`}>
       <body className="flex flex-col min-h-screen">
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema()) }}
+        />
+        {/* beforeInteractive: siempre corre antes que GoogleAnalytics (afterInteractive),
+            sin importar el orden en el JSX — Next.js lo prioriza por estrategia. */}
         <Script id="consent-mode-default" strategy="beforeInteractive">
           {`
             window.dataLayer = window.dataLayer || [];
@@ -73,6 +88,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
             });
           `}
         </Script>
+        <GoogleAnalytics />
         <SessionProvider>
           <TelemetryTracker />
           <Navbar coaches={coaches} salas={salas} />

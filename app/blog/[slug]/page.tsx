@@ -22,6 +22,8 @@ import {
   ESCUELA_DEFAULT_LIBRARY_ID,
   ESCUELA_FREE_SUBCATEGORIES,
 } from "@/lib/types";
+import { getSiteUrl } from "@/lib/site-url";
+import { articleSchema, breadcrumbSchema } from "@/lib/json-ld";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -40,7 +42,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const imageUrl = getFeaturedImageUrl(post, "large");
   const description = stripHtml(post.excerpt.rendered).slice(0, 160);
   const title = stripHtml(post.title.rendered);
-  const canonicalUrl = `https://atrpoker.com/blog/${slug}`;
+  const canonicalUrl = `${getSiteUrl()}/blog/${slug}`;
 
   return {
     title,
@@ -126,8 +128,46 @@ export default async function BlogPostPage({ params }: PageProps) {
     videoAccessGranted = !!session?.user;
   }
 
+  const siteUrl = getSiteUrl();
+  const postUrl = `${siteUrl}/blog/${slug}`;
+  const postTitle = stripHtml(post.title.rendered);
+  const escuelaSub = escuelaCatSlug
+    ? ESCUELA_SUBCATEGORIES.find((s) => s.slug === escuelaCatSlug)
+    : null;
+  const breadcrumb = breadcrumbSchema(
+    escuelaCatSlug
+      ? [
+          { name: "Inicio", url: siteUrl },
+          { name: "Academia", url: `${siteUrl}/academia` },
+          { name: escuelaSub?.label ?? "Academia", url: `${siteUrl}/academia/${escuelaCatSlug}` },
+          { name: postTitle, url: postUrl },
+        ]
+      : [
+          { name: "Inicio", url: siteUrl },
+          { name: "Blog", url: `${siteUrl}/blog` },
+          { name: postTitle, url: postUrl },
+        ]
+  );
+  const article = articleSchema({
+    title: postTitle,
+    description: stripHtml(post.excerpt.rendered).slice(0, 300),
+    url: postUrl,
+    imageUrl,
+    datePublished: post.date_gmt,
+    dateModified: post.modified,
+    authorName: author?.name,
+  });
+
   return (
     <article className="mx-auto max-w-3xl py-12">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
+      />
       {/* Breadcrumb */}
       <nav className="mb-8 flex items-center gap-1.5 text-sm text-muted-foreground">
         <Link href="/" className="hover:text-foreground transition-colors">Inicio</Link>

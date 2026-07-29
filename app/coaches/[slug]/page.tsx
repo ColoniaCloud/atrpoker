@@ -15,6 +15,7 @@ import { CoachesCarousel } from "@/components/CoachesCarousel";
 import {
   getCoachBySlug, getCoachSlugs, getCoaches, getSalas, getPosts, stripHtml,
 } from "@/lib/wordpress";
+import { getSiteUrl } from "@/lib/site-url";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -40,6 +41,9 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return {
     title: `${name} — Coach de Póker`,
     description: desc,
+    alternates: {
+      canonical: `${getSiteUrl()}/coaches/${slug}`,
+    },
     openGraph: {
       title: `${name} — Coach de Póker | ATRPoker`,
       description: desc ?? "",

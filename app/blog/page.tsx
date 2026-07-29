@@ -6,13 +6,14 @@ import { CATEGORY_SLUGS } from "@/lib/types";
 import { BlogCard } from "@/components/BlogCard";
 import { Pagination } from "@/components/Pagination";
 import { cn } from "@/lib/utils";
+import { getSiteUrl } from "@/lib/site-url";
 
 export const metadata: Metadata = {
   title: "Blog de Póker",
   description:
     "Artículos sobre estrategia de póker, análisis de torneos, noticias y consejos para mejorar tu juego.",
   alternates: {
-    canonical: "https://atrpoker.com/blog",
+    canonical: `${getSiteUrl()}/blog`,
   },
   openGraph: {
     title: "Blog de Póker | ATRPoker",

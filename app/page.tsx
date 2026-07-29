@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { getPosts, getSalas, getCategoryBySlug } from "@/lib/wordpress";
 import { CATEGORY_SLUGS, ESCUELA_SUBCATEGORIES } from "@/lib/types";
+import { getSiteUrl } from "@/lib/site-url";
 import { BlogCard } from "@/components/BlogCard";
 import { SalaCard } from "@/components/SalaCard";
 import { SalaPromoCard } from "@/components/SalaPromoCard";
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
   description:
     "Las mejores salas de póker online, reseñas, bonos exclusivos, academia, streaming en vivo y la comunidad de póker más grande de Latinoamerica.",
   alternates: {
-    canonical: "https://atrpoker.com",
+    canonical: getSiteUrl(),
   },
   openGraph: {
     title: "ATRPoker — Póker Online en Latinoamerica",

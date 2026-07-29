@@ -19,6 +19,8 @@ import {
   getFeaturedImageUrl,
   stripHtml,
 } from "@/lib/wordpress";
+import { getSiteUrl } from "@/lib/site-url";
+import { reviewSchema, breadcrumbSchema } from "@/lib/json-ld";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -38,7 +40,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const description = stripHtml(sala.excerpt?.rendered ?? "").slice(0, 160);
   const salaName = stripHtml(sala.title.rendered);
   const title = `${salaName} — Reseña y Bono`;
-  const canonicalUrl = `https://atrpoker.com/salas/${slug}`;
+  const canonicalUrl = `${getSiteUrl()}/salas/${slug}`;
 
   return {
     title,
@@ -253,8 +255,36 @@ export default async function SalaPage({ params }: PageProps) {
   const waMessage = encodeURIComponent(`Necesito ayuda para jugar en ${salaNamePlain}`);
   const whatsappUrl = `https://wa.me/${WA_NUMBER}?text=${waMessage}`;
 
+  const siteUrl = getSiteUrl();
+  const salaUrl = `${siteUrl}/salas/${slug}`;
+  const rating = acf?.rating ? Number(acf.rating) : null;
+  const breadcrumb = breadcrumbSchema([
+    { name: "Inicio", url: siteUrl },
+    { name: "Salas", url: `${siteUrl}/salas` },
+    { name: salaNamePlain, url: salaUrl },
+  ]);
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }}
+      />
+      {rating && rating > 0 && (
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(
+              reviewSchema({
+                salaName: salaNamePlain,
+                rating,
+                description: stripHtml(sala.excerpt?.rendered ?? "").slice(0, 300),
+                url: salaUrl,
+              })
+            ),
+          }}
+        />
+      )}
       {/* ── Hero full-bleed ─────────────────────────────────────────── */}
       <section className="relative -mt-14 left-1/2 -translate-x-1/2 w-screen overflow-hidden pt-36 pb-28">
         {imageUrl ? (
