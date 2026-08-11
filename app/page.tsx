@@ -100,8 +100,39 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* ── Blog ──────────────────────────────────────────── */}
+      {blogPosts.length > 0 && (
+        <section className="py-16">
+          <div className="mb-8 flex items-end justify-between">
+            <div>
+              <h2 className="text-3xl font-bold text-foreground">Últimas del Blog</h2>
+              <p className="mt-1 text-muted-foreground">
+                Estrategia, noticias y análisis de póker
+              </p>
+            </div>
+            <Button asChild variant="outline" className="hidden sm:flex">
+              <Link href="/blog">
+                Ver todo <ArrowRight className="ml-2 h-4 w-4" />
+              </Link>
+            </Button>
+          </div>
+
+          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
+            {blogPosts.map((post) => (
+              <BlogCard key={post.id} post={post} />
+            ))}
+          </div>
+
+          <div className="mt-6 text-center sm:hidden">
+            <Button asChild variant="outline">
+              <Link href="/blog">Ver todo el blog</Link>
+            </Button>
+          </div>
+        </section>
+      )}
+
       {/* ── Salas destacadas ──────────────────────────────── */}
-      <section className="py-16">
+      <section className="py-16 border-t border-border">
         <div className="mb-8 flex items-end justify-between">
           <div>
             <h2 className="text-3xl font-bold text-foreground">Salas de Póker</h2>
@@ -241,37 +272,6 @@ export default async function HomePage() {
 
         </div>
       </section>
-
-      {/* ── Blog ──────────────────────────────────────────── */}
-      {blogPosts.length > 0 && (
-        <section className="border-t border-border py-16">
-          <div className="mb-8 flex items-end justify-between">
-            <div>
-              <h2 className="text-3xl font-bold text-foreground">Últimas del Blog</h2>
-              <p className="mt-1 text-muted-foreground">
-                Estrategia, noticias y análisis de póker
-              </p>
-            </div>
-            <Button asChild variant="outline" className="hidden sm:flex">
-              <Link href="/blog">
-                Ver todo <ArrowRight className="ml-2 h-4 w-4" />
-              </Link>
-            </Button>
-          </div>
-
-          <div className="grid grid-cols-1 gap-6 md:grid-cols-3">
-            {blogPosts.map((post) => (
-              <BlogCard key={post.id} post={post} />
-            ))}
-          </div>
-
-          <div className="mt-6 text-center sm:hidden">
-            <Button asChild variant="outline">
-              <Link href="/blog">Ver todo el blog</Link>
-            </Button>
-          </div>
-        </section>
-      )}
 
       {/* ── Sala icons wall ────────────────────────────────── */}
       <SalaIconsWall

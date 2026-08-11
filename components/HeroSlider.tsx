@@ -4,11 +4,6 @@ import { useState, useEffect } from "react";
 
 const SLIDES = [
   {
-    title: "No podes jugar al póker sin nuestro rakeback",
-    description:
-      "Tu socio estratégico en el mundo del póker. Accedé a los mejores deals de rakeback, construí tu red de jugadores como agente y multiplicá tus ingresos con las salas más reconocidas de la industria.",
-  },
-  {
     title: "Aprendé poker como un verdadero estratega",
     description:
       "Más de 100 clases grabadas en video a tu disposicion para que aprendas en tu vibe, tablas y muchos recursos más.",
@@ -52,14 +47,7 @@ export function HeroSlider() {
         }`}
         style={{ transitionDuration: `${TRANSITION_DURATION}ms` }}
       >
-        {currentSlide.title.includes("rakeback") ? (
-          <>
-            No podes jugar al póker{" "}
-            <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
-              sin nuestro rakeback
-            </span>
-          </>
-        ) : currentSlide.title.includes("estratega") ? (
+        {currentSlide.title.includes("estratega") ? (
           <>
             Aprendé poker como un{" "}
             <span className="bg-gradient-to-r from-amber-300 to-amber-600 bg-clip-text text-transparent">
