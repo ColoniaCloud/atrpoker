@@ -10,8 +10,7 @@ import { Pagination } from "@/components/Pagination";
 
 export const metadata: Metadata = {
   title: "Streaming de Póker",
-  description: "Mirá las mejores mesas de póker en vivo. Torneos y cash games con streaming exclusivo para miembros.",
-  robots: { index: false },
+  description: "Mirá las mejores mesas de póker en vivo. Torneos y cash games en streaming, libre para todos.",
 };
 
 interface PageProps {

@@ -49,14 +49,9 @@ const ROLE_META: Record<string, { label: string; className: string }> = {
 
 // Mirrors the logic in middleware.ts / lib/auth.ts (client-side display only)
 const ACADEMIA_PREMIUM_ROLES = ["administrator", "editor", "colaborador", "player"];
-const STREAMING_DEFAULT_ROLES = ["subscriber", "administrator"];
 
 function hasPremiumAccess(roles: string[]): boolean {
   return roles.some((r) => ACADEMIA_PREMIUM_ROLES.includes(r.toLowerCase()));
-}
-
-function hasStreamingAccess(roles: string[]): boolean {
-  return roles.some((r) => STREAMING_DEFAULT_ROLES.includes(r.toLowerCase()));
 }
 
 function getInitials(name: string | null | undefined): string {
@@ -91,7 +86,6 @@ export default function PerfilPage() {
   const isAdmin = roles.some((r) => r.toLowerCase() === "administrator");
   const initials = getInitials(user.name);
   const premiumAccess = hasPremiumAccess(roles);
-  const streamingAccess = hasStreamingAccess(roles);
 
   const ACCESS_ITEMS = [
     {
@@ -110,9 +104,9 @@ export default function PerfilPage() {
     },
     {
       label: "Streaming",
-      desc: "Videos en vivo y grabados",
+      desc: "Videos en vivo y grabados · acceso libre",
       href: "/streaming",
-      unlocked: streamingAccess,
+      unlocked: true,
       icon: Play,
     },
     {

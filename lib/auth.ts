@@ -71,18 +71,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 
 // ─── Helpers de roles ────────────────────────────────────────────────────────
 
-const STREAMING_ROLES = (
-  process.env.STREAMING_ROLES ?? "subscriber,administrator"
-)
-  .split(",")
-  .map((r) => r.trim().toLowerCase());
-
-export function hasStreamingAccess(roles: string[]): boolean {
-  return roles.some((role) =>
-    STREAMING_ROLES.includes(role.toLowerCase())
-  );
-}
-
 export function isAdmin(roles: string[]): boolean {
   return roles.includes("administrator");
 }
