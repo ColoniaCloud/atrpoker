@@ -16,7 +16,6 @@ interface PageProps {
 
 export const metadata: Metadata = {
   title: "Streaming",
-  robots: { index: false },
 };
 
 export async function generateStaticParams() {
