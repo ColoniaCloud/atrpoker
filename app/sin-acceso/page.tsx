@@ -19,7 +19,7 @@ export default function SinAccesoPage() {
           </div>
           <CardTitle className="text-2xl">Contenido restringido</CardTitle>
           <CardDescription>
-            No tenés acceso a esta sección. El streaming está disponible para miembros con suscripción activa.
+            No tenés permisos para acceder a esta sección.
           </CardDescription>
         </CardHeader>
         <CardContent>
