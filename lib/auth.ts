@@ -72,7 +72,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
 // ─── Helpers de roles ────────────────────────────────────────────────────────
 
 const STREAMING_ROLES = (
-  process.env.STREAMING_ROLES ?? "subscriber,administrator"
+  process.env.STREAMING_ROLES ?? "subscriber,administrator,editor"
 )
   .split(",")
   .map((r) => r.trim().toLowerCase());

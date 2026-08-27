@@ -5,7 +5,7 @@ import type { NextRequest } from "next/server";
 // ─── Roles ────────────────────────────────────────────────────────────────────
 
 const STREAMING_ROLES = (
-  process.env.STREAMING_ROLES ?? "subscriber,administrator"
+  process.env.STREAMING_ROLES ?? "subscriber,administrator,editor"
 )
   .split(",")
   .map((r) => r.trim().toLowerCase());

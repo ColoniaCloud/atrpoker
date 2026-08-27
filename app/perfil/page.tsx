@@ -49,7 +49,7 @@ const ROLE_META: Record<string, { label: string; className: string }> = {
 
 // Mirrors the logic in middleware.ts / lib/auth.ts (client-side display only)
 const ACADEMIA_PREMIUM_ROLES = ["administrator", "editor", "colaborador", "player"];
-const STREAMING_DEFAULT_ROLES = ["subscriber", "administrator"];
+const STREAMING_DEFAULT_ROLES = ["subscriber", "administrator", "editor"];
 
 function hasPremiumAccess(roles: string[]): boolean {
   return roles.some((r) => ACADEMIA_PREMIUM_ROLES.includes(r.toLowerCase()));
