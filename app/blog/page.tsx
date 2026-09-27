@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Spade } from "lucide-react";
-import { getPosts, getCategoryBySlug } from "@/lib/wordpress";
-import { CATEGORY_SLUGS } from "@/lib/types";
-import { BlogCard } from "@/components/BlogCard";
+import { getPosts, getCategorySubtree } from "@/lib/wordpress";
+import { CATEGORY_SLUGS, type WPPost } from "@/lib/types";
+import { BlogBentoGrid } from "@/components/BlogBentoGrid";
 import { Pagination } from "@/components/Pagination";
 import { cn } from "@/lib/utils";
 import { getSiteUrl } from "@/lib/site-url";
@@ -37,11 +37,7 @@ export const metadata: Metadata = {
 
 export const revalidate = 300;
 
-const TABS = [
-  { slug: null, label: "Todos" },
-  { slug: CATEGORY_SLUGS.BLOG_POSTS, label: "Blog de Póker" },
-  { slug: CATEGORY_SLUGS.NOTICIAS, label: "Noticias" },
-] as const;
+const PER_PAGE = 12;
 
 interface PageProps {
   searchParams: Promise<{ page?: string; cat?: string }>;
@@ -50,38 +46,41 @@ interface PageProps {
 export default async function BlogPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const currentPage = Number(params.page ?? 1);
-  const activeCat = params.cat ?? null;
+  const requestedCat = params.cat ?? null;
 
-  // Resolve category ID for selected tab (or fetch all blog posts if none)
-  let categoryId: number | undefined;
-  let categoryIds: number[] | undefined;
+  // Categoría "Blog" + todas sus subcategorías (recursivo).
+  // La entrada se muestra si pertenece a cualquiera de ellas, aunque no tenga
+  // marcada la categoría padre "Blog".
+  const blog = await getCategorySubtree(CATEGORY_SLUGS.BLOG);
+  const blogIds = blog?.ids ?? [];
 
-  if (activeCat) {
-    const cat = await getCategoryBySlug(activeCat);
-    if (cat) categoryId = cat.id;
-  } else {
-    // Fetch both subcategory IDs to show all blog content
-    const [catBlog, catNoticias] = await Promise.all([
-      getCategoryBySlug(CATEGORY_SLUGS.BLOG_POSTS),
-      getCategoryBySlug(CATEGORY_SLUGS.NOTICIAS),
-    ]);
-    const ids = [catBlog?.id, catNoticias?.id].filter((id): id is number => !!id);
-    if (ids.length > 0) categoryIds = ids;
-    else {
-      // fallback to parent "blog" category
-      const parent = await getCategoryBySlug(CATEGORY_SLUGS.BLOG);
-      if (parent) categoryId = parent.id;
+  // Tab activa: sólo se acepta si está dentro del árbol de Blog
+  let activeCat: string | null = null;
+  let categoryIds = blogIds;
+
+  if (requestedCat) {
+    const catSubtree = await getCategorySubtree(requestedCat);
+    if (catSubtree && blogIds.includes(catSubtree.root.id)) {
+      activeCat = requestedCat;
+      categoryIds = catSubtree.ids;
     }
   }
 
-  const { items: posts, totalPages, total } = await getPosts({
-    page: currentPage,
-    perPage: 12,
-    categoryId,
-    categoryIds,
-  });
+  const tabs = [
+    { slug: null, label: "Todos" },
+    ...(blog?.children ?? [])
+      .filter((child) => child.count > 0)
+      .map((child) => ({ slug: child.category.slug, label: child.category.name })),
+  ];
 
-  const activeTab = TABS.find((t) => t.slug === activeCat) ?? TABS[0];
+  // Si no se pudo resolver el árbol de Blog, mejor no mostrar nada que mostrar
+  // entradas de otras secciones (academia, streaming…)
+  const { items: posts, totalPages, total } =
+    categoryIds.length > 0
+      ? await getPosts({ page: currentPage, perPage: PER_PAGE, categoryIds })
+      : { items: [] as WPPost[], totalPages: 0, total: 0 };
+
+  const activeTab = tabs.find((t) => t.slug === activeCat) ?? tabs[0];
   const basePath = activeCat ? `/blog?cat=${activeCat}` : "/blog";
 
   return (
@@ -96,8 +95,8 @@ export default async function BlogPage({ searchParams }: PageProps) {
       </div>
 
       {/* Tabs */}
-      <div className="mb-8 flex gap-2 border-b border-border">
-        {TABS.map((tab) => {
+      <div className="mb-8 flex flex-wrap gap-2 border-b border-border">
+        {tabs.map((tab) => {
           const href = tab.slug ? `/blog?cat=${tab.slug}` : "/blog";
           const isActive = tab.slug === activeCat;
           return (
@@ -117,14 +116,10 @@ export default async function BlogPage({ searchParams }: PageProps) {
         })}
       </div>
 
-      {/* Grid */}
+      {/* Bento grid */}
       {posts.length > 0 ? (
         <>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {posts.map((post) => (
-              <BlogCard key={post.id} post={post} />
-            ))}
-          </div>
+          <BlogBentoGrid posts={posts} />
           <Pagination currentPage={currentPage} totalPages={totalPages} basePath={basePath} />
         </>
       ) : (

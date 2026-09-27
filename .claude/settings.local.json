@@ -3,7 +3,8 @@
     "allow": [
       "Bash(npm run:*)",
       "Bash(npx tsc:*)",
-      "Bash(python -c ' *)"
+      "Bash(python -c ' *)",
+      "mcp__plugin_hostinger_hostinger__hosting_listWordPressInstallationsV1"
     ]
   }
 }

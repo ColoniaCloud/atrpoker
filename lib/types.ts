@@ -319,9 +319,8 @@ export interface PaginatedResponse<T> {
 // ─── Category slugs config ───────────────────────────────────────────────────
 
 export const CATEGORY_SLUGS = {
-  BLOG: "blog",
-  BLOG_POSTS: "blog-blog",     // subcategoría Blog de Póker
-  NOTICIAS: "noticias",         // subcategoría Noticias de Póker
+  BLOG: "blog",                 // categoría padre del blog (sus hijas se incluyen)
+  NOTICIAS: "noticias",         // subcategoría de Blog
   STREAMING: "streaming",
   ESCUELA: "escuela",           // categoría padre de Academia
 } as const;

@@ -12,6 +12,7 @@ import type {
   PaginatedResponse,
   Progreso,
 } from "./types";
+import { CATEGORY_SLUGS } from "./types";
 
 const WP_URL = process.env.WORDPRESS_URL || "https://atr.academy";
 const API_BASE = `${WP_URL}/wp-json/wp/v2`;
@@ -162,6 +163,65 @@ export async function getCategoryChildren(parentSlug: string): Promise<WPCategor
   } catch {
     return [];
   }
+}
+
+// Árbol de categorías: raíz + todas sus descendientes (recursivo).
+// Sirve para listar entradas de una categoría padre aunque el post sólo tenga
+// marcada una subcategoría (WP REST trata `categories=a,b,c` como OR).
+export interface CategorySubtree {
+  root: WPCategory;
+  /** IDs de la raíz + todas las descendientes */
+  ids: number[];
+  /** Hijas directas, cada una con los IDs de su propio subárbol */
+  children: { category: WPCategory; ids: number[]; count: number }[];
+}
+
+export async function getCategorySubtree(
+  slug: string
+): Promise<CategorySubtree | null> {
+  let all: WPCategory[];
+  try {
+    all = await getCategories();
+  } catch (err) {
+    console.warn("[getCategorySubtree] Failed to fetch categories:", err);
+    return null;
+  }
+
+  const root = all.find((c) => c.slug === slug);
+  if (!root) return null;
+
+  const childrenOf = (id: number) => all.filter((c) => c.parent === id);
+
+  // IDs del subárbol de `id` (incluido `id`), con guarda anti-ciclos
+  const subtreeIds = (id: number): number[] => {
+    const acc: number[] = [];
+    const queue = [id];
+    while (queue.length > 0) {
+      const current = queue.shift()!;
+      if (acc.includes(current)) continue;
+      acc.push(current);
+      queue.push(...childrenOf(current).map((c) => c.id));
+    }
+    return acc;
+  };
+
+  const countOf = (ids: number[]) =>
+    ids.reduce((sum, id) => sum + (all.find((c) => c.id === id)?.count ?? 0), 0);
+
+  const children = childrenOf(root.id)
+    .map((category) => {
+      const ids = subtreeIds(category.id);
+      return { category, ids, count: countOf(ids) };
+    })
+    .sort((a, b) => a.category.name.localeCompare(b.category.name, "es"));
+
+  return { root, ids: subtreeIds(root.id), children };
+}
+
+/** IDs de la categoría "blog" + todas sus subcategorías */
+export async function getBlogCategoryIds(): Promise<number[]> {
+  const subtree = await getCategorySubtree(CATEGORY_SLUGS.BLOG);
+  return subtree?.ids ?? [];
 }
 
 // ─── Salas (Custom Post Type) ────────────────────────────────────────────────
@@ -477,8 +537,58 @@ export function getFeaturedImageUrl(
   return media.media_details?.sizes?.[size]?.source_url ?? media.source_url;
 }
 
+// Entidades HTML más comunes en el contenido de WordPress
+const HTML_ENTITIES: Record<string, string> = {
+  amp: "&",
+  lt: "<",
+  gt: ">",
+  quot: '"',
+  apos: "'",
+  nbsp: " ",
+  hellip: "…",
+  mdash: "—",
+  ndash: "–",
+  laquo: "«",
+  raquo: "»",
+  ldquo: "“",
+  rdquo: "”",
+  lsquo: "‘",
+  rsquo: "’",
+  middot: "·",
+  bull: "•",
+  deg: "°",
+  euro: "€",
+  copy: "©",
+  reg: "®",
+  trade: "™",
+};
+
+function decodeEntities(text: string): string {
+  return text.replace(/&(#x?[0-9a-f]+|[a-z][a-z0-9]*);/gi, (match, code: string) => {
+    if (code.startsWith("#")) {
+      const codePoint = code[1]?.toLowerCase() === "x"
+        ? parseInt(code.slice(2), 16)
+        : parseInt(code.slice(1), 10);
+      if (!Number.isFinite(codePoint) || codePoint < 0 || codePoint > 0x10ffff) return match;
+      return String.fromCodePoint(codePoint);
+    }
+    return HTML_ENTITIES[code.toLowerCase()] ?? match;
+  });
+}
+
+// Etiquetas de bloque: al sacarlas dejan un espacio para no pegar palabras
+// ("<p>uno</p><p>dos</p>" → "uno dos", no "unodos")
+const BLOCK_TAGS =
+  /<\/?(?:p|div|br|hr|h[1-6]|li|ul|ol|table|tr|td|th|thead|tbody|blockquote|section|article|aside|header|footer|figure|figcaption|pre)\b[^>]*>/gi;
+
+/** HTML de WordPress → texto plano legible (para alt, meta descriptions, excerpts…) */
 export function stripHtml(html: string): string {
-  return html.replace(/<[^>]+>/g, "").replace(/&[^;]+;/g, " ").trim();
+  const text = html
+    .replace(/<(script|style)\b[^>]*>[\s\S]*?<\/\1>/gi, " ")
+    .replace(BLOCK_TAGS, " ")
+    .replace(/<[^>]+>/g, "");
+
+  return decodeEntities(text).replace(/\s+/g, " ").trim();
 }
 
 export function formatDate(dateString: string): string {

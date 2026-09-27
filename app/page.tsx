@@ -5,8 +5,8 @@ import Image from "next/image";
 import { ArrowRight, ExternalLink, Spade } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
-import { getPosts, getSalas, getCategoryBySlug } from "@/lib/wordpress";
-import { CATEGORY_SLUGS, ESCUELA_SUBCATEGORIES } from "@/lib/types";
+import { getPosts, getSalas, getBlogCategoryIds } from "@/lib/wordpress";
+import { ESCUELA_SUBCATEGORIES } from "@/lib/types";
 import { getSiteUrl } from "@/lib/site-url";
 import { BlogCard } from "@/components/BlogCard";
 import { SalaCard } from "@/components/SalaCard";
@@ -46,8 +46,8 @@ export const metadata: Metadata = {
 export const revalidate = 300;
 
 export default async function HomePage() {
-  const [blogCategory, { items: salasRaw }] = await Promise.all([
-    getCategoryBySlug(CATEGORY_SLUGS.BLOG),
+  const [blogCategoryIds, { items: salasRaw }] = await Promise.all([
+    getBlogCategoryIds(),
     getSalas({ perPage: 20 }),
   ]);
 
@@ -57,9 +57,11 @@ export default async function HomePage() {
     ...salasRaw.filter((s) => s.slug !== "ignition"),
   ];
 
+  // Blog + todas sus subcategorías (una entrada de "Noticias" cuenta como blog
+  // aunque no tenga marcada la categoría padre)
   const { items: blogPosts } = await getPosts({
     perPage: 3,
-    categoryId: blogCategory?.id,
+    categoryIds: blogCategoryIds,
   });
 
   return (
